@@ -27,9 +27,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <main className='w-full min-h-screen px-6 lg:px-0'>
+        {/* main crece para empujar el footer hacia abajo */}
+        <main className="flex-1 w-full flex flex-col mx-auto px-6 xl:px-0 bg-zinc-100">
           {children}
         </main>
+
       </body>
     </html>
   );

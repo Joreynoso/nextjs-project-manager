@@ -1,15 +1,16 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-// If your Prisma file is located elsewhere, you can change the path
-import prisma from "./prisma";
+import { PrismaClient } from "@prisma/client";
 
-export const auth = betterAuth({
+const prisma = new PrismaClient();
+
+const auth = betterAuth({
     database: prismaAdapter(prisma, {
-        provider: "postgresql", // or "mysql", "postgresql", ...etc
+        provider: "postgresql",
     }),
 
-    // configuración para autenticación por email
-    email: {
+    // configuración para autenticación por email y contraseña
+    emailAndPassword: {
         enabled: true,
         requireEmailVerification: false,
         minPasswordLength: 6,
@@ -24,5 +25,6 @@ export const auth = betterAuth({
             maxAge: 5 * 60, // 5 minutes
         }
     },
-
 });
+
+export default auth
