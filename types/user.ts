@@ -12,4 +12,8 @@ export type User = {
     name: string;
     image?: string | null | undefined;
 } & Role
- 
+
+export type Password = {
+    password: string; // required
+    passwordConfirmation: string; // required
+}

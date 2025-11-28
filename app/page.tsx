@@ -1,11 +1,13 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { Badge } from '@/components/ui/badge';
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-[calc(100vh-72px)] items-center justify-center font-sans bg-background">
+    <div className="flex flex-col min-h-[calc(100vh-2rem)] items-center justify-center font-sans bg-background">
+      <Badge variant="outline" className='mb-4'>Autenticación con better auth</Badge>
       <h1 className='max-w-5xl text-center text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight text-foreground mb-8 leading-[1.1]'>
-        Primer proyecto con <span className="text-primary">Better-Auth</span>
+        <span className="text-primary">Better-Auth</span> Autenticación rápida y segura
       </h1>
 
       <p className='max-w-2xl text-center text-lg sm:text-xl md:text-2xl text-muted-foreground mb-12 leading-relaxed font-medium'>
@@ -24,5 +26,5 @@ export default function Home() {
         </Button>
       </div>
     </div>
-  );
+  )
 }

@@ -9,7 +9,6 @@ import { authClient } from '@/lib/auth-client'
 import Link from 'next/link'
 import { toast } from 'sonner'
 
-
 export default function RegisterPage() {
     // default states
     const [email, setEmail] = useState('')
@@ -105,13 +104,18 @@ export default function RegisterPage() {
                     placeholder="Confirmar Contraseña"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className='mb-6'
                     autoComplete='new-password'
                 />
 
+                <hr className="my-2" />
+
                 {/* button */}
                 <Button type="submit">{loading ? 'Registrando...' : 'Registrarse'}</Button>
+                <Button type="button" variant={'outline'}>{loading ? 'Registrando...' : 'Registrarse con Google'}</Button>
+                <Button type="button" variant={'outline'}>{loading ? 'Registrando...' : 'Registrarse con Github'}</Button>
                 <Link href='/auth/login' className='text-muted-foreground text-center text-sm mt-2 hover:text-primary transition-colors'>¿Ya tienes una cuenta?. Inicia sesión</Link>
+
+                <hr className='my-2' />
             </form>
         </div>
     )

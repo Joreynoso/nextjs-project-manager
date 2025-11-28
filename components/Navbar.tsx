@@ -8,14 +8,18 @@ import { useSession } from '@/lib/auth-client'
 import { authClient } from '@/lib/auth-client';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
-
+    // defult states
     const [loading, setLoading] = useState(false)
     const [menuOpen, setMenuOpen] = useState(false)
     const { data: session } = useSession()
     const router = useRouter()
+
+    // instanciar pathname
+    const pathname = usePathname()
 
     // obtener las dos primeras letras del nombre
     const getInitials = (name: string | undefined) => {
@@ -46,6 +50,11 @@ export default function Navbar() {
             toast.error('Algo salio mal')
         }
     }
+
+    // useEffect para cerrar menu al cambiar de página
+    useEffect(() => {
+        setMenuOpen(false)
+    }, [pathname])
 
     return (
         <div className='w-full mx-auto border border-border'>
@@ -114,20 +123,46 @@ export default function Navbar() {
                             </Link>
 
                             {/* perfil */}
-                            <Link href="/profile">
+                            { session && (
+                                <Link href="/profile">
                                 <Button
                                     variant="outline"
                                     className='w-full'>
                                     Mi perfil
                                 </Button>
                             </Link>
+                            )}
+
+                            {/* login */}
+                            {!session && (
+                                <Link href="/auth/login">
+                                    <Button
+                                        variant="outline"
+                                        className='w-full'>
+                                        Iniciar sesión
+                                    </Button>
+                                </Link>
+                            )}
+
+                            {/* registro */}
+                            {!session && (
+                                <Link href="/auth/register">
+                                    <Button
+                                        variant="outline"
+                                        className='w-full'>
+                                        Registrarse
+                                    </Button>
+                                </Link>
+                            )}
 
                             {/* cerrar sesión */}
-                            <Button onClick={handleLogout}
-                                variant="outline"
-                                className='w-full'>
-                                Cerrar sesión
-                            </Button>
+                            { session && (
+                                <Button onClick={handleLogout}
+                                    variant="outline"
+                                    className='w-full'>
+                                    Cerrar sesión
+                                </Button>
+                            )}
 
                             {/* theme toggle */}
                             <ModeToggle />

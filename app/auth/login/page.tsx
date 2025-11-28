@@ -74,8 +74,11 @@ export default function LoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     autoComplete='current-password' />
 
-                {/* button */}
+                {/* button */}<hr className="my-2" />
+
                 <Button type="submit">{loading ? 'Iniciado sesión...' : 'Iniciar sesión'}</Button>
+                <Button type="button" variant={'outline'}>{loading ? 'Registrando...' : 'Registrarse con Google'}</Button>
+                <Button type="button" variant={'outline'}>{loading ? 'Registrando...' : 'Registrarse con Github'}</Button>
                 <Link href='/auth/register' className='text-muted-foreground text-center text-sm mt-2 hover:text-primary transition-colors tracking-tight'>
                 ¿No tienes una cuenta aún?. Registrate</Link>
             </form>
