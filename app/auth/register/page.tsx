@@ -22,6 +22,8 @@ export default function RegisterPage() {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const [loadingGoogle, setLoadingGoogle] = useState(false)
+    const [loadingGithub, setLoadingGithub] = useState(false)
 
     // instance of router
     const router = useRouter()
@@ -42,7 +44,7 @@ export default function RegisterPage() {
                 email,
                 password,
                 name,
-                callbackURL: '/dashboard'
+                callbackURL: '/profile'
             })
 
             if (result.error?.message) {
@@ -54,7 +56,7 @@ export default function RegisterPage() {
 
             console.log(result)
             toast.success('Registro exitoso')
-            router.push('/auth/login')
+            router.push('/profile')
 
         } catch (error) {
             console.log(error)
@@ -67,6 +69,7 @@ export default function RegisterPage() {
 
     // funcion para iniciar sesión con Google
     const handleGoogleSignIn = async () => {
+        setLoadingGoogle(true)
         try {
             const result = await authClient.signIn.social({
                 provider: 'google',
@@ -86,11 +89,14 @@ export default function RegisterPage() {
         } catch (error) {
             setError('Algo salió mal')
             toast.error('Algo salió mal')
+        } finally {
+            setLoadingGoogle(false)
         }
     }
 
     // función para iniciar sesión con Github
     const handleGithubSignIn = async () => {
+        setLoadingGithub(true)
         try {
             const result = await authClient.signIn.social({
                 provider: 'github',
@@ -110,6 +116,8 @@ export default function RegisterPage() {
         } catch (error) {
             setError('Algo salió mal')
             toast.error('Algo salió mal')
+        } finally {
+            setLoadingGithub(false)
         }
     }
 
@@ -164,8 +172,8 @@ export default function RegisterPage() {
 
                 {/* button */}
                 <Button type="submit">{loading ? 'Registrando...' : 'Registrarse'}</Button>
-                <Button type="button" variant={'outline'} onClick={handleGoogleSignIn}>{loading ? 'Registrando...' : 'Registrarse con Google'}<FcGoogle /></Button>
-                <Button type="button" variant={'outline'} onClick={handleGithubSignIn}>{loading ? 'Registrando...' : 'Registrarse con Github'}<FaGithub /></Button>
+                <Button type="button" variant={'outline'} onClick={handleGoogleSignIn}>{loadingGoogle ? 'Registrando...' : 'Registrarse con Google'}<FcGoogle /></Button>
+                <Button type="button" variant={'outline'} onClick={handleGithubSignIn}>{loadingGithub ? 'Registrando...' : 'Registrarse con Github'}<FaGithub /></Button>
                 <Link href='/auth/login' className='text-muted-foreground text-center text-sm mt-2 hover:text-primary transition-colors'>¿Ya tienes una cuenta?. Inicia sesión</Link>
 
                 <hr className='my-2' />

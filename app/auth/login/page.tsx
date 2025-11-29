@@ -20,6 +20,8 @@ export default function LoginPage() {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const [loadingGoogle, setLoadingGoogle] = useState(false)
+    const [loadingGithub, setLoadingGithub] = useState(false)
 
     const router = useRouter()
 
@@ -55,6 +57,7 @@ export default function LoginPage() {
 
     // funcion para iniciar sesión con Google
     const handleGoogleSignIn = async () => {
+        setLoadingGoogle(true)
         try {
             const result = await authClient.signIn.social({
                 provider: 'google',
@@ -74,11 +77,14 @@ export default function LoginPage() {
         } catch (error) {
             setError('Algo salió mal')
             toast.error('Algo salió mal')
+        } finally {
+            setLoadingGoogle(false)
         }
     }
 
     // función para iniciar sesión con Github
     const handleGithubSignIn = async () => {
+        setLoadingGithub(true)
         try {
             const result = await authClient.signIn.social({
                 provider: 'github',
@@ -98,6 +104,8 @@ export default function LoginPage() {
         } catch (error) {
             setError('Algo salió mal')
             toast.error('Algo salió mal')
+        } finally {
+            setLoadingGithub(false)
         }
     }
 
@@ -130,8 +138,8 @@ export default function LoginPage() {
                 {/* button */}<hr className="my-2" />
 
                 <Button type="submit">{loading ? 'Iniciando sesión...' : 'Iniciar sesión'}</Button>
-                <Button type="button" variant={'outline'} onClick={handleGoogleSignIn}>{loading ? 'Iniciando sesión...' : 'Inicia sesión con Google'}<FcGoogle /></Button>
-                <Button type="button" variant={'outline'} onClick={handleGithubSignIn}>{loading ? 'Iniciando sesión...' : 'Inicia sesión con Github'}<FaGithub /></Button>
+                <Button type="button" variant={'outline'} onClick={handleGoogleSignIn}>{loadingGoogle ? 'Iniciando sesión...' : 'Inicia sesión con Google'}<FcGoogle /></Button>
+                <Button type="button" variant={'outline'} onClick={handleGithubSignIn}>{loadingGithub ? 'Iniciando sesión...' : 'Inicia sesión con Github'}<FaGithub /></Button>
                 <Link href='/auth/register' className='text-muted-foreground text-center text-sm mt-2 hover:text-primary transition-colors tracking-tight'>
                     ¿No tienes una cuenta aún?. Registrate</Link>
             </form>

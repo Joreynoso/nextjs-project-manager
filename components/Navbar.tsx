@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import Spin from './ui/spin';
 
 export default function Navbar() {
     // defult states
@@ -34,6 +35,7 @@ export default function Navbar() {
 
     // cerrar sesión
     const handleLogout = async () => {
+        setLoading(true)
         try {
             await authClient.signOut({
                 fetchOptions: {
@@ -42,12 +44,13 @@ export default function Navbar() {
                     },
                 },
             })
-
+            setLoading(false)
 
             toast.success('Sesión cerrada exitosamente')
         } catch (error) {
             console.log(error)
             toast.error('Algo salio mal')
+            setLoading(false)
         }
     }
 
@@ -94,8 +97,9 @@ export default function Navbar() {
                             <Button onClick={handleLogout}
                                 variant="outline"
                                 size="icon"
+                                className="flex items-center justify-center"
                             >
-                                {loading ? <LogOut className="animate-spin" /> : <LogOut />}
+                                {loading ? <Spin /> : <LogOut />}
                             </Button>
                         </>
                     )}
@@ -123,14 +127,14 @@ export default function Navbar() {
                             </Link>
 
                             {/* perfil */}
-                            { session && (
+                            {session && (
                                 <Link href="/profile">
-                                <Button
-                                    variant="outline"
-                                    className='w-full'>
-                                    Mi perfil
-                                </Button>
-                            </Link>
+                                    <Button
+                                        variant="outline"
+                                        className='w-full'>
+                                        Mi perfil
+                                    </Button>
+                                </Link>
                             )}
 
                             {/* login */}
@@ -156,11 +160,11 @@ export default function Navbar() {
                             )}
 
                             {/* cerrar sesión */}
-                            { session && (
+                            {session && (
                                 <Button onClick={handleLogout}
                                     variant="outline"
-                                    className='w-full'>
-                                    Cerrar sesión
+                                    className='w-full flex items-center justify-center gap-2'>
+                                    {loading ? <Spin /> : 'Cerrar sesión'}
                                 </Button>
                             )}
 

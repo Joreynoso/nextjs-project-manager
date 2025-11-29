@@ -2,9 +2,13 @@
 import { Button } from '@/components/ui/button'
 import { useSession } from '@/lib/auth-client'
 import { LockKeyhole, MailCheck } from 'lucide-react'
-import DateFormatter from '@/lib/dateformatter'
 import type { User } from '@/types/user'
+
+import DateFormatter from '@/lib/dateformatter'
 import Link from 'next/link'
+
+import { authClient } from '@/lib/auth-client'
+import { toast } from 'sonner'
 
 export default function ProfilePage() {
 
@@ -16,6 +20,21 @@ export default function ProfilePage() {
     }
 
     const { user }: { user: User } = session
+
+    // funcion para validar el email
+    const handleEmailValidation = async () => {
+        const result =await authClient.sendVerificationEmail({
+            email: user.email,
+            callbackURL: "/"   // o a donde quieras redirigir tras verificar
+        })
+
+        if(result.error){
+            console.log(result.error)
+            toast.error(result.error.message || 'Error al validar el email')
+        }else{
+            toast.success('Email enviado correctamente, verifica tu casilla de correo')
+        }
+    }
 
     return (
         <div className='flex flex-col mt-20 items-center justify-center font-sans bg-background'>
@@ -37,7 +56,7 @@ export default function ProfilePage() {
                     <Item label="Role" value={user.role} />
 
                     {!user.emailVerified && (
-                        <Button className='mt-4 w-full cursor-pointer'>
+                        <Button className='mt-4 w-full cursor-pointer' onClick={handleEmailValidation}>
                             <MailCheck className='mr-2 h-4 w-4' />
                             Validar Email
                         </Button>
