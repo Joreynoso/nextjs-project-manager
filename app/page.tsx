@@ -21,7 +21,7 @@ export default function Home() {
         </Button>
 
         {/* iniciar sesión */}
-        <Button variant="outline" size="lg" className="text-base font-semibold min-w-[160px]">
+        <Button variant="secondary" size="lg" className="text-base font-semibold min-w-[160px]">
           <Link href="/auth/login">Iniciar sesión</Link>
         </Button>
       </div>

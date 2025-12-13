@@ -141,7 +141,7 @@ export default function Navbar() {
                             {!session && (
                                 <Link href="/auth/login">
                                     <Button
-                                        variant="outline"
+                                        variant="secondary"
                                         className='w-full'>
                                         Iniciar sesión
                                     </Button>
@@ -152,7 +152,7 @@ export default function Navbar() {
                             {!session && (
                                 <Link href="/auth/register">
                                     <Button
-                                        variant="outline"
+                                        variant="secondary"
                                         className='w-full'>
                                         Registrarse
                                     </Button>

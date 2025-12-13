@@ -124,7 +124,7 @@ export default function ResetPasswordPage() {
                     </div>
 
                     {/* call to action button */}
-                    <Button type='submit' className='w-full p-2' disabled={loading}>{loading ? 'Actualizando...' : 'Cambiar contraseña'}</Button>
+                    <Button type='submit' variant={'default'} className='w-full p-2' disabled={loading}>{loading ? 'Actualizando...' : 'Cambiar contraseña'}</Button>
                 </form>
             </div>
         </div>

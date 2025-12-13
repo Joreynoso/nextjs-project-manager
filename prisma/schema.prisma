@@ -9,8 +9,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  // directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -74,6 +75,12 @@ model Verification {
   @@map("verification")
 }
 
+/// This enum defines user roles and was created after the User model.
+/// Un `enum` (enumeración) es un tipo de dato especial que permite definir un conjunto de valores con nombre (constantes).
+/// En Prisma, los enums se utilizan para restringir los valores posibles de un campo a una lista predefinida.
+/// Esto mejora la legibilidad del código, previene errores de escritura y asegura la integridad de los datos,
+/// ya que un campo que utiliza un enum solo puede almacenar uno de los valores definidos en ese enum.
+/// Por ejemplo, el enum `Role` define que un usuario solo puede tener el rol `admin` o `user`.
 enum Role {
   admin
   user

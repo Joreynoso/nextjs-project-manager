@@ -118,13 +118,14 @@ export default function LoginPage() {
                 </div>
 
                 {/* email input */}
-                <Label htmlFor="email" className='font-semibold'>Correo</Label>
+                <Label htmlFor="email" className='font-semibold' >Correo</Label>
                 <Input
                     type="email"
                     placeholder="Correo"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    autoComplete='email' />
+                    autoComplete='email'
+                    className='border border-border' />
 
                 {/* password input */}
                 <Label htmlFor="password" className='font-semibold'>Contraseña</Label>
@@ -133,13 +134,14 @@ export default function LoginPage() {
                     placeholder="Contraseña"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    autoComplete='current-password' />
+                    autoComplete='current-password'
+                    className='border border-border' />
 
                 {/* button */}<hr className="my-2" />
 
                 <Button type="submit">{loading ? 'Iniciando sesión...' : 'Iniciar sesión'}</Button>
-                <Button type="button" variant={'outline'} onClick={handleGoogleSignIn}>{loadingGoogle ? 'Iniciando sesión...' : 'Inicia sesión con Google'}<FcGoogle /></Button>
-                <Button type="button" variant={'outline'} onClick={handleGithubSignIn}>{loadingGithub ? 'Iniciando sesión...' : 'Inicia sesión con Github'}<FaGithub /></Button>
+                <Button type="button" variant={'secondary'} onClick={handleGoogleSignIn}>{loadingGoogle ? 'Iniciando sesión...' : 'Inicia sesión con Google'}<FcGoogle /></Button>
+                <Button type="button" variant={'secondary'} onClick={handleGithubSignIn}>{loadingGithub ? 'Iniciando sesión...' : 'Inicia sesión con Github'}<FaGithub /></Button>
                 <Link href='/auth/register' className='text-muted-foreground text-center text-sm mt-2 hover:text-primary transition-colors tracking-tight'>
                     ¿No tienes una cuenta aún?. Registrate</Link>
             </form>

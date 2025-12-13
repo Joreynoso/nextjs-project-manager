@@ -136,7 +136,8 @@ export default function RegisterPage() {
                     type="text"
                     placeholder="Nombre"
                     value={name}
-                    onChange={(e) => setName(e.target.value)} />
+                    onChange={(e) => setName(e.target.value)} 
+                    className='border border-border'/>
 
                 {/* email input */}
                 <Label htmlFor="email" className='font-semibold'>Correo</Label>
@@ -146,6 +147,7 @@ export default function RegisterPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     autoComplete='new-password'
+                    className='border border-border'
                 />
 
                 {/* password input */}
@@ -156,6 +158,7 @@ export default function RegisterPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     autoComplete='new-password'
+                    className='border border-border'
                 />
 
                 {/* confirm password input */}
@@ -166,17 +169,16 @@ export default function RegisterPage() {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     autoComplete='new-password'
+                    className='border border-border'
                 />
 
                 <hr className="my-2" />
 
                 {/* button */}
                 <Button type="submit">{loading ? 'Registrando...' : 'Registrarse'}</Button>
-                <Button type="button" variant={'outline'} onClick={handleGoogleSignIn}>{loadingGoogle ? 'Registrando...' : 'Registrarse con Google'}<FcGoogle /></Button>
-                <Button type="button" variant={'outline'} onClick={handleGithubSignIn}>{loadingGithub ? 'Registrando...' : 'Registrarse con Github'}<FaGithub /></Button>
+                <Button type="button" variant={'secondary'} onClick={handleGoogleSignIn}>{loadingGoogle ? 'Registrando...' : 'Registrarse con Google'}<FcGoogle /></Button>
+                <Button type="button" variant={'secondary'} onClick={handleGithubSignIn}>{loadingGithub ? 'Registrando...' : 'Registrarse con Github'}<FaGithub /></Button>
                 <Link href='/auth/login' className='text-muted-foreground text-center text-sm mt-2 hover:text-primary transition-colors'>¿Ya tienes una cuenta?. Inicia sesión</Link>
-
-                <hr className='my-2' />
             </form>
         </div>
     )
