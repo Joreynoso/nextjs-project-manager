@@ -9,22 +9,50 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
   // directUrl = env("DIRECT_URL")
 }
 
+// model User {
+//   id             String          @id
+//   name           String
+//   email          String
+//   emailVerified  Boolean         @default(false)
+//   image          String?
+//   createdAt      DateTime        @default(now())
+//   updatedAt      DateTime        @default(now()) @updatedAt
+//   sessions       Session[]
+//   accounts       Account[]
+//   role           Role            @default(user)
+//   projects       Project[]
+//   projectMembers ProjectMember[]
+//   tasks          Task[]
+//   messages       Message[]
+
+//   @@unique([email])
+//   @@map("user")
+// }
+
 model User {
-  id            String    @id
+  id            String   @id
   name          String
   email         String
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean  @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now()) @updatedAt
-  sessions      Session[]
-  accounts      Account[]
-  role          Role      @default(user)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now()) @updatedAt
+  role          Role     @default(user)
+
+  // Relaciones de Better Auth
+  sessions Session[]
+  accounts Account[]
+
+  // Relaciones de Project Manager (con nombres específicos)
+  createdProjects Project[]       @relation("CreatedProjects")
+  projectMembers  ProjectMember[] @relation("ProjectMembers")
+  assignedTasks   Task[]          @relation("AssignedTasks")
+  sentMessages    Message[]       @relation("SentMessages")
 
   @@unique([email])
   @@map("user")
@@ -84,4 +112,75 @@ model Verification {
 enum Role {
   admin
   user
+}
+
+/// Model project
+model Project {
+  id          String    @id @default(cuid())
+  name        String
+  description String?   @db.Text
+  tag         String
+  deadline    DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  createdBy String
+  creator   User   @relation("CreatedProjects", fields: [createdBy], references: [id], onDelete: Cascade)
+
+  members  ProjectMember[]
+  tasks    Task[]
+  messages Message[]
+
+  @@index([createdBy])
+}
+
+/// Model project member
+model ProjectMember {
+  id        String   @id @default(cuid())
+  projectId String
+  userId    String
+  joinedAt  DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation("ProjectMembers", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, userId])
+  @@index([userId])
+  @@index([projectId])
+}
+
+/// Model task
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  description String?  @db.Text
+  completed   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  assignedTo String?
+  assignee   User?   @relation("AssignedTasks", fields: [assignedTo], references: [id], onDelete: SetNull)
+
+  @@index([projectId])
+  @@index([assignedTo])
+}
+
+/// Model message 
+model Message {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation("SentMessages", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([userId])
+  @@index([createdAt])
 }
