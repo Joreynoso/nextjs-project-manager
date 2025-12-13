@@ -64,7 +64,7 @@ export default function ProfilePage() {
 
                     {/* botón de olvide mi contraseña */}
                     <Link href='/auth/forgot-password'>
-                        <Button className='mt-4 w-full cursor-pointer' variant={'outline'} type='submit'>
+                        <Button variant={'secondary'} className='mt-4 w-full cursor-pointer' type='submit'>
                             <LockKeyhole className='mr-2 h-4 w-4' />
                             Olvide mi contraseña
                         </Button>

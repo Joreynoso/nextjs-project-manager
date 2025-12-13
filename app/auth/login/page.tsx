@@ -68,11 +68,10 @@ export default function LoginPage() {
             if (result.error?.message) {
                 setError(result.error.message)
                 toast.error(result.error.message)
+                setLoadingGoogle(false)
                 return
             }
 
-            router.push("/profile"); // redirect to login page
-            toast.success('Inicio de sesión exitoso')
 
         } catch (error) {
             setError('Algo salió mal')
@@ -98,8 +97,6 @@ export default function LoginPage() {
                 return
             }
 
-            router.push("/profile"); // redirect to login page
-            toast.success('Inicio de sesión exitoso')
 
         } catch (error) {
             setError('Algo salió mal')

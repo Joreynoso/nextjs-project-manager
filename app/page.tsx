@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-[calc(100vh-2rem)] items-center justify-center font-sans bg-background">
+    <div className="flex flex-col min-h-[calc(100vh-10rem)] items-center justify-center font-sans bg-background">
       <Badge variant="outline" className='mb-4'>Autenticación con better auth</Badge>
       <h1 className='max-w-5xl text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-foreground mb-8 leading-[1.1]'>
         <span className="text-primary">Better-Auth</span> Autenticación rápida y segura

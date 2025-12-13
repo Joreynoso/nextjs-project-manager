@@ -76,7 +76,7 @@ export default function Navbar() {
                             <Button>
                                 <Link href="/auth/login">Iniciar sesión</Link>
                             </Button>
-                            <Button variant={'outline'}>
+                            <Button variant={'secondary'}>
                                 <Link href="/auth/register">Registrarse</Link>
                             </Button>
                         </>
@@ -89,13 +89,13 @@ export default function Navbar() {
                     {session && (
                         <>
                             <Link href="/profile">
-                                <Button variant="outline" size="icon">
+                                <Button variant="secondary" size="icon">
                                     {getInitials(session.user.name)}
                                 </Button>
                             </Link>
 
                             <Button onClick={handleLogout}
-                                variant="outline"
+                                variant="secondary"
                                 size="icon"
                                 className="flex items-center justify-center"
                             >
@@ -107,7 +107,7 @@ export default function Navbar() {
 
                 {/* buttons section on smaller screens*/}
                 <div className="md:hidden">
-                    <Button variant="outline" size="icon" onClick={toggleMenu}>
+                    <Button variant="secondary" size="icon" onClick={toggleMenu}>
                         <Menu className="h-4 w-4" />
                     </Button>
                 </div>
@@ -120,7 +120,7 @@ export default function Navbar() {
                             {/* inicio */}
                             <Link href="/">
                                 <Button
-                                    variant="outline"
+                                    variant="secondary"
                                     className='w-full'>
                                     Inicio
                                 </Button>
@@ -130,7 +130,7 @@ export default function Navbar() {
                             {session && (
                                 <Link href="/profile">
                                     <Button
-                                        variant="outline"
+                                        variant="secondary"
                                         className='w-full'>
                                         Mi perfil
                                     </Button>
@@ -162,7 +162,7 @@ export default function Navbar() {
                             {/* cerrar sesión */}
                             {session && (
                                 <Button onClick={handleLogout}
-                                    variant="outline"
+                                    variant="secondary"
                                     className='w-full flex items-center justify-center gap-2'>
                                     {loading ? <Spin /> : 'Cerrar sesión'}
                                 </Button>
