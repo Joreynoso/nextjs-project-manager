@@ -64,7 +64,7 @@ export default function Navbar() {
             <nav className="w-full max-w-7xl mx-auto flex justify-between items-center p-4 bg-outline">
                 {/* logo section */}
                 <Link href="/">
-                    <h1 className='text-xl font-semibold tracking-tight'>Better-auth practice</h1>
+                    <h1 className='text-xl font-semibold tracking-tight'>Project Manager</h1>
                 </Link>
 
                 {/* buttons section on larger screens*/}

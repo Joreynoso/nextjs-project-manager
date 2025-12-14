@@ -1,26 +1,29 @@
+'use client'
+
+import Footer from '@/components/Footer';
+import Navbar from '@/components/Navbar';
+import { usePathname } from 'next/navigation';
+
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <div>
-    {/* Sidebar */}
-    <div className='sidebar w-72 h-screen fixed top-0 left-0 z-1 bg-card'>
-      <div className="sidebar-header">
-        <h1>Project Manager</h1>
-      </div>
-      <div className="sidebar-content">
-        <ul>
-          <li>Dashboard</li>
-          <li>Projects</li>
-          <li>Teams</li>
-          <li>Settings</li>
-        </ul>
-      </div>
+
+  // ocultar navbar en el dashboar, en esta vista
+  const pathname = usePathname();
+  const isNavbarOpen = pathname !== '/dashboard';
+  const isFooterOpen = pathname !== '/dashboard';
+
+  // render return
+  return (
+    <div>
+      {/* Main Content */}
+      {isNavbarOpen && <Navbar />}
+      <main className="h-screen bg-background">
+        {children}
+      </main>
+      {isFooterOpen && <Footer />}
     </div>
-    {/* Main Content */}
-    <main className='main-content ml-72 h-screen bg-background'>
-      {children}
-    </main>
-  </div>;
-} 
+  );
+}
