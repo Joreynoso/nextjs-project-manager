@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from '@/components/Navbar';
 import { ThemeProvider } from '../components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
+import Footer from '@/components/Footer';
 
 const fontSans = Montserrat({
   variable: "--font-sans",
@@ -48,12 +49,15 @@ export default function RootLayout({
           <Navbar />
 
           {/* main crece para empujar el footer hacia abajo */}
-          <main className="flex-1 w-full flex flex-col mx-auto px-4 xl:px-0 ">
+          <main className="min-h-[calc(100vh-64px)] flex-1 w-full flex flex-col mx-auto px-4 xl:px-0">
             {children}
           </main>
 
-          {/* toast */}
+          {/* toast */} 
           <Toaster position="top-center" />
+
+          {/* Footer */}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
