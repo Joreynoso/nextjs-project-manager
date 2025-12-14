@@ -1,12 +1,9 @@
 "use client"
 
 import {
-  BadgeCheck,
   Bell,
   ChevronsUpDown,
-  CreditCard,
   LogOut,
-  Sparkles,
   Users,
 } from "lucide-react"
 
@@ -31,6 +28,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import Link from 'next/link'
+import { useSession } from "@/lib/auth-client"
 
 export function NavUser({
   user,
@@ -43,6 +41,18 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar()
 
+
+  // get the user info
+  const { data: session } = useSession()
+
+  // obtener las dos primeras letras del nombre
+  const getInitials = (name: string | undefined) => {
+    if (!name) return ''
+    return name.slice(0, 2).toUpperCase()
+  }
+
+
+  // render return
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -53,12 +63,11 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg">{getInitials(session?.user?.name)}</AvatarFallback>
               </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+              <div className="grid flex-1 text-left text-sm leading-tight"> 
+                <span className="truncate font-medium">{session?.user?.name}</span>
+                <span className="truncate text-xs">{session?.user?.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>

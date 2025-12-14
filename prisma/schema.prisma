@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,25 +8,17 @@ datasource db {
   // directUrl = env("DIRECT_URL")
 }
 
-// model User {
-//   id             String          @id
-//   name           String
-//   email          String
-//   emailVerified  Boolean         @default(false)
-//   image          String?
-//   createdAt      DateTime        @default(now())
-//   updatedAt      DateTime        @default(now()) @updatedAt
-//   sessions       Session[]
-//   accounts       Account[]
-//   role           Role            @default(user)
-//   projects       Project[]
-//   projectMembers ProjectMember[]
-//   tasks          Task[]
-//   messages       Message[]
+/// Resumen de las relaciones entre tablas:
+///
+/// - `User` es el modelo central. Un `User` puede tener múltiples `Session`s y `Account`s (para autenticación).
+/// - Un `User` puede crear varios `Project`s (`CreatedProjects`), ser miembro de múltiples `Project`s a través de `ProjectMember`s (`ProjectMembers`),
+///   tener varias `Task`s asignadas (`AssignedTasks`) y enviar múltiples `Message`s (`SentMessages`).
+/// - `Project` es creado por un `User` (`creator`). Un `Project` puede tener muchos `ProjectMember`s, `Task`s y `Message`s.
+/// - `ProjectMember` es una tabla intermedia que conecta un `User` con un `Project`, indicando que un usuario es miembro de un proyecto específico.
+/// - `Task` pertenece a un `Project` y puede ser asignada opcionalmente a un `User` (`assignee`).
+/// - `Message` pertenece a un `Project` y es enviado por un `User`.
+/// - `Role` es un `enum` que define los roles posibles para un `User` (admin, user).
 
-//   @@unique([email])
-//   @@map("user")
-// }
 
 model User {
   id            String   @id

@@ -1,0 +1,21 @@
+DATABASE_URL="postgresql://postgres.kiodijennejvphuxyulg:ACAQzK3bmzlWBKix@aws-1-sa-east-1.pooler.supabase.com:5432/postgres"
+
+BETTER_AUTH_SECRET="ff910acb3b076ed47bb72037d7c25751ba45ce8775fdac8c6f6a5cd2b249b9af"
+BETTER_AUTH_URL="http://localhost:3000"
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+NEXT_PUBLIC_BASE_URL="http://localhost:3000"
+
+# Social providers
+GITHUB_CLIENT_ID="Ov23liZ5TIqTZrNJ1e2G"
+GITHUB_CLIENT_SECRET="b690dd79cb048de937a94e1e951685979e5c11ca"
+
+GOOGLE_CLIENT_ID="685765470828-7l7igejrssrh87qga4qgpsn595oc8oae.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET="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"
+
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=joreynoso.developer@gmail.com
+SMTP_PASS=kfirkgbfhtuvaign
+SMTP_FROM_NAME=BetterAuthApp
+SMTP_FROM_EMAIL=joreynoso.developer@gmail.com
