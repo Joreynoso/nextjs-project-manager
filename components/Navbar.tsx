@@ -159,6 +159,17 @@ export default function Navbar() {
                                 </Link>
                             )}
 
+                            {/* proyectos */}
+                            {session && (
+                                <Link href="/projects">
+                                    <Button
+                                        variant="secondary"
+                                        className='w-full'>
+                                        Proyectos
+                                </Button>
+                            </Link>
+                            )}
+
                             {/* cerrar sesión */}
                             {session && (
                                 <Button onClick={handleLogout}

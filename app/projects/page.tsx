@@ -1,6 +1,28 @@
 import ProjectsList from '@/components/projects/ProjectsList';
+import { redirect } from 'next/navigation';
+import { headers } from 'next/headers';
+import auth from '@/lib/auth';
 
-export default function ProjectsPage() {
+// fetch projects
+async function getProjects() {
+    const res = await fetch('http://localhost:3000/api/projects');
+    const projects = await res.json();
+    return projects;
+}
+
+export default async function ProjectsPage() {
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
+
+    if (!session?.user) {
+        redirect("/auth/login")
+    }
+
+    // fetch projects
+    const projects = await getProjects();
+
+    console.log(projects);
 
     // render return
     return (

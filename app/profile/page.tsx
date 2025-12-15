@@ -1,25 +1,26 @@
-'use client'
 import { Button } from '@/components/ui/button'
-import { useSession } from '@/lib/auth-client'
 import { LockKeyhole, MailCheck } from 'lucide-react'
-import type { User } from '@/types/user'
-
-import DateFormatter from '@/lib/dateformatter'
-import Link from 'next/link'
 
 import { authClient } from '@/lib/auth-client'
 import { toast } from 'sonner'
 
-export default function ProfilePage() {
+import DateFormatter from '@/lib/dateformatter'
+import Link from 'next/link'
+import auth from '@/lib/auth'
+import { headers } from 'next/headers'
+import { redirect } from 'next/navigation'
 
-    const { data: session } = useSession()
+export default async function ProfilePage() {
 
-    // si no hay session, redirige a login
-    if (!session) {
-        return null
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
+
+    if (!session?.user) {
+        redirect("/auth/login")
     }
 
-    const { user }: { user: User } = session
+    const user = session.user
 
     // funcion para validar el email
     const handleEmailValidation = async () => {
