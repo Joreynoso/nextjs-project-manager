@@ -1,6 +1,6 @@
 'use client'
 
-import { Montserrat, Merriweather, Source_Code_Pro } from "next/font/google";
+import { Montserrat, Merriweather, Source_Code_Pro, Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from '@/components/Navbar';
 import { ThemeProvider } from '../components/theme-provider';
@@ -8,7 +8,7 @@ import { Toaster } from '@/components/ui/sonner';
 import Footer from '@/components/Footer';
 import { usePathname } from 'next/navigation';
 
-const fontSans = Montserrat({
+const fontSans = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
