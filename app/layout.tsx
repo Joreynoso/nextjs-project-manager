@@ -33,7 +33,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
-  
+
   // Ocultar Navbar y Footer en todas las rutas que empiecen con /dashboard
   const isDashboard = pathname?.startsWith('/dashboard');
 
@@ -48,20 +48,17 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange>
-            
-          {/* Solo mostrar Navbar si NO estamos en dashboard */}
-          {!isDashboard && <Navbar />}
+
+          <Navbar />
 
           {/* main crece para empujar el footer hacia abajo */}
-          <main className={`flex-1 w-full flex flex-col mx-auto ${!isDashboard ? 'min-h-[calc(100vh-64px)] px-4 xl:px-0' : ''}`}>
+          <main className={`flex-1 w-full flex flex-col mx-auto ${!isDashboard ? 'min-h-[calc(100vh-64px)] px-4 xl:px-0' : ''} max-w-7xl`}>
             {children}
           </main>
 
-          {/* toast */} 
+          {/* toast */}
           <Toaster position="top-center" />
-
-          {/* Solo mostrar Footer si NO estamos en dashboard */}
-          {!isDashboard && <Footer />}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
