@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import auth from '@/lib/auth'
-import { headers } from 'next/headers'
 
+// obtener proyectos donde el usuario forma parte o es creador
+// de alguno de los proyectos
 export async function GET(request: Request) {
     try {
-        // verificar si el usuario esta autenticado 
+        // verificar si el usuario esta autenticado
+
         const session = await auth.api.getSession({
             headers: request.headers
         })
@@ -69,6 +71,7 @@ export async function GET(request: Request) {
     }
 }
 
+// crear proyecto
 export async function POST(request: Request) {
     try {
         // verificar si el usuario esta autenticado 

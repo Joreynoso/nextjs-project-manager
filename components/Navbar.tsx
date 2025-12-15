@@ -61,7 +61,7 @@ export default function Navbar() {
 
     return (
         <div className='w-full mx-auto border border-border'>
-            <nav className="w-full max-w-7xl mx-auto flex justify-between items-center p-4 bg-outline">
+            <nav className="w-full mx-auto flex justify-between items-center p-4 bg-outline">
                 {/* logo section */}
                 <Link href="/">
                     <h1 className='text-xl font-medium tracking-tight'>Project <span className='text-primary'>Manager</span></h1>

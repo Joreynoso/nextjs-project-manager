@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import auth from '@/lib/auth';
 
+// obtener usuarios
 export async function GET(request: Request) {
 
     // verificar si el usuario esta autenticado 

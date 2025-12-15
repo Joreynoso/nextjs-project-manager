@@ -36,7 +36,7 @@ const footerLinks = [
 
 const Footer = () => {
     return (
-        <div className="flex flex-col">
+        <div className="w-full flex flex-col">
             <div className="grow bg-muted" />
             <footer className="border-t">
                 <div className="max-w-(--breakpoint-xl) mx-auto">
