@@ -3,7 +3,6 @@ import prisma from '@/lib/prisma';
 import auth from '@/lib/auth';
 
 export async function GET(request: Request) {
-
     // verificar si el usuario esta autenticado 
     const session = await auth.api.getSession({
         headers: request.headers
@@ -14,28 +13,28 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: 'No autorizado' }, { status: 403 });
     }
 
-    // recuperar todos los usuarios
+    // recuperar perfil del usuario
     try {
-
-        // formatear respuesta
-        const users = await prisma.user.findMany({
+        const user = await prisma.user.findUnique({
+            where: {
+                id: session.user.id
+            },
             select: {
                 id: true,
                 name: true,
                 email: true,
-                role: true,
                 emailVerified: true,
-                createdAt: true
-            },
-            orderBy: {
-                createdAt: "desc"
+                image: true,
+                role: true,
+                createdAt: true,
+                updatedAt: true
             }
         });
 
         // retornar respuesta
-        return NextResponse.json(users);
+        return NextResponse.json(user);
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ error: 'Error al obtener los usuarios' }, { status: 500 });
+        return NextResponse.json({ error: 'Error al obtener el perfil' }, { status: 500 });
     }
 }
