@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import auth from '@/lib/auth'
+import { headers } from 'next/headers'
 
 export async function GET(request: Request) {
     try {
@@ -59,14 +60,6 @@ export async function GET(request: Request) {
                 createdAt: "desc"
             }
         })
-
-        // retornar respuesta o [] si no hay proyectos
-        if (!projects) {
-            return NextResponse.json(
-                { error: "No hay proyectos" },
-                { status: 404 }
-            )
-        }
 
         // retornar respuesta
         return NextResponse.json(projects)

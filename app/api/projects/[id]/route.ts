@@ -7,80 +7,52 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    // Verificar sesión
     const session = await auth.api.getSession({
       headers: await headers()
     })
-    
-    if (!session?.user?.id) {
+
+    const userId = session?.user?.id
+
+    if (!userId) {
       return NextResponse.json(
         { error: "No autorizado" },
         { status: 401 }
       )
     }
-    
-    // Buscar proyecto (solo si soy miembro)
+
+    if (!isCuid(params.id)) {
+      return NextResponse.json(
+        { error: "Proyecto no encontrado" },
+        { status: 404 }
+      )
+    }
+
     const project = await prisma.project.findFirst({
       where: {
         id: params.id,
         members: {
-          some: {
-            userId: session.user.id
-          }
-        }
-      },
-      include: {
-        creator: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true
-          }
-        },
-        members: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                name: true,
-                email: true,
-                image: true
-              }
-            }
-          }
-        },
-        tasks: {
-          include: {
-            assignee: {
-              select: {
-                id: true,
-                name: true,
-                email: true,
-                image: true
-              }
-            }
-          },
-          orderBy: {
-            createdAt: "desc"
-          }
+          some: { userId }
         }
       }
     })
-    
+
     if (!project) {
       return NextResponse.json(
         { error: "Proyecto no encontrado" },
         { status: 404 }
       )
     }
-    
+
     return NextResponse.json(project)
   } catch (error) {
-    console.error("Error fetching project:", error)
+    console.error(error)
     return NextResponse.json(
-      { error: "Error al cargar proyecto" },
+      { error: "Error al obtener el proyecto" },
       { status: 500 }
     )
   }
+}
+
+function isCuid(id: string) {
+  return typeof id === "string" && id.startsWith("c") && id.length >= 24
 }
