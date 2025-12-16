@@ -17,7 +17,7 @@ export default function Home() {
       <div className='flex flex-col sm:flex-row gap-4'>
         {/* registarse */}
         <Button variant="default" size="lg" className="text-base font-medium min-w-[160px]">
-          <Link href="/dashboard">Empezar Ahora</Link>
+          <Link href="/projects">Empezar Ahora</Link>
         </Button>
 
         {/* iniciar sesión */}
