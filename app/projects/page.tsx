@@ -1,5 +1,14 @@
-// imports
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+// import breadcrumb
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator
+}
+    from '@/components/ui/breadcrumb';
+
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -7,8 +16,8 @@ import { getProjects } from '@/actions/projects';
 
 // import components
 import ProjectsList from '@/components/projects/ProjectsList';
+import Link from 'next/link';
 
-// main component
 export default async function ProjectsPage() {
 
     // obtener proyectos desde sv-actions
@@ -19,22 +28,22 @@ export default async function ProjectsPage() {
         <div className='w-full min-h-[calc(100vh-4rem)] mx-auto flex flex-col py-5 pb-10 max-w-7xl'>
 
             {/* breadcrumb */}
-            <Breadcrumb className='mb-6'>
+            <Breadcrumb className='mb-5'>
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <BreadcrumbLink href="/">Home</BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbLink href="/projects">Projects</BreadcrumbLink>
+                        <BreadcrumbPage>Proyectos</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
 
             {/* Page Header: Title, Description */}
-            <div className='flex flex-col gap-y-2 mb-6'>
+            <div className='flex flex-col gap-y-2 mb-5'>
                 <p className='text-base text-muted-foreground leading-relaxed'>
-                    Administra todos tus proyectos desde aquí. Crea nuevos, edita los existentes y organiza tu trabajo de manera eficiente.
+                    Crear un nuevo proyecto es sencillo y rápido. Solo necesitas proporcionar un nombre y una descripción para comenzar.
                 </p>
             </div>
 
@@ -46,7 +55,7 @@ export default async function ProjectsPage() {
                 />
                 <Button className='w-full sm:w-auto'>
                     <Plus className='mr-2 h-4 w-4' />
-                    Agregar nuevo proyecto
+                    <Link href="/projects/new">Agregar nuevo proyecto</Link>
                 </Button>
             </div>
 
@@ -58,7 +67,7 @@ export default async function ProjectsPage() {
                     </p>
                 </div>
             ) : (
-                <ProjectsList projects={projects}/>
+                <ProjectsList projects={projects} />
             )}
         </div>
     )

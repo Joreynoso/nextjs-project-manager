@@ -3,23 +3,25 @@
 import auth from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { headers } from 'next/headers'
+import { NextResponse } from 'next/server'
 
 // obtener lista de proyectos
 export async function getProjects() {
 
-    // verificar que el usuario este autenticado y tenga permisos
     const user = await auth.api.getSession({
         headers: await headers()
     })
 
-    // mostrar lista de proyectos donde el usuario forme parte
-    // o sea el creador, debe ver ambos
+    if (!user?.user?.id) {
+        throw new Error('No autenticado')
+    }
+
     const projects = await prisma.project.findMany({
         include: {
             creator: true,
             members: {
                 include: {
-                    user: true  // ← Incluir los datos del usuario de cada member
+                    user: true
                 }
             }
         },
@@ -33,6 +35,23 @@ export async function getProjects() {
             createdAt: 'desc'
         }
     })
-    
+
     return projects
+}
+
+// crear proyecto
+export async function createProject(formData: FormData) {
+
+    // verificar si el usuario esta autenticado 
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
+
+    if (!session?.user?.id) {
+        return NextResponse.json(
+            { error: "No autorizado" },
+            { status: 401 }
+        )
+    }
+
 }

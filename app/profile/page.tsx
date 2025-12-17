@@ -9,7 +9,7 @@ import { redirect } from 'next/navigation'
 import { authClient } from '@/lib/auth-client'
 import type { User } from '@/types/user'
 import { useSession } from '@/lib/auth-client'
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 
 
 export default function ProfilePage() {
@@ -45,7 +45,7 @@ export default function ProfilePage() {
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbLink href="/profile">Mi Perfil</BreadcrumbLink>
+                        <BreadcrumbPage>Mi Perfil</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
