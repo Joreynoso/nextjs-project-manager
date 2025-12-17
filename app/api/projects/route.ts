@@ -6,8 +6,8 @@ import auth from '@/lib/auth'
 // de alguno de los proyectos
 export async function GET(request: Request) {
     try {
+        
         // verificar si el usuario esta autenticado
-
         const session = await auth.api.getSession({
             headers: request.headers
         })

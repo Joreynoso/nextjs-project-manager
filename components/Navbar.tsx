@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Spin from './ui/spin';
+import { getInitials } from '@/lib/utils';
 
 export default function Navbar() {
     // defult states
@@ -21,12 +22,6 @@ export default function Navbar() {
 
     // instanciar pathname
     const pathname = usePathname()
-
-    // obtener las dos primeras letras del nombre
-    const getInitials = (name: string | undefined) => {
-        if (!name) return ''
-        return name.slice(0, 2).toUpperCase()
-    }
 
     // toggle menu
     const toggleMenu = () => {

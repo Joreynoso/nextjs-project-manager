@@ -3,12 +3,16 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbS
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { getProjects } from '@/actions/projects';
 
 // import components
 import ProjectsList from '@/components/projects/ProjectsList';
 
 // main component
 export default async function ProjectsPage() {
+
+    // obtener proyectos desde sv-actions
+    const projects = await getProjects()
 
     // render return    
     return (
@@ -47,7 +51,15 @@ export default async function ProjectsPage() {
             </div>
 
             {/* lista de proyectos */}
-            <ProjectsList />
+            {projects.length === 0 ? (
+                <div className='w-full h-full flex items-center justify-center'>
+                    <p className='text-base text-muted-foreground leading-relaxed'>
+                        Oops! parece que aún no has creado tu primer proyecto o tampoco formas parte de ninguno.
+                    </p>
+                </div>
+            ) : (
+                <ProjectsList projects={projects}/>
+            )}
         </div>
     )
 }
