@@ -8,6 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from 'sonner'
 import { useState } from 'react'
 import { X } from 'lucide-react'
+import { createProject } from '@/actions/projects'
+import { create } from 'domain'
 
 type formProject = {
     users: any
@@ -54,10 +56,22 @@ export default function ProjectForm({ users, onCancel }: formProject) {
     // Usuarios disponibles (no seleccionados)
     const availableUsers = users.filter((user: any) => !formData.members.includes(user.id))
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        toast.success('Proyecto creado correctamente')
-        console.log(formData)
+        setLoading(true)
+        try {
+            const result = await createProject(formData)
+            if(!result){
+                toast.error('Error al crear el proyecto')
+                return
+            }
+            toast.success('Proyecto creado exitosamente')
+            onCancel()
+        } catch (error) {
+            toast.error('Error al crear el proyecto')
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -151,11 +165,17 @@ export default function ProjectForm({ users, onCancel }: formProject) {
 
             {/* acciones */}
             <div className='flex gap-4 justify-end mt-4'>
-                <Button type="button" variant="outline" onClick={onCancel}>
+                <Button 
+                disabled={loading}
+                type="button" 
+                variant="outline" onClick={onCancel}>
                     Cancelar
                 </Button>
-                <Button type="submit">
-                    Guardar
+                <Button 
+                type="submit"
+                disabled={loading}
+                >
+                    { loading ? 'Guardando...' : 'Guardar' }
                 </Button>
             </div>
         </form>

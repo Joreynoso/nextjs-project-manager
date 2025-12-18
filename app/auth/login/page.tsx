@@ -107,7 +107,7 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="flex flex-col mt-20 items-center justify-center font-sans bg-background">
+        <div className="flex flex-col mt-20 mb-20 items-center justify-center font-sans bg-background">
             <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full max-w-md bg-card border border-border p-6 rounded-lg shadow-sm'>
                 <div className='mb-6'>
                     <h2 className='text-xl font-semibold mb-2 tracking-tight'>Inicia sesión con better-auth</h2>

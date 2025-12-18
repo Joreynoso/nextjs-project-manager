@@ -123,7 +123,7 @@ export default function RegisterPage() {
 
     // render return
     return (
-        <div className="flex flex-col mt-20 items-center justify-center font-sans bg-background">
+        <div className="flex flex-col mt-20 mb-20 items-center justify-center font-sans bg-background">
 
             <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full max-w-md bg-card border border-border p-6 rounded-lg shadow-sm'>
                 <div className='mb-6'>
