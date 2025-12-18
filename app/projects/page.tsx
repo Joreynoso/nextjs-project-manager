@@ -9,19 +9,23 @@ import {
 }
     from '@/components/ui/breadcrumb';
 
-import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+
+// import actions
 import { getProjects } from '@/actions/projects';
+import { getAllUsers } from '@/actions/users';
 
 // import components
 import ProjectsList from '@/components/projects/ProjectsList';
-import Link from 'next/link';
+import ProjectDialog from '@/components/projects/ProjectDialog';
 
 export default async function ProjectsPage() {
 
     // obtener proyectos desde sv-actions
     const projects = await getProjects()
+
+    // obtener usuarios desde sv-actions
+    const users = await getAllUsers()
 
     // render return    
     return (
@@ -53,10 +57,10 @@ export default async function ProjectsPage() {
                     placeholder="Buscar proyecto..."
                     className='w-full'
                 />
-                <Button className='w-full sm:w-auto'>
-                    <Plus className='mr-2 h-4 w-4' />
-                    <Link href="/projects/new">Agregar nuevo proyecto</Link>
-                </Button>
+
+                {/* Boton para agregar nuevo proyecto, debe ser un client component */}
+
+                <ProjectDialog users={users}/>
             </div>
 
             {/* lista de proyectos */}

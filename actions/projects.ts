@@ -3,7 +3,6 @@
 import auth from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { headers } from 'next/headers'
-import { NextResponse } from 'next/server'
 
 // obtener lista de proyectos
 export async function getProjects() {
@@ -41,17 +40,5 @@ export async function getProjects() {
 
 // crear proyecto
 export async function createProject(formData: FormData) {
-
-    // verificar si el usuario esta autenticado 
-    const session = await auth.api.getSession({
-        headers: await headers()
-    })
-
-    if (!session?.user?.id) {
-        return NextResponse.json(
-            { error: "No autorizado" },
-            { status: 401 }
-        )
-    }
 
 }
