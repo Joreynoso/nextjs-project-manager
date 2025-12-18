@@ -7,6 +7,7 @@ import { ThemeProvider } from '../components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 import Footer from '@/components/Footer';
 import { usePathname } from 'next/navigation';
+import ScreenSizeHelper from "@/components/ScreenSizeHelper";
 
 const fontSans = Inter({
   variable: "--font-sans",
@@ -59,6 +60,7 @@ export default function RootLayout({
           {/* toast */}
           <Toaster position="top-center" />
           <Footer />
+          <ScreenSizeHelper />
         </ThemeProvider>
       </body>
     </html>

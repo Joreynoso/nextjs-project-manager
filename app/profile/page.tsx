@@ -56,7 +56,7 @@ export default function ProfilePage() {
                 </p>
             </div>
 
-            <div className='max-w-md w-full flex flex-col gap-4 bg-card border border-border p-6 rounded-lg shadow-sm'>
+            <div className='max-w-md w-full flex flex-col gap-4 bg-card border border-border p-6 rounded-lg shadow-sm mx-auto'>
 
                 <div className='flex flex-col gap-2'>
                     <Item label="Nombre" value={user.name} />
