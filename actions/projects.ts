@@ -3,6 +3,7 @@
 import auth from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { CreateProjectInput } from '@/types/projects'
+import console from 'console'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 
@@ -71,4 +72,53 @@ export async function createProject(data: CreateProjectInput) {
 
     revalidatePath('/projects')
     return newProject
+}
+
+// eliminar un proyecto
+export async function deleteProject(projectId: string) {
+
+    const user = await auth.api.getSession({
+        headers: await headers()
+    })
+
+    if (!user?.user?.id) {
+        throw new Error('No autenticado')
+    }
+
+    console.log('usuario registrado', user)
+
+    // Obtener el proyecto con el createdBy
+    const project = await prisma.project.findUnique({
+        where: { id: projectId },
+        select: { createdBy: true }
+    })
+
+    console.log('proyecto a eliminar', project)
+
+    if (!project) {
+        throw new Error("Proyecto no encontrado")
+    }
+
+    console.log('usuario registrado', user)
+
+    // Verificar que el usuario actual es el creador
+    if (project.createdBy !== user.user.id) {
+        return {
+            success: false,
+            error: 'Solo el creador puede eliminar este proyecto',
+            code: 'FORBIDDEN'
+        }
+    }
+
+    // Eliminar el proyecto
+    await prisma.project.delete({
+        where: { id: projectId }
+    })
+
+    revalidatePath("/projects")
+
+    return {
+        success: true,
+        message: 'Proyecto eliminado correctamente'
+    }
 }

@@ -9,8 +9,6 @@ datasource db {
 }
 
 /// Resumen de las relaciones entre tablas:
-///
-/// - `User` es el modelo central. Un `User` puede tener múltiples `Session`s y `Account`s (para autenticación).
 /// - Un `User` puede crear varios `Project`s (`CreatedProjects`), ser miembro de múltiples `Project`s a través de `ProjectMember`s (`ProjectMembers`),
 ///   tener varias `Task`s asignadas (`AssignedTasks`) y enviar múltiples `Message`s (`SentMessages`).
 /// - `Project` es creado por un `User` (`creator`). Un `Project` puede tener muchos `ProjectMember`s, `Task`s y `Message`s.
