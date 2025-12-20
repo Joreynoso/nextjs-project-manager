@@ -18,6 +18,7 @@ import { getAllUsers } from '@/actions/users';
 // import components
 import ProjectsList from '@/components/projects/ProjectsList';
 import ProjectDialog from '@/components/projects/ProjectDialog';
+import ProjectEmpty from '@/components/projects/ProjectEmpty';
 
 export default async function ProjectsPage() {
 
@@ -60,16 +61,12 @@ export default async function ProjectsPage() {
 
                 {/* Boton para agregar nuevo proyecto, debe ser un client component */}
 
-                <ProjectDialog users={users}/>
+                <ProjectDialog users={users} />
             </div>
 
             {/* lista de proyectos */}
             {projects.length === 0 ? (
-                <div className='w-full h-full flex items-center justify-center'>
-                    <p className='text-base text-muted-foreground leading-relaxed'>
-                        Oops! parece que aún no has creado tu primer proyecto o tampoco formas parte de ninguno.
-                    </p>
-                </div>
+                <ProjectEmpty />
             ) : (
                 <ProjectsList projects={projects} />
             )}
