@@ -26,8 +26,12 @@ import { Badge } from '@/components/ui/badge'
 import { getInitials } from '@/lib/utils'
 import { ProjectWithMembers } from '@/types/projects'
 import { toast } from 'sonner'
+import { useProjectsDialog } from '@/app/projects/context/ProjectContext'
 
 export default function ProjectCard({ project }: { project: ProjectWithMembers }) {
+
+    // Usar el contexto para abrir el dialog de edición
+    const { openEditDialog } = useProjectsDialog()
 
     // Handle delete project
     const handleDeleteProject = async () => {
@@ -68,15 +72,16 @@ export default function ProjectCard({ project }: { project: ProjectWithMembers }
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-48">
                         <DropdownMenuItem
+                            onClick={() => openEditDialog(project)}
                             className="cursor-pointer"
                         >
-                            Edit Project
+                            Editar proyecto
                         </DropdownMenuItem>
                         <DropdownMenuItem
                             onClick={handleDeleteProject}
                             className="cursor-pointer"
                         >
-                            Delete Project
+                            Eliminar proyecto
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

@@ -7,18 +7,14 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator
 }
-    from '@/components/ui/breadcrumb';
-
-import { Input } from '@/components/ui/input';
+    from '@/components/ui/breadcrumb'
 
 // import actions
-import { getProjects } from '@/actions/projects';
-import { getAllUsers } from '@/actions/users';
+import { getProjects } from '@/actions/projects'
+import { getAllUsers } from '@/actions/users'
 
-// import components
-import ProjectsList from '@/components/projects/ProjectsList';
-import ProjectDialog from '@/components/projects/ProjectDialog';
-import ProjectEmpty from '@/components/projects/ProjectEmpty';
+// import client component
+import ProjectsClient from './ProjectsClient'
 
 export default async function ProjectsPage() {
 
@@ -52,24 +48,8 @@ export default async function ProjectsPage() {
                 </p>
             </div>
 
-            {/* Actions: Search and Add Project */}
-            <div className='w-full flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-8'>
-                <Input
-                    placeholder="Buscar proyecto..."
-                    className='w-full'
-                />
-
-                {/* Boton para agregar nuevo proyecto, debe ser un client component */}
-
-                <ProjectDialog users={users} />
-            </div>
-
-            {/* lista de proyectos */}
-            {projects.length === 0 ? (
-                <ProjectEmpty />
-            ) : (
-                <ProjectsList projects={projects} />
-            )}
+            {/* Todo el contenido client con el Provider */}
+            <ProjectsClient users={users} projects={projects} />
         </div>
     )
 }

@@ -1,54 +1,45 @@
-'use client' // ← IMPORTANTE: Agregar esto al inicio
+'use client'
 
-// import dialog
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogDescription,
     DialogHeader,
     DialogTitle,
-    DialogTrigger
 }
-    from "@/components/ui/dialog"
+from "@/components/ui/dialog"
 
-import { Button } from "@/components/ui/button"
-import { Plus } from 'lucide-react'
-
-// Importar tu formulario
 import ProjectForm from './ProjectForm'
-import { useState } from "react"
+import { useProjectsDialog } from '@/app/projects/context/ProjectContext'
 
 export default function ProjectDialog({ users }: { users: any }) {
+    // ← Usar el contexto en vez de estado local
+    const { isDialogOpen, currentProject, closeDialog } = useProjectsDialog()
 
-    // estados
-    const [onCancel, setOnCancel] = useState(false)
-
-    // handle close
-    const handleClose = () => {
-        setOnCancel(!onCancel)
-    }
+    // ← Decidir el título según el modo
+    const title = currentProject ? 'Editar proyecto' : 'Agregar nuevo proyecto'
+    const description = currentProject 
+        ? 'Modifica los datos del proyecto' 
+        : 'Ingrese los datos del nuevo proyecto'
 
     return (
-        <Dialog open={onCancel} onOpenChange={handleClose}>
-            <DialogTrigger asChild>
-                <Button className='w-full sm:w-auto'>
-                    <Plus className='mr-2 h-4 w-4' />
-                    Agregar nuevo proyecto
-                </Button>
-            </DialogTrigger>
-
-            {/* dialog content */}
+        <Dialog open={isDialogOpen} onOpenChange={closeDialog}>
+            {/* Ya NO necesitas DialogTrigger aquí, lo abrirás desde otros lados */}
+            
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Agregar nuevo proyecto</DialogTitle>
+                    <DialogTitle>{title}</DialogTitle>
                     <DialogDescription>
-                        Ingrese los datos del nuevo proyecto
+                        {description}
                     </DialogDescription>
                 </DialogHeader>
 
-                {/* form */}
-                <ProjectForm users={users} onCancel={handleClose} />
+                {/* Pasar el proyecto al formulario */}
+                <ProjectForm 
+                    users={users} 
+                    onCancel={closeDialog}
+                    project={currentProject} // ← puede ser null o un proyecto
+                />
             </DialogContent>
         </Dialog>
     )

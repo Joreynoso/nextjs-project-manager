@@ -122,3 +122,14 @@ export async function deleteProject(projectId: string) {
         message: 'Proyecto eliminado correctamente'
     }
 }
+
+// editar un proyecto
+export async function updateProject(projectId: string, formData: any) {
+    const user = await auth.api.getSession({
+        headers: await headers()
+    })
+
+    if (!user?.user?.id) {
+        throw new Error('No autenticado')
+    }
+}

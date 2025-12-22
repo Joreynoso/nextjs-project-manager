@@ -8,39 +8,49 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from 'sonner'
 import { useState } from 'react'
 import { X } from 'lucide-react'
-import { createProject } from '@/actions/projects'
-import { create } from 'domain'
+import { createProject, updateProject } from '@/actions/projects'
+import { ProjectWithMembers } from '@/types/projects'
 
-type formProject = {
+type FormProjectProps = {
     users: any
     onCancel: () => void
+    project?: ProjectWithMembers | null // ← Acepta ProjectWithMembers del contexto
 }
 
-export default function ProjectForm({ users, onCancel }: formProject) {
+export default function ProjectForm({ users, onCancel, project = null }: FormProjectProps) {
     const [loading, setLoading] = useState(false)
+
+    // ← Extraer IDs de miembros si el proyecto tiene members como objetos
+    const getMemberIds = () => {
+        if (!project?.members) return []
+        // Si members es un array de objetos con userId, extraer los IDs
+        if (project.members.length > 0 && typeof project.members[0] === 'object') {
+            return project.members.map((m: any) => m.userId)
+        }
+        // Si ya son strings, devolverlos tal cual (esto no debería pasar con ProjectWithMembers)
+        return project.members as unknown as string[]
+    }
+
+    // ← Pre-llenar datos si existe proyecto
     const [formData, setFormData] = useState({
-        name: '',
-        tag: '',
-        description: '',
-        members: [] as string[]
+        name: project?.name || '',
+        tag: project?.tag || '',
+        description: project?.description || '',
+        members: getMemberIds()
     })
 
-    // Estado para forzar el reset del select
     const [selectKey, setSelectKey] = useState(0)
 
-    // Agregar miembro
     const handleAddMember = (userId: string) => {
         if (!formData.members.includes(userId)) {
             setFormData({
                 ...formData,
                 members: [...formData.members, userId]
             })
-            // Forzar reset del select cambiando la key
             setSelectKey(prev => prev + 1)
         }
     }
 
-    // Remover miembro
     const handleRemoveMember = (userId: string) => {
         setFormData({
             ...formData,
@@ -48,27 +58,38 @@ export default function ProjectForm({ users, onCancel }: formProject) {
         })
     }
 
-    // Obtener usuario por ID
     const getUserById = (userId: string) => {
         return users.find((user: any) => user.id === userId)
     }
 
-    // Usuarios disponibles (no seleccionados)
     const availableUsers = users.filter((user: any) => !formData.members.includes(user.id))
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setLoading(true)
+
         try {
-            const result = await createProject(formData)
-            if(!result){
-                toast.error('Error al crear el proyecto')
-                return
+            if (project) {
+                // ← MODO EDITAR
+                const result = await updateProject(project.id, formData) // necesitas crear esta action
+                if (!result) {
+                    toast.error('Error al actualizar el proyecto')
+                    return
+                }
+                toast.success('Proyecto actualizado exitosamente')
+            } else {
+                // ← MODO CREAR
+                const result = await createProject(formData)
+                if (!result) {
+                    toast.error('Error al crear el proyecto')
+                    return
+                }
+                toast.success('Proyecto creado exitosamente')
             }
-            toast.success('Proyecto creado exitosamente')
-            onCancel()
+
+            onCancel() // Cierra el dialog
         } catch (error) {
-            toast.error('Error al crear el proyecto')
+            toast.error(project ? 'Error al actualizar el proyecto' : 'Error al crear el proyecto')
         } finally {
             setLoading(false)
         }
@@ -84,6 +105,7 @@ export default function ProjectForm({ users, onCancel }: formProject) {
                     name="name"
                     type="text"
                     placeholder="Ej. Proyecto de diseño"
+                    value={formData.name} // ← importante para pre-llenar
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 />
             </div>
@@ -96,6 +118,7 @@ export default function ProjectForm({ users, onCancel }: formProject) {
                     name="tag"
                     type="text"
                     placeholder="Ej. Diseño, Desarrollo, Marketing"
+                    value={formData.tag} // ← importante para pre-llenar
                     onChange={(e) => setFormData({ ...formData, tag: e.target.value })}
                 />
             </div>
@@ -108,6 +131,7 @@ export default function ProjectForm({ users, onCancel }: formProject) {
                     name="description"
                     placeholder="Describe tu proyecto..."
                     className='min-h-[200px]'
+                    value={formData.description} // ← importante para pre-llenar
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 />
             </div>
@@ -119,7 +143,7 @@ export default function ProjectForm({ users, onCancel }: formProject) {
                 </Label>
 
                 <Select
-                    key={selectKey} // forzar reset de default
+                    key={selectKey}
                     onValueChange={handleAddMember}
                     disabled={availableUsers.length === 0}
                 >
@@ -165,17 +189,19 @@ export default function ProjectForm({ users, onCancel }: formProject) {
 
             {/* acciones */}
             <div className='flex gap-4 justify-end mt-4'>
-                <Button 
-                disabled={loading}
-                type="button" 
-                variant="outline" onClick={onCancel}>
+                <Button
+                    disabled={loading}
+                    type="button"
+                    variant="outline"
+                    onClick={onCancel}
+                >
                     Cancelar
                 </Button>
-                <Button 
-                type="submit"
-                disabled={loading}
+                <Button
+                    type="submit"
+                    disabled={loading}
                 >
-                    { loading ? 'Guardando...' : 'Guardar' }
+                    {loading ? 'Guardando...' : project ? 'Actualizar' : 'Crear'}
                 </Button>
             </div>
         </form>
