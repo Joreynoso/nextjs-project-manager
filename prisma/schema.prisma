@@ -5,47 +5,31 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  // directUrl = env("DIRECT_URL")
 }
 
-/// Resumen de las relaciones entre tablas:
-/// - Un `User` puede crear varios `Project`s (`CreatedProjects`), ser miembro de múltiples `Project`s a través de `ProjectMember`s (`ProjectMembers`),
-///   tener varias `Task`s asignadas (`AssignedTasks`) y enviar múltiples `Message`s (`SentMessages`).
-/// - `Project` es creado por un `User` (`creator`). Un `Project` puede tener muchos `ProjectMember`s, `Task`s y `Message`s.
-/// - `ProjectMember` es una tabla intermedia que conecta un `User` con un `Project`, indicando que un usuario es miembro de un proyecto específico.
-/// - `Task` pertenece a un `Project` y puede ser asignada opcionalmente a un `User` (`assignee`).
-/// - `Message` pertenece a un `Project` y es enviado por un `User`.
-/// - `Role` es un `enum` que define los roles posibles para un `User` (admin, user).
-
-
 model User {
-  id            String   @id
-  name          String
-  email         String
-  emailVerified Boolean  @default(false)
-  image         String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @default(now()) @updatedAt
-  role          Role     @default(user)
-
-  // Relaciones de Better Auth
-  sessions Session[]
-  accounts Account[]
-
-  // Relaciones de Project Manager (con nombres específicos)
+  id              String          @id
+  name            String
+  email           String          @unique
+  emailVerified   Boolean         @default(false)
+  image           String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @default(now()) @updatedAt
+  role            Role            @default(user)
+  sentMessages    Message[]       @relation("SentMessages")
   createdProjects Project[]       @relation("CreatedProjects")
   projectMembers  ProjectMember[] @relation("ProjectMembers")
   assignedTasks   Task[]          @relation("AssignedTasks")
-  sentMessages    Message[]       @relation("SentMessages")
+  accounts        Account[]
+  sessions        Session[]
 
-  @@unique([email])
   @@map("user")
 }
 
 model Session {
   id        String   @id
   expiresAt DateTime
-  token     String
+  token     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   ipAddress String?
@@ -53,7 +37,6 @@ model Session {
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([token])
   @@map("session")
 }
 
@@ -62,7 +45,6 @@ model Account {
   accountId             String
   providerId            String
   userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
   idToken               String?
@@ -72,6 +54,7 @@ model Account {
   password              String?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("account")
 }
@@ -87,33 +70,20 @@ model Verification {
   @@map("verification")
 }
 
-/// This enum defines user roles and was created after the User model.
-/// Un `enum` (enumeración) es un tipo de dato especial que permite definir un conjunto de valores con nombre (constantes).
-/// En Prisma, los enums se utilizan para restringir los valores posibles de un campo a una lista predefinida.
-/// Esto mejora la legibilidad del código, previene errores de escritura y asegura la integridad de los datos,
-/// ya que un campo que utiliza un enum solo puede almacenar uno de los valores definidos en ese enum.
-/// Por ejemplo, el enum `Role` define que un usuario solo puede tener el rol `admin` o `user`.
-enum Role {
-  admin
-  user
-}
-
 /// Model project
 model Project {
-  id          String    @id @default(cuid())
+  id          String          @id @default(cuid())
   name        String
-  description String?   @db.Text
+  description String?
   tag         String
   deadline    DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  createdBy String
-  creator   User   @relation("CreatedProjects", fields: [createdBy], references: [id], onDelete: Cascade)
-
-  members  ProjectMember[]
-  tasks    Task[]
-  messages Message[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  createdBy   String
+  messages    Message[]
+  creator     User            @relation("CreatedProjects", fields: [createdBy], references: [id], onDelete: Cascade)
+  members     ProjectMember[]
+  tasks       Task[]
 
   @@index([createdBy])
 }
@@ -124,9 +94,8 @@ model ProjectMember {
   projectId String
   userId    String
   joinedAt  DateTime @default(now())
-
-  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  user    User    @relation("ProjectMembers", fields: [userId], references: [id], onDelete: Cascade)
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User     @relation("ProjectMembers", fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([projectId, userId])
   @@index([userId])
@@ -137,16 +106,15 @@ model ProjectMember {
 model Task {
   id          String   @id @default(cuid())
   title       String
-  description String?  @db.Text
+  description String?
   completed   Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
-  projectId String
-  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-
-  assignedTo String?
-  assignee   User?   @relation("AssignedTasks", fields: [assignedTo], references: [id], onDelete: SetNull)
+  projectId   String
+  assignedTo  String?
+  status      String   @default("pending")
+  assignee    User?    @relation("AssignedTasks", fields: [assignedTo], references: [id])
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@index([projectId])
   @@index([assignedTo])
@@ -155,16 +123,25 @@ model Task {
 /// Model message 
 model Message {
   id        String   @id @default(cuid())
-  content   String   @db.Text
+  content   String
   createdAt DateTime @default(now())
-
   projectId String
-  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-
-  userId String
-  user   User   @relation("SentMessages", fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User     @relation("SentMessages", fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([projectId])
   @@index([userId])
   @@index([createdAt])
+}
+
+/// This enum defines user roles and was created after the User model.
+/// Un `enum` (enumeración) es un tipo de dato especial que permite definir un conjunto de valores con nombre (constantes).
+/// En Prisma, los enums se utilizan para restringir los valores posibles de un campo a una lista predefinida.
+/// Esto mejora la legibilidad del código, previene errores de escritura y asegura la integridad de los datos,
+/// ya que un campo que utiliza un enum solo puede almacenar uno de los valores definidos en ese enum.
+/// Por ejemplo, el enum `Role` define que un usuario solo puede tener el rol `admin` o `user`.
+enum Role {
+  admin
+  user
 }

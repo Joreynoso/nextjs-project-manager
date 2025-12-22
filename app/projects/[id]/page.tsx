@@ -1,5 +1,6 @@
 // import breacumb
 import { getProjectById } from '@/actions/projects'
+import ProjectTasks from '@/components/projects/ProjectTasks'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -21,6 +22,9 @@ export default async function ProjectDetailPage({ params }: Props) {
     // fetch project
     const project = await getProjectById(id)
 
+    // fetch tasks
+   console.log('proyecto desde actions server', project)
+
     // render return
     return (
         <div className='w-full min-h-[calc(100vh-4rem)] mx-auto flex flex-col py-5 pb-10 max-w-7xl'>
@@ -33,11 +37,11 @@ export default async function ProjectDetailPage({ params }: Props) {
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage>Proyectos</BreadcrumbPage>
+                        <BreadcrumbLink href="/projects">Proyectos</BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage>Proyecto</BreadcrumbPage>
+                        <BreadcrumbPage className='max-w-[150px] truncate'>{project?.name}</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
@@ -45,24 +49,12 @@ export default async function ProjectDetailPage({ params }: Props) {
             {/* Page Header: Title, Description */}
             <div className='flex flex-col gap-y-2 mb-5'>
                 <p className='text-base text-muted-foreground leading-relaxed'>
-                    Detalles del proyecto y su titulo, deberia ir aqui.
+                    {project?.description}
                 </p>
             </div>
 
-            {/* Page Content */}
-            <div className='bg-card p-5 rounded-lg card flex flex-col gap-y-5'>
-
-                <p>{project?.name}</p>
-                <p>{project?.description}</p>
-                <p>{project?.tag}</p>
-                <p>{project?.deadline?.toDateString()}</p>
-
-                {project?.members.map((member) => (
-                    <p key={member.id}>{member.user.name}</p>
-                ))}
-            </div>
-
             {/* lista de tareas del proyecto deberia ir aqui */}
+            <ProjectTasks tasks={project?.tasks}/>
 
         </div>
     )

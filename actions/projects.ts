@@ -3,7 +3,6 @@
 import auth from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { CreateProjectInput } from '@/types/projects'
-import console from 'console'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 
@@ -51,6 +50,7 @@ export async function getProjectById(id: string) {
         throw new Error('No autenticado')
     }
 
+    // proyectos con tareas incluidas, si es que las tiene
     const project = await prisma.project.findUnique({
         where: { id },
         include: {
@@ -59,7 +59,8 @@ export async function getProjectById(id: string) {
                 include: {
                     user: true
                 }
-            }
+            },
+            tasks: true
         }
     })
     return project
@@ -188,6 +189,7 @@ export async function updateProject(projectId: string, formData: any) {
 
     return {
         success: true,
-        message: 'Proyecto actualizado correctamente'
+        message: 'Proyecto actualizado correctamente',
+        updatedProject
     }
 }
