@@ -41,6 +41,30 @@ export async function getProjects() {
     return projects
 }
 
+// obtener un proyecto por id
+export async function getProjectById(id: string) {
+    const user = await auth.api.getSession({
+        headers: await headers()
+    })
+
+    if (!user?.user?.id) {
+        throw new Error('No autenticado')
+    }
+
+    const project = await prisma.project.findUnique({
+        where: { id },
+        include: {
+            creator: true,
+            members: {
+                include: {
+                    user: true
+                }
+            }
+        }
+    })
+    return project
+}
+
 // crear proyecto
 export async function createProject(data: CreateProjectInput) {
     const user = await auth.api.getSession({

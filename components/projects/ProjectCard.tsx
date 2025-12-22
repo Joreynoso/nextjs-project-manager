@@ -27,6 +27,7 @@ import { getInitials } from '@/lib/utils'
 import { ProjectWithMembers } from '@/types/projects'
 import { toast } from 'sonner'
 import { useProjectsDialog } from '@/app/projects/context/ProjectContext'
+import Link from 'next/link'
 
 export default function ProjectCard({ project }: { project: ProjectWithMembers }) {
 
@@ -82,6 +83,11 @@ export default function ProjectCard({ project }: { project: ProjectWithMembers }
                             className="cursor-pointer"
                         >
                             Eliminar proyecto
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                            className="cursor-pointer"
+                        >
+                           <Link href={`/projects/${project.id}`}>Ver proyecto</Link>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

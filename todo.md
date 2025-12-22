@@ -8,5 +8,7 @@
 ## Mejorar el registro
 ## Mejorar el navbar, que sea correspondiente a la página en la que se encuentra
 ## Aplicar la elección del modo oscuro y claro
+## Actualizar proyecto no funciona con los members, corregir
+
 
 
