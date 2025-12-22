@@ -12,7 +12,7 @@ function ProjectsContent({ users, projects }: { users: any, projects: any }) {
     const { openCreateDialog } = useProjectsDialog()
 
     return (
-        <div className="container mx-auto">
+        <div className='w-full min-h-[calc(100vh-4rem)] mx-auto flex flex-col max-w-7xl'>
             <div className="flex justify-between items-center mb-6">
 
                 {/* Botón para crear nuevo proyecto */}

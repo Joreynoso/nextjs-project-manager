@@ -140,7 +140,7 @@ export default function ProjectCard({ project }: { project: ProjectWithMembers }
                                     </TooltipTrigger>
                                     <TooltipContent side="bottom">
                                         <p className="text-xs font-medium">{member.user.name}</p>
-                                        <p className="text-xs text-muted-foreground">{member.user.email}</p>
+                                        <p className="text-xs">{member.user.email}</p>
                                     </TooltipContent>
                                 </Tooltip>
                             ))}

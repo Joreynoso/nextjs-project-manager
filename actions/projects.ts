@@ -132,4 +132,38 @@ export async function updateProject(projectId: string, formData: any) {
     if (!user?.user?.id) {
         throw new Error('No autenticado')
     }
+
+    const project = await prisma.project.findUnique({
+        where: { id: projectId },
+        select: { createdBy: true }
+    })
+
+    if (!project) {
+        throw new Error("Proyecto no encontrado")
+    }
+
+    if (project.createdBy !== user.user.id) {
+        return {
+            success: false,
+            error: 'Solo el creador puede editar este proyecto',
+            code: '403'
+        }
+    }
+
+    const updatedProject = await prisma.project.update({
+        where: { id: projectId },
+        data: {
+            name: formData.name,
+            description: formData.description,
+            tag: formData.tag,
+            deadline: formData.deadline
+        }
+    })
+
+    revalidatePath('/projects')
+
+    return {
+        success: true,
+        message: 'Proyecto actualizado correctamente'
+    }
 }

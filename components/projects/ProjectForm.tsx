@@ -27,7 +27,7 @@ export default function ProjectForm({ users, onCancel, project = null }: FormPro
         if (project.members.length > 0 && typeof project.members[0] === 'object') {
             return project.members.map((m: any) => m.userId)
         }
-        // Si ya son strings, devolverlos tal cual (esto no debería pasar con ProjectWithMembers)
+        // Si ya son strings, devolverlos tal cual
         return project.members as unknown as string[]
     }
 
@@ -71,7 +71,7 @@ export default function ProjectForm({ users, onCancel, project = null }: FormPro
         try {
             if (project) {
                 // ← MODO EDITAR
-                const result = await updateProject(project.id, formData) // necesitas crear esta action
+                const result = await updateProject(project.id, formData)
                 if (!result) {
                     toast.error('Error al actualizar el proyecto')
                     return
@@ -87,7 +87,7 @@ export default function ProjectForm({ users, onCancel, project = null }: FormPro
                 toast.success('Proyecto creado exitosamente')
             }
 
-            onCancel() // Cierra el dialog
+            onCancel()
         } catch (error) {
             toast.error(project ? 'Error al actualizar el proyecto' : 'Error al crear el proyecto')
         } finally {
@@ -95,6 +95,7 @@ export default function ProjectForm({ users, onCancel, project = null }: FormPro
         }
     }
 
+    // render return
     return (
         <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full'>
             {/* nombre proyecto */}
