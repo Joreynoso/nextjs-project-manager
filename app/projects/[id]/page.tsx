@@ -10,6 +10,7 @@ import {
     BreadcrumbLink
 }
     from '@/components/ui/breadcrumb'
+import UsersAvatars from '@/components/users/UsersAvatars'
 
 type Props = {
     params: Promise<{ id: string }>
@@ -22,8 +23,11 @@ export default async function ProjectDetailPage({ params }: Props) {
     // fetch project
     const project = await getProjectById(id)
 
+    // extract user objects from project members
+    const members = project?.members.map(member => member.user) || []
+
     // fetch tasks
-   console.log('proyecto desde actions server', project)
+    console.log('proyecto desde actions server', project)
 
     // render return
     return (
@@ -51,10 +55,11 @@ export default async function ProjectDetailPage({ params }: Props) {
                 <p className='text-base text-muted-foreground leading-relaxed'>
                     {project?.description}
                 </p>
+                {/* aqui debe ir la lista de miembros */}
             </div>
 
             {/* lista de tareas del proyecto deberia ir aqui */}
-            <ProjectTasks tasks={project?.tasks}/>
+            <ProjectTasks tasks={project?.tasks} />
 
         </div>
     )
