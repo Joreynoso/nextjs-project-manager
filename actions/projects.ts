@@ -60,7 +60,11 @@ export async function getProjectById(id: string) {
                     user: true
                 }
             },
-            tasks: true
+            tasks: {
+                include: {
+                    assignee: true
+                }
+            }
         }
     })
     return project
