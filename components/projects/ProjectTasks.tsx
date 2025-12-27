@@ -10,12 +10,11 @@ import { useState } from 'react'
 import TaskCard from '../tasks/TaskCard'
 
 interface ProjectTasksProps {
-    id?: string
     tasks?: Task[]  // ← Agregar ?
 }
 
 // tener en cuenta que taskts puede venir vacio
-export default function ProjectTasks({ id, tasks = [] }: ProjectTasksProps) {
+export default function ProjectTasks({ tasks = [] }: ProjectTasksProps) {
 
     const [showNewTask, setShowNewTask] = useState(false)
 
@@ -63,10 +62,9 @@ export default function ProjectTasks({ id, tasks = [] }: ProjectTasksProps) {
                 {/* lista de tareas pendientes */}
                 <div className='w-full mt-5'>
                     {pendingTasks.map(task => (
-                        <>
-                            <TaskCard
-                                task={task} />
-                        </>
+                        <TaskCard
+                            key={task.id}
+                            task={task} />
                     ))}
                 </div>
             </div>
@@ -81,6 +79,15 @@ export default function ProjectTasks({ id, tasks = [] }: ProjectTasksProps) {
                         <Badge className='h-6 w-6 text-xs rounded-full flex justify-center items-center'>{inProgressTasks.length}</Badge>
                     </div>
                 </div>
+
+                {/* lista de tareas en progreso */}
+                <div className='w-full mt-5'>
+                    {inProgressTasks.map(task => (
+                        <TaskCard
+                            key={task.id}
+                            task={task} />
+                    ))}
+                </div>
             </div>
 
             {/* tareas completadas */}
@@ -92,6 +99,15 @@ export default function ProjectTasks({ id, tasks = [] }: ProjectTasksProps) {
                         <p className='text-base font-semibold'>Completadas</p>
                         <Badge className='h-6 w-6 text-xs rounded-full flex justify-center items-center'>{doneTasks.length}</Badge>
                     </div>
+                </div>
+
+                {/* lista de tareas completadas */}
+                <div className='w-full mt-5'>
+                    {doneTasks.map(task => (
+                        <TaskCard
+                            key={task.id}
+                            task={task} />
+                    ))}
                 </div>
             </div>
         </div>

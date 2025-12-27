@@ -23,12 +23,6 @@ export default async function ProjectDetailPage({ params }: Props) {
     // fetch project
     const project = await getProjectById(id)
 
-    // extract user objects from project members
-    const members = project?.members.map(member => member.user) || []
-
-    // fetch tasks
-    console.log('proyecto desde actions server', project)
-
     // render return
     return (
         <div className='w-full min-h-[calc(100vh-4rem)] mx-auto flex flex-col py-5 pb-10 max-w-7xl'>
