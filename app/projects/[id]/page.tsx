@@ -59,7 +59,7 @@ export default async function ProjectDetailPage({ params }: Props) {
             </div>
 
             {/* lista de tareas del proyecto deberia ir aqui */}
-            <ProjectTasks tasks={project?.tasks} />
+            <ProjectTasks id={id} tasks={project?.tasks} />
 
         </div>
     )
