@@ -9,7 +9,13 @@
 ## Mejorar el navbar, que sea correspondiente a la página en la que se encuentra
 ## Aplicar la elección del modo oscuro y claro
 ## Actualizar proyecto no funciona con los members, corregir
+
 ## Implementar un componente para los avatares de los usuarios apilados sumando al "owner" tambien
+## Implementar eliminar, editar tareas (editar, no se como hacerlo aun)
+## Implementar la creación de tareas
+## Implentar el emtpy taks, para cuando no haya tareas aún.
+
+## Implementar login moderno con imagenes
 
 
 

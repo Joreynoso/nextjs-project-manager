@@ -7,6 +7,7 @@ import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
 import { toast } from 'sonner'
 
+
 interface NewTaskCardProps {
     onCancel: () => void
     onSave: (data: { title: string; description: string }) => void

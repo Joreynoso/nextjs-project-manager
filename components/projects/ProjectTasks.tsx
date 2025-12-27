@@ -4,10 +4,10 @@ import type { Task } from '@/types/tasks'
 import { Button } from '../ui/button'
 import { Badge } from '../ui/badge'
 import { PlusIcon } from 'lucide-react'
-import { formatDateString } from '@/lib/utils'
 import { NewTaskCard } from '../tasks/NewTask'
 import { useState } from 'react'
 import TaskCard from '../tasks/TaskCard'
+
 
 interface ProjectTasksProps {
     tasks?: Task[]  // ← Agregar ?
@@ -16,11 +16,12 @@ interface ProjectTasksProps {
 // tener en cuenta que taskts puede venir vacio
 export default function ProjectTasks({ tasks = [] }: ProjectTasksProps) {
 
+    // estado para mostrar el formulario de nueva tarea
     const [showNewTask, setShowNewTask] = useState(false)
 
+    // agregar una nueva tarea
     const handleSaveTask = (data: { title: string; description: string }) => {
         console.log('Nueva tarea:', data)
-        // Aquí haremos el POST a la API (siguiente paso)
         setShowNewTask(false)
     }
 
@@ -34,7 +35,7 @@ export default function ProjectTasks({ tasks = [] }: ProjectTasksProps) {
         <div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
 
             {/* tareas pendientes */}
-            <div className='bg-muted w-full min-h-[600px] rounded-lg p-5 mb-4'>
+            <div className='bg-muted w-full h-auto sm:min-h-[750px] rounded-lg p-5 mb-4'>
 
                 {/* titulo, cantidad de tareas y boton de crear tarea */}
                 <div className='w-full flex justify-between items-center'>
@@ -70,7 +71,7 @@ export default function ProjectTasks({ tasks = [] }: ProjectTasksProps) {
             </div>
 
             {/* tareas en progreso */}
-            <div className='bg-muted w-full min-h-[600px] rounded-lg p-5 mb-4'>
+            <div className='bg-muted w-full h-auto sm:min-h-[750px] rounded-lg p-5 mb-4'>
 
                 {/* titulo, cantidad de tareas y boton de crear tarea */}
                 <div className='w-full flex justify-between items-center'>
@@ -91,13 +92,13 @@ export default function ProjectTasks({ tasks = [] }: ProjectTasksProps) {
             </div>
 
             {/* tareas completadas */}
-            <div className='bg-muted w-full min-h-[600px] rounded-lg p-5 mb-4'>
+            <div className='bg-muted w-full h-auto sm:min-h-[750px] rounded-lg p-5 mb-4'>
 
                 {/* titulo, cantidad de tareas y boton de crear tarea */}
                 <div className='w-full flex justify-between items-center'>
                     <div className='flex items-center gap-x-2'>
                         <p className='text-base font-semibold'>Completadas</p>
-                        <Badge className='h-6 w-6 text-xs rounded-full flex justify-center items-center'>{doneTasks.length}</Badge>
+                        <Badge className='h-6 w-6 text-xs roun  ded-full flex justify-center items-center'>{doneTasks.length}</Badge>
                     </div>
                 </div>
 

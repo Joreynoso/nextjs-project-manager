@@ -1,38 +1,6 @@
 import { Separator } from "@/components/ui/separator";
-import {
-    DribbbleIcon,
-    GithubIcon,
-    TwitchIcon,
-    TwitterIcon,
-} from "lucide-react";
+import { GithubIcon } from "lucide-react";
 import Link from "next/link";
-
-const footerLinks = [
-    {
-        title: "Overview",
-        href: "#",
-    },
-    {
-        title: "Features",
-        href: "#",
-    },
-    {
-        title: "Pricing",
-        href: "#",
-    },
-    {
-        title: "Careers",
-        href: "#",
-    },
-    {
-        title: "Help",
-        href: "#",
-    },
-    {
-        title: "Privacy",
-        href: "#",
-    },
-];
 
 const Footer = () => {
     return (
@@ -46,22 +14,13 @@ const Footer = () => {
                         <span className="text-muted-foreground">
                             &copy; {new Date().getFullYear()}{" "}
                             <Link href="/" target="_blank">
-                                Shadcn UI Blocks
+                                Created by José Reynoso
                             </Link>
                             . All rights reserved.
                         </span>
 
                         <div className="flex items-center gap-5 text-muted-foreground">
-                            <Link href="#" target="_blank">
-                                <TwitterIcon className="h-5 w-5" />
-                            </Link>
-                            <Link href="#" target="_blank">
-                                <DribbbleIcon className="h-5 w-5" />
-                            </Link>
-                            <Link href="#" target="_blank">
-                                <TwitchIcon className="h-5 w-5" />
-                            </Link>
-                            <Link href="#" target="_blank">
+                            <Link href="https://github.com/Joreynoso" target="_blank">
                                 <GithubIcon className="h-5 w-5" />
                             </Link>
                         </div>
