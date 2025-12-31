@@ -16,6 +16,8 @@ interface ProjectTasksProps {
 // tener en cuenta que taskts puede venir vacio
 export default function ProjectTasks({ tasks = [] }: ProjectTasksProps) {
 
+    console.log('lista de tareas', tasks)
+
     // estado para mostrar el formulario de nueva tarea
     const [showNewTask, setShowNewTask] = useState(false)
 

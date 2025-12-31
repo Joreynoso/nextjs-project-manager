@@ -107,18 +107,17 @@ model Task {
   id          String   @id @default(cuid())
   title       String
   description String?
-  completed   Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   projectId   String
   assignedTo  String?
-  status      String   @default("pending")
+  status      TaskStatus @default(pending)
   assignee    User?    @relation("AssignedTasks", fields: [assignedTo], references: [id])
   project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@index([projectId])
   @@index([assignedTo])
-}
+} 
 
 /// Model message 
 model Message {
@@ -144,4 +143,10 @@ model Message {
 enum Role {
   admin
   user
+}
+
+enum TaskStatus {
+  pending
+  in_progress
+  completed
 }

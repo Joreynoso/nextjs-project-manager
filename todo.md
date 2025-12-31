@@ -15,6 +15,9 @@
 ## Implentar el emtpy taks, para cuando no haya tareas aún.
 
 ## Implementar login moderno con imagenes
+## Cambiar mi base de datos de prisma para quitar  completed   Boolean  @default(false)
+
+
 
 
 
