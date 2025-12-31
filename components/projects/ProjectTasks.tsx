@@ -30,7 +30,7 @@ export default function ProjectTasks({ tasks = [] }: ProjectTasksProps) {
     // filtrar por tipo de estado
     const pendingTasks = tasks.filter(task => task.status === 'pending')
     const inProgressTasks = tasks.filter(task => task.status === 'in_progress')
-    const doneTasks = tasks.filter(task => task.status === 'done')
+    const doneTasks = tasks.filter(task => task.status === 'completed')
 
     // renderizar tareas
     return (

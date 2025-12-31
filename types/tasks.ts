@@ -5,13 +5,12 @@ export type Task = {
     id: string
     title: string
     description: string | null  // ← Nullable
-    completed: boolean
     projectId: string
     createdAt: Date
     updatedAt: Date
     assignedTo: string | null   // ← Nullable
     assignee: User | null       // ← Nullable
-    status: string
+    status: 'pending' | 'in_progress' | 'completed'
 }
 
 export type ProjectWithTasks = Prisma.ProjectGetPayload<{
