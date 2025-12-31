@@ -14,25 +14,6 @@ export type Task = {
     status: string
 }
 
-/*
-    id          String   @id @default(cuid())
-    title       String
-    description String?  @db.Text
-    completed   Boolean  @default(false)
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-
-    projectId String
-    project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-
-    assignedTo String?
-    assignee   User?   @relation("AssignedTasks", fields: [assignedTo], references: [id], onDelete: SetNull)
-
-    @@index([projectId])
-    @@index([assignedTo])
-*/
-
-
 export type ProjectWithTasks = Prisma.ProjectGetPayload<{
     include: {
         creator: true,

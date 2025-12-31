@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma"
 import { headers } from "next/headers"
 
 export async function GET(
+  req: Request,  // 👈 AGREGAR ESTO
   { params }: { params: { id: string } }
 ) {
   try {
@@ -17,13 +18,6 @@ export async function GET(
       return NextResponse.json(
         { error: "No autorizado" },
         { status: 401 }
-      )
-    }
-
-    if (!isCuid(params.id)) {
-      return NextResponse.json(
-        { error: "Proyecto no encontrado" },
-        { status: 404 }
       )
     }
 
@@ -51,8 +45,4 @@ export async function GET(
       { status: 500 }
     )
   }
-}
-
-function isCuid(id: string) {
-  return typeof id === "string" && id.startsWith("c") && id.length >= 24
 }
