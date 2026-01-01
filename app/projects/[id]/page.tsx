@@ -1,6 +1,7 @@
-// import breacumb
 import { getProjectById } from '@/actions/projects'
 import ProjectTasks from '@/components/projects/ProjectTasks'
+
+// import breacumb
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -10,7 +11,6 @@ import {
     BreadcrumbLink
 }
     from '@/components/ui/breadcrumb'
-import UsersAvatars from '@/components/users/UsersAvatars'
 
 type Props = {
     params: Promise<{ id: string }>

@@ -2,6 +2,10 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import auth from '@/lib/auth';
 
+/**
+ * GET /api/profile
+ * Obtiene el perfil del usuario autenticado
+ */
 export async function GET(request: Request) {
     // verificar si el usuario esta autenticado 
     const session = await auth.api.getSession({

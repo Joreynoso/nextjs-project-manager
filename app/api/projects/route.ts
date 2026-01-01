@@ -2,8 +2,10 @@ import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import auth from '@/lib/auth'
 
-// obtener proyectos donde el usuario forma parte o es creador
-// de alguno de los proyectos
+/**
+ * GET /api/projects
+ * Obtiene todos los proyectos
+ */
 export async function GET(request: Request) {
     try {
         
@@ -71,7 +73,10 @@ export async function GET(request: Request) {
     }
 }
 
-// crear proyecto
+/**
+ * POST /api/projects
+ * Crea un nuevo proyecto
+ */
 export async function POST(request: Request) {
     try {
         // verificar si el usuario esta autenticado 

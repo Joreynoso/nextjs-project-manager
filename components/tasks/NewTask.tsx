@@ -32,9 +32,12 @@ type NewTaskCardProps = {
 }
 
 export function NewTaskCard({ projectId, onCancel, onSave }: NewTaskCardProps) {
+
+    // estados
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
 
+    // funciones
     const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (!title.trim()) {
@@ -64,6 +67,7 @@ export function NewTaskCard({ projectId, onCancel, onSave }: NewTaskCardProps) {
         }
     }
 
+    // render return
     return (
         <Card className='border border-dashed border-primary mt-5 rounded-lg'>
             <CardContent>

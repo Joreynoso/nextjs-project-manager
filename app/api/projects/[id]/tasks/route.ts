@@ -49,7 +49,6 @@ export async function POST(
  * GET /api/projects/[id]/tasks
  * Trae todas las tareas de un proyecto específico
  */
-
 export async function GET(req: Request, context: { params: Promise<{ id: string }> }
 ) {
   try {
