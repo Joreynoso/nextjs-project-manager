@@ -19,7 +19,7 @@ export default function TaskCard({ task }: { task: Task }) {
                 <h3 className='text-lg font-semibold tracking-tight leading-tight'>
                     {task.title}
                 </h3>
-                <p className='text-sm text-muted-foreground leading-relaxed line-clamp-2'>
+                <p className='text-sm text-muted-foreground leading-relaxed line-clamp-3'>
                     {task.description || 'Sin descripción'}
                 </p>
             </div>

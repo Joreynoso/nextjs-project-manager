@@ -1,30 +1,39 @@
 'use client'
 
-import type { Task } from '@/types/tasks'
+
 import { Button } from '../ui/button'
 import { Badge } from '../ui/badge'
 import { PlusIcon } from 'lucide-react'
 import { NewTaskCard } from '../tasks/NewTask'
 import { useState } from 'react'
 import TaskCard from '../tasks/TaskCard'
+import { useRouter } from 'next/navigation'
 
+import type { Task } from '@/types/tasks'
 
 interface ProjectTasksProps {
+    projectId: string
     tasks?: Task[]  // ← Agregar ?
 }
 
 // tener en cuenta que taskts puede venir vacio
-export default function ProjectTasks({ tasks = [] }: ProjectTasksProps) {
-
-    console.log('lista de tareas', tasks)
+export default function ProjectTasks({ projectId, tasks = [] }: ProjectTasksProps) {
 
     // estado para mostrar el formulario de nueva tarea
     const [showNewTask, setShowNewTask] = useState(false)
 
-    // agregar una nueva tarea
-    const handleSaveTask = (data: { title: string; description: string }) => {
-        console.log('Nueva tarea:', data)
+    // estado para mostrar el formulario de nueva tarea
+    const [localTasks, setLocalTasks] = useState<Task[]>(tasks)
+
+    const router = useRouter()
+
+    const handleSaveTask = async (newTask: Task) => {
+        // Actualización optimista (inmediata)
+        setLocalTasks([...localTasks, newTask])
         setShowNewTask(false)
+
+        // Revalidar en segundo plano para estar seguro
+        router.refresh()
     }
 
     // filtrar por tipo de estado
@@ -57,6 +66,7 @@ export default function ProjectTasks({ tasks = [] }: ProjectTasksProps) {
                 {/* formulario de nueva tarea */}
                 {showNewTask && (
                     <NewTaskCard
+                        projectId={projectId}
                         onCancel={() => setShowNewTask(false)}
                         onSave={handleSaveTask}
                     />

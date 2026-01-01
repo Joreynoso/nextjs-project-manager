@@ -6,18 +6,36 @@ import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
 import { toast } from 'sonner'
+import type { Task } from '@/types/tasks'
 
+// fetch post para crear una nueva tarea
+async function createTask(data: { title: string; description: string; projectId: string }) {
+    const response = await fetch(`/api/projects/${data.projectId}/tasks`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    if (!response.ok) {
+        throw new Error('Error al crear la tarea')
+    }
 
-interface NewTaskCardProps {
-    onCancel: () => void
-    onSave: (data: { title: string; description: string }) => void
+    return response.json()
 }
 
-export function NewTaskCard({ onCancel, onSave }: NewTaskCardProps) {
+// type
+type NewTaskCardProps = {
+    projectId: string
+    onCancel: () => void
+    onSave: (task: Task) => void
+}
+
+export function NewTaskCard({ projectId, onCancel, onSave }: NewTaskCardProps) {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
 
-    const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (!title.trim()) {
             toast.error('El titulo es obligatorio')
@@ -29,13 +47,18 @@ export function NewTaskCard({ onCancel, onSave }: NewTaskCardProps) {
             return
         }
 
-        onSave({ title, description })
-        setTitle('')
-        setDescription('')
-        toast.success('Tarea guardada exitosamente')
+        try {
+            const task = await createTask({ title, description, projectId })
+            onSave(task)
+            setTitle('')
+            setDescription('')
+            toast.success('Tarea guardada exitosamente')
+        } catch (error) {
+            toast.error('Error al guardar la tarea')
+        }
     }
 
-    const handleKeyDown = (e: KeyboardEvent<HTMLFormElement>) => { 
+    const handleKeyDown = (e: KeyboardEvent<HTMLFormElement>) => {
         if (e.key === 'Escape') {
             onCancel()
         }
