@@ -1,30 +1,64 @@
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { Badge } from '@/components/ui/badge';
+import { ArrowRight } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-[calc(100vh-10rem)] items-center justify-center font-sans bg-background">
-      <Badge variant="outline" className='mb-4'>Gestión de Proyectos</Badge>
-      <h1 className='max-w-5xl text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight text-foreground mb-8 leading-[1.1]'>
-        <span className="text-primary">ProjectFlow</span> Tu Gestor de Proyectos Definitivo
-      </h1>
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto">
+        <div className="flex min-h-screen items-center justify-between gap-8 py-12">
 
-      <p className='max-w-2xl text-center text-base sm:text-lg md:text-xl text-muted-foreground mb-12 leading-relaxed font-medium'>
-        Organiza, colabora y entrega tus proyectos a tiempo con nuestra plataforma intuitiva y potente.
-      </p>
+          {/* Sección de texto */}
+          <div className="w-full lg:w-1/2 space-y-8">
+            <div className="space-y-6">
+              <h1 className="text-6xl sm:text-7xl lg:text-8xl font-semibold  tracking-tight leading-none">
+                Bienvenido
+                <br />
+                a la Jungla
+                <br />
+                <span className="text-primary">Colaborativa</span>
+              </h1>
 
-      <div className='flex flex-col sm:flex-row gap-4'>
-        {/* registarse */}
-        <Button variant="default" size="lg" className="text-base font-medium min-w-[160px]">
-          <Link href="/projects">Empezar Ahora</Link>
-        </Button>
+              <p className="max-w-md text-lg sm:text-xl text-muted-foreground leading-relaxed">
+                Crea, colabora, comparte, cada proyecto que tengas muchas ganas de hacer la concha bien puta de la lora.
+              </p>
+            </div>
 
-        {/* iniciar sesión */}
-        <Button variant="secondary" size="lg" className="text-base font-medium min-w-[160px]">
-          <Link href="/auth/login">Acceder</Link>
-        </Button>
+            <Button variant={'default'}  size={'lg'} className='text-lg'>
+              Crear mi primer proyecto
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </div>
+
+          {/* Sección de imagen */}
+          <div className="hidden lg:block w-1/2">
+            <div className="relative">
+              {/* Contenedor de la ilustración */}
+              <div className="bg-card rounded-3xl shadow-2xl aspect-square max-w-lg mx-auto relative overflow-hidden">
+
+                {/* Hojas decorativas de fondo */}
+                <div className="absolute inset-0 opacity-20">
+                  <div className="absolute top-10 left-10 w-32 h-32 bg-primary rounded-full blur-3xl"></div>
+                  <div className="absolute bottom-10 right-10 w-40 h-40 bg-secondary rounded-full blur-3xl"></div>
+                </div>
+
+                {/* Personaje central - Placeholder */}
+                <div className="relative z-10 flex items-center justify-center h-full">
+                  <Image
+                    src="/images/img_1.jpg"
+                    alt="Explorador en la jungla colaborativa"
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    priority
+                    className="rounded-3xl"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
-  )
+  );
 }

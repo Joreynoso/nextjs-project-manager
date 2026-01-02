@@ -1,5 +1,5 @@
 
-import { Bricolage_Grotesque, Source_Code_Pro } from "next/font/google";
+import { Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import Navbar from '@/components/Navbar';
 import { ThemeProvider } from '../components/theme-provider';
@@ -7,22 +7,24 @@ import { Toaster } from '@/components/ui/sonner';
 import Footer from '@/components/Footer';
 import ScreenSizeHelper from "@/components/ScreenSizeHelper";
 
-const fontSans = Bricolage_Grotesque({
-  variable: "--font-sans",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage-sans",
   subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
   display: "swap",
 });
 
 const fontSerif = Bricolage_Grotesque({
-  variable: "--font-serif",
+  variable: "--font-bricolage-serif",
   subsets: ["latin"],
   weight: ["300", "400", "700"],
   display: "swap",
 });
 
-const fontMono = Source_Code_Pro({
-  variable: "--font-mono",
+const fontMono = Bricolage_Grotesque({
+  variable: "--font-bricolage-mono",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
@@ -35,7 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} antialiased`}
+        className={`${bricolage.variable} ${fontSerif.variable} ${fontMono.variable} antialiased`}
         suppressHydrationWarning={false}
       >
         <ThemeProvider
