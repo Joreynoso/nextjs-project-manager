@@ -61,7 +61,7 @@ export default function Navbar() {
 
                 {/* logo section */}
                 <Link href="/">
-                    <h1 className='text-xl font-medium tracking-tight'>Project <span className='text-primary'>Manager</span></h1>
+                    <h1 className='text-xl font-medium tracking-tight'>Better <span className='text-primary'>Jungle</span></h1>
                 </Link>
 
                 {/* buttons section on larger screens*/}

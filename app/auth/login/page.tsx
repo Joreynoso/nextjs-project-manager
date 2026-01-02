@@ -12,6 +12,7 @@ import Link from 'next/link';
 // icons
 import { FcGoogle } from "react-icons/fc"
 import { FaGithub } from "react-icons/fa"
+import Image from 'next/image';
 
 
 export default function LoginPage() {
@@ -107,41 +108,57 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="flex flex-col mt-20 mb-20 items-center justify-center font-sans bg-background">
-            <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full max-w-md bg-card border border-border p-6 rounded-lg shadow-sm'>
-                <div className='mb-6'>
-                    <h2 className='text-xl font-semibold mb-2 tracking-tight'>Inicia sesión con better-auth</h2>
-                    <p className='text-sm text-muted-foreground tracking-tight'>Ingresa tus datos para iniciar sesión</p>
+        <div className="min-h-screen">
+            <div className="container mx-auto">
+                <div className="flex min-h-screen items-center justify-between">
+
+                    {/* Texto */}
+                    <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full max-w-md  rounded-lg shadow-sm'>
+                        <div className='mb-6'>
+                            <h2 className='text-xl font-semibold mb-2 tracking-tight'>Inicia sesión en Better Jungle</h2>
+                            <p className='text-sm text-muted-foreground tracking-tight'>Ingresa tus datos para iniciar sesión</p>
+                        </div>
+
+                        {/* email input */}
+                        <Label htmlFor="email" className='font-semibold' >Correo</Label>
+                        <Input
+                            type="email"
+                            placeholder="Correo"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            autoComplete='email'
+                            className='border border-border' />
+
+                        {/* password input */}
+                        <Label htmlFor="password" className='font-semibold'>Contraseña</Label>
+                        <Input
+                            type="password"
+                            placeholder="Contraseña"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            autoComplete='current-password'
+                            className='border border-border' />
+
+                        {/* button */}<hr className="my-2" />
+
+                        <Button type="submit">{loading ? 'Iniciando sesión...' : 'Iniciar sesión'}</Button>
+                        <Button type="button" variant={'secondary'} onClick={handleGoogleSignIn}>{loadingGoogle ? 'Iniciando sesión...' : 'Inicia sesión con Google'}<FcGoogle /></Button>
+                        <Button type="button" variant={'secondary'} onClick={handleGithubSignIn}>{loadingGithub ? 'Iniciando sesión...' : 'Inicia sesión con Github'}<FaGithub /></Button>
+                        <Link href='/auth/register' className='text-muted-foreground text-center text-sm mt-2 hover:text-primary transition-colors tracking-tight'>
+                            ¿No tienes una cuenta aún?. Registrate</Link>
+                    </form>
+                    {/* Imagen */}
+                    <div className="hidden lg:block relative w-1/2 min-h-[calc(100vh-4rem)] border border-border rounded-3xl overflow-hidden">
+                        <Image
+                            src="/images/img_2.jpg"
+                            alt="Explorador en la jungla colaborativa"
+                            fill
+                            priority
+                            className="object-cover"
+                        />
+                    </div>
                 </div>
-
-                {/* email input */}
-                <Label htmlFor="email" className='font-semibold' >Correo</Label>
-                <Input
-                    type="email"
-                    placeholder="Correo"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    autoComplete='email'
-                    className='border border-border' />
-
-                {/* password input */}
-                <Label htmlFor="password" className='font-semibold'>Contraseña</Label>
-                <Input
-                    type="password"
-                    placeholder="Contraseña"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    autoComplete='current-password'
-                    className='border border-border' />
-
-                {/* button */}<hr className="my-2" />
-
-                <Button type="submit">{loading ? 'Iniciando sesión...' : 'Iniciar sesión'}</Button>
-                <Button type="button" variant={'secondary'} onClick={handleGoogleSignIn}>{loadingGoogle ? 'Iniciando sesión...' : 'Inicia sesión con Google'}<FcGoogle /></Button>
-                <Button type="button" variant={'secondary'} onClick={handleGithubSignIn}>{loadingGithub ? 'Iniciando sesión...' : 'Inicia sesión con Github'}<FaGithub /></Button>
-                <Link href='/auth/register' className='text-muted-foreground text-center text-sm mt-2 hover:text-primary transition-colors tracking-tight'>
-                    ¿No tienes una cuenta aún?. Registrate</Link>
-            </form>
+            </div>
         </div>
     )
 }
