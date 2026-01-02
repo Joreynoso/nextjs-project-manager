@@ -56,30 +56,41 @@ export default function ProfilePage() {
                 </p>
             </div>
 
-            <div className='max-w-md w-full flex flex-col gap-4 bg-card border border-border p-6 rounded-lg shadow-sm mx-auto'>
+            <div className='w-full flex gap-4'>
 
-                <div className='flex flex-col gap-2'>
-                    <Item label="Nombre" value={user.name} />
-                    <Item label="Correo" value={user.email} />
-                    <Item label="Creado" value={DateFormatter(user.createdAt)} />
-                    <Item label="Actualizado" value={DateFormatter(user.updatedAt)} />
-                    <Item label="Verificado" value={user.emailVerified ? 'Sí' : 'No'} />
-                    <Item label="Role" value={user.role} />
+                {/* información del usuario */}
+                <div className='w-full flex gap-4 bg-card border border-border p-6 rounded-lg mx-auto'>
 
-                    {!user.emailVerified && (
-                        <Button className='mt-4 w-full cursor-pointer' onClick={handleEmailValidation}>
-                            <MailCheck className='mr-2 h-4 w-4' />
-                            Validar Email
-                        </Button>
-                    )}
+                    <div className='flex flex-col gap-2'>
+                        <Item label="Nombre" value={user.name} />
+                        <Item label="Correo" value={user.email} />
+                        <Item label="Creado" value={DateFormatter(user.createdAt)} />
+                        <Item label="Actualizado" value={DateFormatter(user.updatedAt)} />
+                        <Item label="Verificado" value={user.emailVerified ? 'Sí' : 'No'} />
+                        <Item label="Role" value={user.role} />
 
-                    {/* botón de olvide mi contraseña */}
-                    <Link href='/auth/forgot-password'>
-                        <Button variant={'secondary'} className=' mt-4 w-full cursor-pointer' type='submit'>
-                            <LockKeyhole className='mr-2 h-4 w-4' />
-                            Olvide mi contraseña
-                        </Button>
-                    </Link>
+                        {!user.emailVerified && (
+                            <Button className='mt-4 w-full cursor-pointer' onClick={handleEmailValidation}>
+                                <MailCheck className='mr-2 h-4 w-4' />
+                                Validar Email
+                            </Button>
+                        )}
+
+                        {/* botón de olvide mi contraseña */}
+                        <Link href='/auth/forgot-password'>
+                            <Button variant={'secondary'} className=' mt-4 w-full cursor-pointer' type='submit'>
+                                <LockKeyhole className='mr-2 h-4 w-4' />
+                                Olvide mi contraseña
+                            </Button>
+                        </Link>
+                    </div>
+                </div>
+
+                {/* avatar picker sección */}
+                <div className='w-full flex flex-col gap-4 bg-card border border-border p-6 rounded-lg mx-auto'>
+                    <div className='flex flex-col gap-2'>
+                        
+                    </div>
                 </div>
             </div>
         </div>

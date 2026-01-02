@@ -44,3 +44,42 @@ export async function PATCH(req: Request, context: { params: Promise<{ taskId: s
         )
     }
 }
+
+/**
+ * DELETE /api/tasks/[taskId]
+ * Elimina una tarea específica
+ */
+export async function DELETE(req: Request, context: { params: Promise<{ taskId: string }> }) {
+    try {
+        const { taskId } = await context.params
+        const session = await auth.api.getSession({
+            headers: req.headers
+        })
+
+        if (!session?.user?.id) {
+            return NextResponse.json(
+                { error: "No autorizado" },
+                { status: 401 }
+            )
+        }
+
+        // Eliminar la tarea
+        const deletedTask = await prisma.task.delete({
+            where: {
+                id: taskId
+            },
+        })
+
+        return NextResponse.json({
+            message: "Tarea eliminada exitosamente",
+            task: deletedTask
+        })
+    } catch (error) {
+        console.error("Error al eliminar una tarea", error)
+        return NextResponse.json(
+            { error: "Error al eliminar tarea" },
+            { status: 500 }
+        )
+    }
+}
+

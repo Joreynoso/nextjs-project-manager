@@ -113,7 +113,7 @@ export default function LoginPage() {
                 <div className="flex min-h-screen items-center justify-between">
 
                     {/* Texto */}
-                    <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full max-w-md  rounded-lg shadow-sm'>
+                    <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full max-w-md  rounded-lg'>
                         <div className='mb-6'>
                             <h2 className='text-xl sm:text-2xl md:text-3xl font-semibold mb-2 tracking-tight'>Inicia sesión en Better <span className="text-primary">Jungle</span></h2>
                             <p className='text-sm sm:text-lg md:text-xl text-muted-foreground tracking-tight'>Completa el formulario y forma parte de la comunidad colaborativa más grande de Latam.</p>

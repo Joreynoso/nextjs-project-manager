@@ -43,6 +43,21 @@ export default function TaskCard({ task }: { task: Task }) {
         }
     }
 
+    const handleDeleteTask = async (taskId: string) => {
+        try {
+            const response = await fetch(`/api/tasks/${taskId}`, {
+                method: 'DELETE'
+            })
+            if (!response.ok) {
+                toast.error('Error al eliminar')
+            }
+            toast.success('Tarea eliminada')
+            router.refresh()
+        } catch (error) {
+            toast.error('Error al eliminar la tarea')
+        }
+    }
+
     return (
         <div className='relative bg-card text-card-foreground border rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:border-primary/20 mb-3'>
 
@@ -64,7 +79,7 @@ export default function TaskCard({ task }: { task: Task }) {
                         <DropdownMenuItem onClick={() => handleStatusChange('completed')} >
                             Marcar como completada
                         </DropdownMenuItem>
-                        <DropdownMenuItem >
+                        <DropdownMenuItem onClick={() => handleDeleteTask(task.id)}>
                             Borrar tarea
                         </DropdownMenuItem>
                     </DropdownMenuContent>

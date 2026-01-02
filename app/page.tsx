@@ -26,7 +26,7 @@ export default function Home() {
               </h1>
 
               <p className="max-w-md text-lg sm:text-xl text-muted-foreground leading-relaxed">
-                Crea, colabora, comparte, cada proyecto que tengas muchas ganas de hacer la concha bien puta de la lora.
+                Crea, colabora y comparte tus proyectos en un espacio diseñado para potenciar tu creatividad y el trabajo en equipo.
               </p>
             </div>
 

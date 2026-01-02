@@ -18,7 +18,8 @@
 ## Cambiar mi base de datos de prisma para quitar  completed   Boolean  @default(false)
 
 ## El proyecto no actualiza los miembros, corregir
-
+## Validar formularios correctamente, faltan muchas
+## Corregir en action.ts que tira un error al intentar acceder a la ruta /projects
 
 
 

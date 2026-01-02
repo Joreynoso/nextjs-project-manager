@@ -130,7 +130,7 @@ export default function RegisterPage() {
 
                     {/* Texto */}
                     <div className="w-full lg:w-1/2 space-y-8">
-                        <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full max-w-md rounded-lg shadow-sm'>
+                        <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full max-w-md rounded-lg'>
                             <div className='mb-6'>
                                 <h2 className='text-2xl sm:text-3xl font-semibold mb-2 tracking-tight'>Registrate en Better <span className="text-primary">Jungle</span></h2>
                                 <p className='text-sm sm:text-lg md:text-xl text-muted-foreground tracking-tight'>Ingresa tus datos para registrarte y formar parte de la comunidad colaborativa más grande de Latam.</p>
