@@ -13,11 +13,12 @@ import type { Task } from '@/types/tasks'
 
 interface ProjectTasksProps {
     projectId: string
+    projectName: string
     tasks?: Task[]  // ← Agregar ?
 }
 
 // tener en cuenta que taskts puede venir vacio
-export default function ProjectTasks({ projectId, tasks = [] }: ProjectTasksProps) {
+export default function ProjectTasks({ projectId, projectName, tasks = [] }: ProjectTasksProps) {
 
     // estado para mostrar el formulario de nueva tarea
     const [showNewTask, setShowNewTask] = useState(false)
@@ -43,10 +44,10 @@ export default function ProjectTasks({ projectId, tasks = [] }: ProjectTasksProp
 
     // renderizar tareas
     return (
-        <div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
+        <div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3'>
 
             {/* tareas pendientes */}
-            <div className='bg-muted w-full h-auto sm:min-h-[750px] rounded-lg p-5 mb-4'>
+            <div className='w-full bg-muted h-auto sm:min-h-[750px] rounded-lg p-3'>
 
                 {/* titulo, cantidad de tareas y boton de crear tarea */}
                 <div className='w-full flex justify-between items-center'>
@@ -67,6 +68,7 @@ export default function ProjectTasks({ projectId, tasks = [] }: ProjectTasksProp
                 {showNewTask && (
                     <NewTaskCard
                         projectId={projectId}
+                        projectName={projectName}
                         onCancel={() => setShowNewTask(false)}
                         onSave={handleSaveTask}
                     />
@@ -83,7 +85,7 @@ export default function ProjectTasks({ projectId, tasks = [] }: ProjectTasksProp
             </div>
 
             {/* tareas en progreso */}
-            <div className='bg-muted w-full h-auto sm:min-h-[750px] rounded-lg p-5 mb-4'>
+            <div className='bg-muted w-full h-auto sm:min-h-[750px] rounded-lg p-3'>
 
                 {/* titulo, cantidad de tareas y boton de crear tarea */}
                 <div className='w-full flex justify-between items-center'>
@@ -104,7 +106,7 @@ export default function ProjectTasks({ projectId, tasks = [] }: ProjectTasksProp
             </div>
 
             {/* tareas completadas */}
-            <div className='bg-muted w-full h-auto sm:min-h-[750px] rounded-lg p-5 mb-4'>
+            <div className='bg-muted w-full h-auto sm:min-h-[750px] rounded-lg p-3'>
 
                 {/* titulo, cantidad de tareas y boton de crear tarea */}
                 <div className='w-full flex justify-between items-center'>

@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
             messages: [
                 {
                     role: "system",
-                    content: "Eres un asistente que genera descripciones concisas para tareas de proyectos. genera descripciones de máximo 40 palabras, claras y orientadas a la acción."
+                    content: "Eres un asistente que genera descripciones concisas para tareas de proyectos. genera descripciones de máximo 30 palabras, claras y orientadas a la acción."
                 },
                 {
                     role: "user",

@@ -132,8 +132,8 @@ export default function RegisterPage() {
                     <div className="w-full lg:w-1/2 space-y-8">
                         <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full max-w-md rounded-lg shadow-sm'>
                             <div className='mb-6'>
-                                <h2 className='text-xl font-semibold mb-2 tracking-tight'>Registrate con better-auth</h2>
-                                <p className='text-sm text-muted-foreground tracking-tight'>Ingresa tus datos para registrarte</p>
+                                <h2 className='text-2xl sm:text-3xl font-semibold mb-2 tracking-tight'>Registrate en Better <span className="text-primary">Jungle</span></h2>
+                                <p className='text-sm sm:text-lg md:text-xl text-muted-foreground tracking-tight'>Ingresa tus datos para registrarte y formar parte de la comunidad colaborativa más grande de Latam.</p>
                             </div>
 
                             <Label htmlFor="name" className='font-semibold'>Nombre</Label>
@@ -180,9 +180,9 @@ export default function RegisterPage() {
                             <hr className="my-2" />
 
                             {/* button */}
-                            <Button type="submit">{loading ? 'Registrando...' : 'Registrarse'}</Button>
-                            <Button type="button" variant={'secondary'} onClick={handleGoogleSignIn}>{loadingGoogle ? 'Registrando...' : 'Registrarse con Google'}<FcGoogle /></Button>
-                            <Button type="button" variant={'secondary'} onClick={handleGithubSignIn}>{loadingGithub ? 'Registrando...' : 'Registrarse con Github'}<FaGithub /></Button>
+                            <Button type="submit">{loading ? 'Registrando...' : 'Registrarme con mi email'}</Button>
+                            <Button type="button" variant={'secondary'} onClick={handleGoogleSignIn}>{loadingGoogle ? 'Registrando...' : 'Registrarme con Google'}<FcGoogle /></Button>
+                            <Button type="button" variant={'secondary'} onClick={handleGithubSignIn}>{loadingGithub ? 'Registrando...' : 'Registrarme con Github'}<FaGithub /></Button>
                             <Link href='/auth/login' className='text-muted-foreground text-center text-sm mt-2 hover:text-primary transition-colors'>¿Ya tienes una cuenta?. Inicia sesión</Link>
                         </form>
                     </div>
@@ -190,7 +190,7 @@ export default function RegisterPage() {
                     {/* Imagen */}
                     <div className="hidden lg:block relative w-1/2 min-h-[calc(100vh-4rem)] border border-border rounded-3xl overflow-hidden">
                         <Image
-                            src="/images/img_1.jpg"
+                            src="/images/img_3.jpg"
                             alt="Explorador en la jungla colaborativa"
                             fill
                             priority

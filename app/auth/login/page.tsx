@@ -115,8 +115,8 @@ export default function LoginPage() {
                     {/* Texto */}
                     <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full max-w-md  rounded-lg shadow-sm'>
                         <div className='mb-6'>
-                            <h2 className='text-xl font-semibold mb-2 tracking-tight'>Inicia sesión en Better Jungle</h2>
-                            <p className='text-sm text-muted-foreground tracking-tight'>Ingresa tus datos para iniciar sesión</p>
+                            <h2 className='text-xl sm:text-2xl md:text-3xl font-semibold mb-2 tracking-tight'>Inicia sesión en Better <span className="text-primary">Jungle</span></h2>
+                            <p className='text-sm sm:text-lg md:text-xl text-muted-foreground tracking-tight'>Completa el formulario y forma parte de la comunidad colaborativa más grande de Latam.</p>
                         </div>
 
                         {/* email input */}
@@ -141,7 +141,7 @@ export default function LoginPage() {
 
                         {/* button */}<hr className="my-2" />
 
-                        <Button type="submit">{loading ? 'Iniciando sesión...' : 'Iniciar sesión'}</Button>
+                        <Button type="submit">{loading ? 'Iniciando sesión...' : 'Ingresar con email'}</Button>
                         <Button type="button" variant={'secondary'} onClick={handleGoogleSignIn}>{loadingGoogle ? 'Iniciando sesión...' : 'Inicia sesión con Google'}<FcGoogle /></Button>
                         <Button type="button" variant={'secondary'} onClick={handleGithubSignIn}>{loadingGithub ? 'Iniciando sesión...' : 'Inicia sesión con Github'}<FaGithub /></Button>
                         <Link href='/auth/register' className='text-muted-foreground text-center text-sm mt-2 hover:text-primary transition-colors tracking-tight'>

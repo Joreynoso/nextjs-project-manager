@@ -61,8 +61,11 @@ export default function TaskCard({ task }: { task: Task }) {
                         <DropdownMenuItem onClick={() => handleStatusChange('in_progress')}>
                             Marcar como en progreso
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleStatusChange('completed')}>
+                        <DropdownMenuItem onClick={() => handleStatusChange('completed')} >
                             Marcar como completada
+                        </DropdownMenuItem>
+                        <DropdownMenuItem >
+                            Borrar tarea
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
