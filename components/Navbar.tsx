@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Button } from './ui/button';
-import { LogOut, Menu } from 'lucide-react';
+import { Folder, LogOut, Menu } from 'lucide-react';
 import { ModeToggle } from './mode-toggle';
 import { useSession } from '@/lib/auth-client'
 import { authClient } from '@/lib/auth-client';
@@ -56,7 +56,9 @@ export default function Navbar() {
 
     return (
         <div className='w-full mx-auto border border-border'>
+
             <nav className="max-w-7xl mx-auto flex justify-between items-center px-5 xl:px-0 py-4 bg-outline">
+
                 {/* logo section */}
                 <Link href="/">
                     <h1 className='text-xl font-medium tracking-tight'>Project <span className='text-primary'>Manager</span></h1>
@@ -89,11 +91,21 @@ export default function Navbar() {
                                 </Button>
                             </Link>
 
+                            <Link href="/projects">
+                                <Button
+                                    variant="secondary"
+                                    className="flex items-center justify-center cursor-pointer"
+                                >
+                                    Mis proyectos
+                                    <Folder />
+                                </Button>
+                            </Link>
+
                             <Button onClick={handleLogout}
                                 variant="secondary"
-                                size="icon"
-                                className="flex items-center justify-center"
+                                className="flex items-center justify-center cursor-pointer"
                             >
+                                cerrar sesión
                                 {loading ? <Spin /> : <LogOut />}
                             </Button>
                         </>
@@ -161,8 +173,8 @@ export default function Navbar() {
                                         variant="secondary"
                                         className='w-full'>
                                         Proyectos
-                                </Button>
-                            </Link>
+                                    </Button>
+                                </Link>
                             )}
 
                             {/* cerrar sesión */}

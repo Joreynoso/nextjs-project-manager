@@ -61,8 +61,8 @@ export default function LoginPage() {
         try {
             const result = await authClient.signIn.social({
                 provider: 'google',
-                callbackURL: '/profile',
-                newUserCallbackURL: "/profile"
+                callbackURL: '/projects',
+                newUserCallbackURL: "/projects"
             })
 
             if (result.error?.message) {

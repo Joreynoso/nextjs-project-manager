@@ -100,8 +100,8 @@ export default function RegisterPage() {
         try {
             const result = await authClient.signIn.social({
                 provider: 'github',
-                callbackURL: '/profile',
-                newUserCallbackURL: "/profile"
+                callbackURL: '/projects',
+                newUserCallbackURL: "/projects"
             })
 
             if (result.error?.message) {
