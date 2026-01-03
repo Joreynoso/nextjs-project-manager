@@ -185,7 +185,15 @@ export async function updateProject(projectId: string, formData: any) {
             name: formData.name,
             description: formData.description,
             tag: formData.tag,
-            deadline: formData.deadline
+            deadline: formData.deadline,
+
+            // Borra las relaciones actuales de este proyecto
+            members: {
+                deleteMany: {},
+                create: formData.members.map((userId: string) => ({
+                    userId: userId
+                }))
+            }
         }
     })
 

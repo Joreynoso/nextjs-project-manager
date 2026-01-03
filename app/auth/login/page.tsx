@@ -35,6 +35,13 @@ export default function LoginPage() {
         setLoading(true)
         setError('')
 
+        if (!email || !password) {
+            setError('Por favor, completa todos los campos')
+            toast.error('Por favor, completa todos los campos')
+            setLoading(false)
+            return
+        }
+
         try {
             const result = await authClient.signIn.email({
                 email,
@@ -42,8 +49,9 @@ export default function LoginPage() {
             })
 
             if (result.error?.message) {
+                
                 setError(result.error.message)
-                toast.error(result.error.message)
+                toast.error('Email o contraseña incorrectos')
                 setLoading(false)
                 return
             }
@@ -71,7 +79,7 @@ export default function LoginPage() {
 
             if (result.error?.message) {
                 setError(result.error.message)
-                toast.error(result.error.message)
+                toast.error('Algo salió mal')
                 setLoadingGoogle(false)
                 return
             }
@@ -124,10 +132,10 @@ export default function LoginPage() {
                     >
                         <form
                             onSubmit={handleSubmit}
-                            className="flex flex-col gap-4 w-full max-w-md  rounded-lg">
+                            className="flex flex-col gap-4 w-full max-w-lg rounded-lg">
                             <div className='mb-6'>
-                                <h2 className='text-xl sm:text-2xl md:text-3xl font-semibold mb-2 tracking-tight'>Inicia sesión en Better <span className="text-primary">Jungle</span></h2>
-                                <p className='text-sm sm:text-lg md:text-xl text-muted-foreground tracking-tight'>Completa el formulario y forma parte de la comunidad colaborativa más grande de Latam.</p>
+                                <h2 className='text-2xl sm:text-3xl md:text-4xl font-semibold mb-2 tracking-tight'>Inicia sesión en Better <span className="text-primary">Jungle</span></h2>
+                                <p className='text-base sm:text-lg md:text-xl text-muted-foreground tracking-tight'>Completa el formulario y forma parte de la comunidad colaborativa más grande de Latam.</p>
                             </div>
 
                             {/* email input */}

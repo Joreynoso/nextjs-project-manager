@@ -38,10 +38,17 @@ export default function RegisterPage() {
         setLoading(true)
 
         if (password !== confirmPassword) {
-            setError('The passwords doest no match')
+            toast.error('Las contraseñas no coinciden')
             setLoading(false)
             return
         }
+
+        if (!email || !password || !name) {
+            toast.error('Todos los campos son obligatorios')
+            setLoading(false)
+            return
+        }
+
         try {
 
             const result = await authClient.signUp.email({
@@ -52,7 +59,6 @@ export default function RegisterPage() {
             })
 
             if (result.error?.message) {
-                setError(result.error.message)
                 toast.error(result.error.message)
                 setLoading(false)
                 return
@@ -64,7 +70,6 @@ export default function RegisterPage() {
 
         } catch (error) {
             console.log(error)
-            setError('Algo salio mal')
             toast.error('Algo salio mal')
         } finally {
             setLoading(false)
@@ -82,7 +87,6 @@ export default function RegisterPage() {
             })
 
             if (result.error?.message) {
-                setError(result.error.message)
                 toast.error(result.error.message)
                 return
             }
@@ -91,7 +95,7 @@ export default function RegisterPage() {
             toast.success('Inicio de sesión exitoso')
 
         } catch (error) {
-            setError('Algo salió mal')
+            toast.error('Algo salió mal')
             toast.error('Algo salió mal')
         } finally {
             setLoadingGoogle(false)
@@ -109,8 +113,8 @@ export default function RegisterPage() {
             })
 
             if (result.error?.message) {
-                setError(result.error.message)
-                toast.error(result.error.message)
+                setError('Algo salio mal')
+                toast.error('Algo salio mal')
                 return
             }
 
@@ -132,16 +136,16 @@ export default function RegisterPage() {
                 <div className="flex min-h-screen items-center justify-between">
 
                     {/* Texto */}
-                    <motion.div 
-                    // transición de izquierda a derecha
-                    initial={{ opacity: 0, x: 20 }} 
-                    animate={{ opacity: 1, x: 0 }} 
-                    transition={{ duration: 0.5 }} 
-                    className="w-full lg:w-1/2 space-y-8">
-                        <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full max-w-md rounded-lg'>
+                    <motion.div
+                        // transición de izquierda a derecha
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="w-full lg:w-1/2 space-y-8">
+                        <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full max-w-lg rounded-lg'>
                             <div className='mb-6'>
-                                <h2 className='text-2xl sm:text-3xl font-semibold mb-2 tracking-tight'>Registrate en Better <span className="text-primary">Jungle</span></h2>
-                                <p className='text-sm sm:text-lg md:text-xl text-muted-foreground tracking-tight'>Ingresa tus datos para registrarte y formar parte de la comunidad colaborativa más grande de Latam.</p>
+                                <h2 className='text-2xl sm:text-3xl md:text-4xl font-semibold mb-2 tracking-tight'>Registrate en Better <span className="text-primary">Jungle</span></h2>
+                                <p className='text-base sm:text-lg md:text-xl text-muted-foreground tracking-tight'>Ingresa tus datos para registrarte y formar parte de la comunidad colaborativa más grande de Latam.</p>
                             </div>
 
                             <Label htmlFor="name" className='font-semibold'>Nombre</Label>
@@ -196,12 +200,12 @@ export default function RegisterPage() {
                     </motion.div>
 
                     {/* Imagen */}
-                    <motion.div 
-                    // transición de izquierda a derecha
-                    initial={{ opacity: 0, x: 20 }} 
-                    animate={{ opacity: 1, x: 0 }} 
-                    transition={{ duration: 0.5 }} 
-                    className="hidden lg:block relative w-1/2 min-h-[calc(75vh)] border border-border rounded-3xl overflow-hidden">
+                    <motion.div
+                        // transición de izquierda a derecha
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="hidden lg:block relative w-1/2 min-h-[calc(75vh)] border border-border rounded-3xl overflow-hidden">
                         <Image
                             src="/images/img_3.jpg"
                             alt="Explorador en la jungla colaborativa"

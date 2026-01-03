@@ -13,10 +13,10 @@ import ProjectForm from './ProjectForm'
 import { useProjectsDialog } from '@/app/projects/context/ProjectContext'
 
 export default function ProjectDialog({ users }: { users: any }) {
-    // ← Usar el contexto en vez de estado local
+    // Usar el contexto en vez de estado local
     const { isDialogOpen, currentProject, closeDialog } = useProjectsDialog()
 
-    // ← Decidir el título según el modo
+    // Decidir el título según el modo
     const title = currentProject ? 'Editar proyecto' : 'Agregar nuevo proyecto'
     const description = currentProject 
         ? 'Modifica los datos del proyecto' 
@@ -24,8 +24,6 @@ export default function ProjectDialog({ users }: { users: any }) {
 
     return (
         <Dialog open={isDialogOpen} onOpenChange={closeDialog}>
-            {/* Ya NO necesitas DialogTrigger aquí, lo abrirás desde otros lados */}
-            
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
@@ -34,11 +32,10 @@ export default function ProjectDialog({ users }: { users: any }) {
                     </DialogDescription>
                 </DialogHeader>
 
-                {/* Pasar el proyecto al formulario */}
                 <ProjectForm 
                     users={users} 
                     onCancel={closeDialog}
-                    project={currentProject} // ← puede ser null o un proyecto
+                    project={currentProject}
                 />
             </DialogContent>
         </Dialog>
