@@ -10,8 +10,10 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import Spin from './ui/spin';
 import { getInitials } from '@/lib/utils';
+import { motion } from 'framer-motion'
+
+import Spin from './ui/spin';
 
 export default function Navbar() {
     // defult states
@@ -55,7 +57,12 @@ export default function Navbar() {
     }, [pathname])
 
     return (
-        <div className='w-full mx-auto border border-border'>
+        <motion.div
+        // transición de arriba a abajo
+        initial={{ opacity: 0, y: -20 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.5 }} 
+        className='w-full mx-auto border border-border'>
 
             <nav className="max-w-7xl mx-auto flex justify-between items-center px-5 xl:px-0 py-4 bg-outline">
 
@@ -193,6 +200,6 @@ export default function Navbar() {
                 )}
 
             </nav>
-        </div>
+        </motion.div>
     )
 }

@@ -29,8 +29,7 @@ export default function ProfilePage() {
         })
 
         if (result.error) {
-            console.log(result.error)
-            toast.error(result.error.message || 'Error al validar el email')
+            toast.error('La validación no está habilitada en estos momentos, consulta de nuevo más tarde.')
         } else {
             toast.success('Email enviado correctamente, verifica tu casilla de correo')
         }
@@ -56,7 +55,7 @@ export default function ProfilePage() {
                 </p>
             </div>
 
-            <div className='w-full flex gap-4'>
+            <div className='w-full flex flex-col sm:flex-row gap-4'>
 
                 {/* información del usuario */}
                 <div className='w-full flex gap-4 bg-card border border-border p-6 rounded-lg mx-auto'>

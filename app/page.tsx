@@ -5,6 +5,7 @@ import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useSession } from '@/lib/auth-client'
+import { motion } from 'framer-motion'
 
 export default function Home() {
   const { data: session } = useSession()
@@ -15,7 +16,12 @@ export default function Home() {
         <div className="flex min-h-screen items-center justify-between">
 
           {/* Texto */}
-          <div className="w-full lg:w-1/2 space-y-8">
+          <motion.div 
+          // transición de izquierda a derecha
+          initial={{ opacity: 0, x: -20 }} 
+          animate={{ opacity: 1, x: 0 }} 
+          transition={{ duration: 0.5 }} 
+          className="w-full lg:w-1/2 space-y-8">
             <div className="space-y-6">
               <h1 className="text-6xl sm:text-7xl lg:text-8xl font-semibold tracking-tight leading-none">
                 Bienvenido
@@ -36,10 +42,15 @@ export default function Home() {
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
-          </div>
+          </motion.div>
 
           {/* Imagen */}
-          <div className="hidden lg:block relative w-1/2 min-h-[calc(100vh-4rem)] border border-border rounded-3xl overflow-hidden">
+          <motion.div 
+          // transición desde derecha a izquierda
+          initial={{ opacity: 0, x: 20 }} 
+          animate={{ opacity: 1, x: 0 }} 
+          transition={{ duration: 0.5 }} 
+          className="hidden lg:block relative w-1/2 min-h-[calc(75vh)] border border-border rounded-3xl overflow-hidden">
             <Image
               src="/images/img_1.jpg"
               alt="Explorador en la jungla colaborativa"
@@ -47,7 +58,7 @@ export default function Home() {
               priority
               className="object-cover"
             />
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

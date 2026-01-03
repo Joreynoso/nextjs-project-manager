@@ -1,16 +1,24 @@
+'use client'
+
 import { Separator } from "@/components/ui/separator";
 import { GithubIcon } from "lucide-react";
 import Link from "next/link";
+import { motion } from 'framer-motion'
 
 const Footer = () => {
     return (
-        <div className="w-full flex flex-col">
+        <motion.div
+        // transición de arriba a abajo
+        initial={{ opacity: 0, y: 20 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.5 }} 
+        className="w-full flex flex-col">
             <div className="grow bg-muted" />
             <footer className="border-t">
                 <div className="max-w-(--breakpoint-xl) mx-auto">
                     <Separator />
                     <div className="py-8 flex flex-col-reverse sm:flex-row items-center justify-between gap-x-2 gap-y-5 px-6 xl:px-0">
-                        {/* Copyright */}
+                        {/* Copyright */}   
                         <span className="text-muted-foreground">
                             &copy; {new Date().getFullYear()}{" "}
                             <Link href="/" target="_blank">
@@ -27,7 +35,7 @@ const Footer = () => {
                     </div>
                 </div>
             </footer>
-        </div>
+        </motion.div>
     );
 };
 

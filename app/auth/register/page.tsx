@@ -14,6 +14,9 @@ import { FcGoogle } from "react-icons/fc"
 import { FaGithub } from "react-icons/fa"
 import Image from 'next/image'
 
+// motion
+import { motion } from 'framer-motion'
+
 
 export default function RegisterPage() {
     // default states
@@ -129,7 +132,12 @@ export default function RegisterPage() {
                 <div className="flex min-h-screen items-center justify-between">
 
                     {/* Texto */}
-                    <div className="w-full lg:w-1/2 space-y-8">
+                    <motion.div 
+                    // transición de izquierda a derecha
+                    initial={{ opacity: 0, x: 20 }} 
+                    animate={{ opacity: 1, x: 0 }} 
+                    transition={{ duration: 0.5 }} 
+                    className="w-full lg:w-1/2 space-y-8">
                         <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full max-w-md rounded-lg'>
                             <div className='mb-6'>
                                 <h2 className='text-2xl sm:text-3xl font-semibold mb-2 tracking-tight'>Registrate en Better <span className="text-primary">Jungle</span></h2>
@@ -185,10 +193,15 @@ export default function RegisterPage() {
                             <Button type="button" variant={'secondary'} onClick={handleGithubSignIn}>{loadingGithub ? 'Registrando...' : 'Registrarme con Github'}<FaGithub /></Button>
                             <Link href='/auth/login' className='text-muted-foreground text-center text-sm mt-2 hover:text-primary transition-colors'>¿Ya tienes una cuenta?. Inicia sesión</Link>
                         </form>
-                    </div>
+                    </motion.div>
 
                     {/* Imagen */}
-                    <div className="hidden lg:block relative w-1/2 min-h-[calc(100vh-4rem)] border border-border rounded-3xl overflow-hidden">
+                    <motion.div 
+                    // transición de izquierda a derecha
+                    initial={{ opacity: 0, x: 20 }} 
+                    animate={{ opacity: 1, x: 0 }} 
+                    transition={{ duration: 0.5 }} 
+                    className="hidden lg:block relative w-1/2 min-h-[calc(75vh)] border border-border rounded-3xl overflow-hidden">
                         <Image
                             src="/images/img_3.jpg"
                             alt="Explorador en la jungla colaborativa"
@@ -196,7 +209,7 @@ export default function RegisterPage() {
                             priority
                             className="object-cover"
                         />
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         </div>
