@@ -23,7 +23,7 @@ export default function Home() {
           transition={{ duration: 0.5 }} 
           className="w-full lg:w-1/2 space-y-8">
             <div className="space-y-6">
-              <h1 className="text-6xl sm:text-7xl lg:text-8xl font-semibold tracking-tight leading-none">
+              <h1 className="text-4xl lg:text-6xl xl:text-7xl font-semibold tracking-tight leading-none">
                 Bienvenido
                 <br />
                 a la Jungla
