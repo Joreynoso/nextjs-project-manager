@@ -6,6 +6,11 @@ const groq = new Groq({
     apiKey: process.env.GROQ_API_KEY,
 });
 
+/**
+ * POST /api/generate-description
+ * Genera una descripción para una tarea específica
+ */
+
 export async function POST(request: NextRequest) {
     // verificar que exista un usuario autenticado
     const session = await auth.api.getSession({
@@ -16,6 +21,7 @@ export async function POST(request: NextRequest) {
     if (!session?.user?.id) {
         return NextResponse.json({ error: 'No autorizado' }, { status: 403 });
     }
+
     try {
         const { projectName, taskName } = await request.json();
 

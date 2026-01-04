@@ -8,6 +8,7 @@ import { Textarea } from '../ui/textarea'
 import { toast } from 'sonner'
 import type { Task } from '@/types/tasks'
 import { Sparkles } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 // fetch para obtener una descripción con GROQ
 async function generateDescription(projectName: string, taskName: string) {
@@ -138,65 +139,72 @@ export function NewTaskCard({ projectId, projectName, onCancel, onSave }: NewTas
 
     // render return
     return (
-        <Card className='border border-dashed border-primary mt-5 rounded-lg'>
-            <CardContent>
-                <form onSubmit={handleSave} className='space-y-3' onKeyDown={handleKeyDown}>
-                    <Input
-                        placeholder='Título de la tarea...'
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        autoFocus
-                        required
-                    />
-
-                    <div className='relative'>
-                        <Textarea
-                            placeholder='Descripción (opcional)...'
-                            value={displayedText || description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            rows={3}
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+        >
+            <Card
+                className='border border-dashed border-primary mt-5 rounded-lg'>
+                <CardContent>
+                    <form onSubmit={handleSave} className='space-y-3' onKeyDown={handleKeyDown}>
+                        <Input
+                            placeholder='Título de la tarea...'
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            autoFocus
                             required
-                            className='pr-12'
-                            disabled={generating || !!displayedText}
                         />
 
-                        <Button
-                            type='button'
-                            size='icon'
-                            variant='ghost'
-                            onClick={handleGenerateDescription}
-                            disabled={!title.trim() || generating || !!displayedText}
-                            className='absolute bottom-2 right-2 h-8 w-8 z-10'
-                            title='Generar descripción con IA'
-                        >
-                            <Sparkles className={`w-4 h-4 ${generating ? 'animate-spin' : ''}`} />
-                        </Button>
-                    </div>
+                        <div className='relative'>
+                            <Textarea
+                                placeholder='Descripción (opcional)...'
+                                value={displayedText || description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                rows={3}
+                                required
+                                className='pr-12'
+                                disabled={generating || !!displayedText}
+                            />
 
-                    <div className='flex gap-2 justify-end'>
+                            <Button
+                                type='button'
+                                size='icon'
+                                variant='ghost'
+                                onClick={handleGenerateDescription}
+                                disabled={!title.trim() || generating || !!displayedText}
+                                className='absolute bottom-2 right-2 h-8 w-8 z-10'
+                                title='Generar descripción con IA'
+                            >
+                                <Sparkles className={`w-4 h-4 ${generating ? 'animate-spin' : ''}`} />
+                            </Button>
+                        </div>
 
-                        {/* cancelar */}
-                        <Button
-                            size='sm'
-                            variant='outline'
-                            onClick={onCancel}
-                            type='button'
-                        >
-                            Cancelar
-                        </Button>
+                        <div className='flex gap-2 justify-end'>
 
-                        {/* guardar */}
-                        <Button
-                            size='sm'
-                            type='submit'
-                            disabled={loading || generating || !!displayedText}
-                        >
-                            {loading ? 'Guardando...' : 'Guardar'}
-                        </Button>
+                            {/* cancelar */}
+                            <Button
+                                size='sm'
+                                variant='outline'
+                                onClick={onCancel}
+                                type='button'
+                            >
+                                Cancelar
+                            </Button>
 
-                    </div>
-                </form>
-            </CardContent>
-        </Card>
+                            {/* guardar */}
+                            <Button
+                                size='sm'
+                                type='submit'
+                                disabled={loading || generating || !!displayedText}
+                            >
+                                {loading ? 'Guardando...' : 'Guardar'}
+                            </Button>
+
+                        </div>
+                    </form>
+                </CardContent>
+            </Card>
+        </motion.div>
     )
 }

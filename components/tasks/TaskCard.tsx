@@ -2,7 +2,7 @@
 
 import type { Task } from '@/types/tasks'
 import { formatDateString } from '@/lib/utils'
-import { Calendar, EllipsisVertical } from 'lucide-react'
+import { Calendar, Check, CircleDashed, EllipsisVertical, Loader } from 'lucide-react'
 
 // import dropdown menu
 import {
@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { motion } from 'framer-motion'
 
 export default function TaskCard({ task }: { task: Task }) {
 
@@ -34,7 +35,7 @@ export default function TaskCard({ task }: { task: Task }) {
                 throw new Error('Error al actualizar')
             }
             // Mostrar mensaje de éxito
-            toast.success('Estado actualizado')
+            toast.success('Tarea actualizada')
 
             // Refrescar la página para ver los cambios
             router.refresh()
@@ -59,7 +60,12 @@ export default function TaskCard({ task }: { task: Task }) {
     }
 
     return (
-        <div className='relative bg-card text-card-foreground border rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:border-primary/20 mb-3'>
+        <motion.div
+            // Aparece desde abajo y sube
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className='relative bg-card text-card-foreground border rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:border-primary/20 mb-3'>
 
             {/* Dropdown menu de estados - Posicionado arriba a la derecha */}
             <div className="absolute top-2 right-2">
@@ -70,14 +76,17 @@ export default function TaskCard({ task }: { task: Task }) {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => handleStatusChange('pending')}>
-                            Marcar como pendiente
+                        <DropdownMenuItem onClick={() => handleStatusChange('pending')} className="flex justify-between">
+                            <span>Marcar como pendiente</span>
+                            <CircleDashed className="h-4 w-4 ml-2" />
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleStatusChange('in_progress')}>
-                            Marcar como en progreso
+                        <DropdownMenuItem onClick={() => handleStatusChange('in_progress')} className="flex justify-between">
+                            <span>Marcar como en progreso</span>
+                            <Loader className="h-4 w-4 ml-2" />
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleStatusChange('completed')} >
-                            Marcar como completada
+                        <DropdownMenuItem onClick={() => handleStatusChange('completed')} className="flex justify-between">
+                            <span>Marcar como completada</span>
+                            <Check className="h-4 w-4 ml-2" />
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleDeleteTask(task.id)}>
                             Borrar tarea
@@ -102,6 +111,6 @@ export default function TaskCard({ task }: { task: Task }) {
                 </p>
             </div>
 
-        </div>
+        </motion.div>
     )
 }

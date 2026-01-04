@@ -1,6 +1,5 @@
 'use client'
 
-
 import { Button } from '../ui/button'
 import { Badge } from '../ui/badge'
 import { PlusIcon } from 'lucide-react'
@@ -8,7 +7,6 @@ import { NewTaskCard } from '../tasks/NewTask'
 import { useState } from 'react'
 import TaskCard from '../tasks/TaskCard'
 import { useRouter } from 'next/navigation'
-
 import type { Task } from '@/types/tasks'
 
 interface ProjectTasksProps {
