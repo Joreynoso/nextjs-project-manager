@@ -49,14 +49,13 @@ export default function LoginPage() {
             })
 
             if (result.error?.message) {
-                
                 setError(result.error.message)
                 toast.error('Email o contraseña incorrectos')
                 setLoading(false)
                 return
             }
 
-            router.push("/profile"); // redirect to login page
+            router.push("/projects"); // redirect to login page
             toast.success('Inicio de sesión exitoso')
 
         } catch (error) {
@@ -84,6 +83,7 @@ export default function LoginPage() {
                 return
             }
 
+            router.push("/projects"); // redirect to login page
 
         } catch (error) {
             setError('Algo salió mal')
@@ -99,8 +99,8 @@ export default function LoginPage() {
         try {
             const result = await authClient.signIn.social({
                 provider: 'github',
-                callbackURL: '/profile',
-                newUserCallbackURL: "/profile"
+                callbackURL: '/projects',
+                newUserCallbackURL: "/projects"
             })
 
             if (result.error?.message) {
@@ -109,6 +109,7 @@ export default function LoginPage() {
                 return
             }
 
+            router.push("/projects"); // redirect to login page  
 
         } catch (error) {
             setError('Algo salió mal')
