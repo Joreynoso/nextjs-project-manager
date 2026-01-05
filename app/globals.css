@@ -168,10 +168,6 @@
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
 }
 
-
-
-
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -211,3 +207,4 @@ Change theme with circle animation
     mask-size: 200vmax;
   }
 }
+

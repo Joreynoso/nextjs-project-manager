@@ -10,6 +10,7 @@
 
 ## Validar formularios correctamente, faltan muchas
 ## Corregir en action.ts que tira un error al intentar acceder a la ruta /projects
+## throw new Error('No autenticado') actions\projects.ts (17:15) @ getProjects
 
 
 
