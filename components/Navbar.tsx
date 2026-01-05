@@ -12,8 +12,10 @@ import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { getInitials } from '@/lib/utils';
 import { motion } from 'framer-motion'
+import type { User } from '@/types/user'
 
 import Spin from './ui/spin';
+import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 
 export default function Navbar() {
     // defult states
@@ -89,15 +91,18 @@ export default function Navbar() {
                     {/* botones de modo oscuro y claro */}
                     <ModeToggle />
 
-                    {/* si existe session, renderiza el avatar */}
+                    {/* si existe session, renderiza el avatar y el email */}
                     {session && (
                         <>
                             <Link href="/profile">
-                                <Button variant="secondary" size="icon">
-                                    {getInitials(session.user.name)}
+                                <Button variant="secondary" size="icon" className="flex items-center justify-center cursor-pointer rounded-full overflow-hidden">
+                                    <Avatar>
+                                        <AvatarImage src={session.user.image ?? undefined} />
+                                        <AvatarFallback>{getInitials(session.user.name)}</AvatarFallback>
+                                    </Avatar>
                                 </Button>
                             </Link>
-
+                            
                             <Link href="/projects">
                                 <Button
                                     variant="secondary"

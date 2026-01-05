@@ -207,7 +207,7 @@ export default function RegisterPage() {
                         transition={{ duration: 0.5 }}
                         className="hidden lg:block relative w-1/2 min-h-[calc(75vh)] border border-border rounded-3xl overflow-hidden">
                         <Image
-                            src="/images/img_3.jpg"
+                            src="/images/img_4.png"
                             alt="Explorador en la jungla colaborativa"
                             fill
                             priority

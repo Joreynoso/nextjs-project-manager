@@ -21,7 +21,7 @@ import { deleteProject } from '@/actions/projects'
 import { Button } from '../ui/button'
 import { EllipsisVertical, Calendar } from 'lucide-react'
 import { formatDateString } from '@/lib/utils'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { getInitials } from '@/lib/utils'
 import { ProjectWithMembers } from '@/types/projects'
@@ -112,6 +112,7 @@ export default function ProjectCard({ project }: { project: ProjectWithMembers }
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3 min-w-0 flex-1">
                         <Avatar className='h-10 w-10 shrink-0'>
+                            <AvatarImage src={project.creator.image ?? undefined} />
                             <AvatarFallback className="text-xs font-medium">
                                 {getInitials(project.creator.name)}
                             </AvatarFallback>
@@ -139,6 +140,7 @@ export default function ProjectCard({ project }: { project: ProjectWithMembers }
                                 <Tooltip key={member.user.id}>
                                     <TooltipTrigger asChild>
                                         <Avatar className='h-9 w-9 ring-2 ring-background transition-transform hover:scale-110 hover:z-10 cursor-pointer'>
+                                            <AvatarImage src={member.user.image ?? undefined} />
                                             <AvatarFallback className="text-xs">
                                                 {getInitials(member.user.name)}
                                             </AvatarFallback>

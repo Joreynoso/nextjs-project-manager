@@ -10,6 +10,7 @@ import { authClient } from '@/lib/auth-client'
 import type { User } from '@/types/user'
 import { useSession } from '@/lib/auth-client'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
+import AvatarPicker from '@/components/profile/AvatarPicker'
 
 
 export default function ProfilePage() {
@@ -88,7 +89,12 @@ export default function ProfilePage() {
                 {/* avatar picker sección */}
                 <div className='w-full flex flex-col gap-4 bg-card border border-border p-6 rounded-lg mx-auto'>
                     <div className='flex flex-col gap-2'>
-                        
+                        <h2 className='text-lg font-semibold'>Avatar</h2>
+                        <p className='text-sm text-muted-foreground mb-4'>
+                            Elige tu avatar para personalizar tu perfil.
+                        </p>
+
+                        <AvatarPicker />
                     </div>
                 </div>
             </div>
