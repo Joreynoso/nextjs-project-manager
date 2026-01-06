@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma'
 import { CreateProjectInput } from '@/types/projects'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
+import { projectSchema } from '@/lib/validations/projects'
 
 // obtener lista de proyectos
 export async function getProjects() {
@@ -80,19 +81,20 @@ export async function createProject(data: CreateProjectInput) {
         throw new Error('No autenticado')
     }
 
+    const validatedData = projectSchema.parse(data)
+
     const newProject = await prisma.project.create({
         data: {
-            name: data.name,
-            description: data.description,
-            tag: data.tag,
-            deadline: data.deadline,
+            name: validatedData.name,
+            description: validatedData.description,
+            tag: validatedData.tag,
             creator: {
                 connect: {
                     id: user.user.id
                 }
             },
             members: {
-                create: data.members.map((memberId) => ({
+                create: validatedData.members.map((memberId) => ({
                     userId: memberId
                 }))
             }
@@ -185,7 +187,6 @@ export async function updateProject(projectId: string, formData: any) {
             name: formData.name,
             description: formData.description,
             tag: formData.tag,
-            deadline: formData.deadline,
 
             // Borra las relaciones actuales de este proyecto
             members: {

@@ -10,17 +10,25 @@ import { useState } from 'react'
 import { X } from 'lucide-react'
 import { createProject, updateProject } from '@/actions/projects'
 import { ProjectWithMembers } from '@/types/projects'
+import { projectSchema } from '@/lib/validations/projects'
 
 type FormProjectProps = {
     users: any
     onCancel: () => void
-    project?: ProjectWithMembers | null // ← Acepta ProjectWithMembers del contexto
+    project?: ProjectWithMembers | null // Acepta ProjectWithMembers del contexto
+}
+
+interface ProjectFormState {
+    name: string
+    description?: string
+    tag: string
+    members: string[]
 }
 
 export default function ProjectForm({ users, onCancel, project = null }: FormProjectProps) {
     const [loading, setLoading] = useState(false)
 
-    // ← Extraer IDs de miembros si el proyecto tiene members como objetos
+    // Extraer IDs de miembros si el proyecto tiene members como objetos
     const getMemberIds = () => {
         if (!project?.members) return []
         // Si members es un array de objetos con userId, extraer los IDs
@@ -31,8 +39,8 @@ export default function ProjectForm({ users, onCancel, project = null }: FormPro
         return project.members as unknown as string[]
     }
 
-    // ← Pre-llenar datos si existe proyecto
-    const [formData, setFormData] = useState({
+    // Pre-llenar datos si existe proyecto
+    const [formData, setFormData] = useState<ProjectFormState>({
         name: project?.name || '',
         tag: project?.tag || '',
         description: project?.description || '',
@@ -41,6 +49,7 @@ export default function ProjectForm({ users, onCancel, project = null }: FormPro
 
     const [selectKey, setSelectKey] = useState(0)
 
+    // Handle add member
     const handleAddMember = (userId: string) => {
         if (!formData.members.includes(userId)) {
             setFormData({
@@ -51,6 +60,7 @@ export default function ProjectForm({ users, onCancel, project = null }: FormPro
         }
     }
 
+    // Handle remove member
     const handleRemoveMember = (userId: string) => {
         setFormData({
             ...formData,
@@ -64,22 +74,44 @@ export default function ProjectForm({ users, onCancel, project = null }: FormPro
 
     const availableUsers = users.filter((user: any) => !formData.members.includes(user.id))
 
+    // Handle submit
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setLoading(true)
 
+        // Preparar los datos SIN validar todavía
+        const projectData = {
+            name: formData.name,
+            description: formData.description || undefined,
+            tag: formData.tag,
+            members: formData.members
+        }
+
+        // Validar con safeParse (única validación)
+        const validation = projectSchema.safeParse(projectData)
+
+        if (!validation.success) {
+            // Mostrar errores de validación
+            validation.error.issues.forEach((issue) => {
+                toast.error(issue.message)
+            })
+            setLoading(false)
+            return // Detener aquí si hay errores
+        }
+
+        // Si llegamos aquí, los datos son válidos
         try {
             if (project) {
-                // ← MODO EDITAR
-                const result = await updateProject(project.id, formData)
+                // MODO EDITAR
+                const result = await updateProject(project.id, validation.data)
                 if (!result) {
                     toast.error('Error al actualizar el proyecto')
                     return
                 }
                 toast.success('Proyecto actualizado exitosamente')
             } else {
-                // ← MODO CREAR
-                const result = await createProject(formData)
+                // MODO CREAR
+                const result = await createProject(validation.data)
                 if (!result) {
                     toast.error('Error al crear el proyecto')
                     return
@@ -89,6 +121,7 @@ export default function ProjectForm({ users, onCancel, project = null }: FormPro
 
             onCancel()
         } catch (error) {
+            console.error('Error en handleSubmit:', error)
             toast.error(project ? 'Error al actualizar el proyecto' : 'Error al crear el proyecto')
         } finally {
             setLoading(false)
@@ -106,7 +139,7 @@ export default function ProjectForm({ users, onCancel, project = null }: FormPro
                     name="name"
                     type="text"
                     placeholder="Ej. Proyecto de diseño"
-                    value={formData.name} // ← importante para pre-llenar
+                    value={formData.name} // importante para pre-llenar
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 />
             </div>
@@ -119,7 +152,7 @@ export default function ProjectForm({ users, onCancel, project = null }: FormPro
                     name="tag"
                     type="text"
                     placeholder="Ej. Diseño, Desarrollo, Marketing"
-                    value={formData.tag} // ← importante para pre-llenar
+                    value={formData.tag} // importante para pre-llenar
                     onChange={(e) => setFormData({ ...formData, tag: e.target.value })}
                 />
             </div>
@@ -132,7 +165,7 @@ export default function ProjectForm({ users, onCancel, project = null }: FormPro
                     name="description"
                     placeholder="Describe tu proyecto..."
                     className='min-h-[200px]'
-                    value={formData.description} // ← importante para pre-llenar
+                    value={formData.description} // importante para pre-llenar
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 />
             </div>

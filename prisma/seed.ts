@@ -66,7 +66,6 @@ async function main() {
       name: 'Plataforma de E-learning',
       description: 'Desarrollo de una plataforma educativa con cursos interactivos',
       tag: 'Development',
-      deadline: new Date('2025-12-31'),
       createdBy: alice.id,
       members: {
         create: [

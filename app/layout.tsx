@@ -46,7 +46,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange>
 
-          <Navbar /> 
+          <Navbar />
 
           {/* main crece para empujar el footer hacia abajo */}
           <main className="flex-1 w-full flex flex-col mx-auto min-h-[calc(100vh-64px)] px-5 xl:px-0 max-w-7xl">
@@ -54,7 +54,10 @@ export default function RootLayout({
           </main>
 
           {/* toast */}
-          <Toaster position="top-center" />
+          <Toaster
+            position="top-center"
+            expand={true}
+          />
           <Footer />
           <ScreenSizeHelper />
         </ThemeProvider>

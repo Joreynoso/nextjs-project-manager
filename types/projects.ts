@@ -36,6 +36,5 @@ export type CreateProjectInput = {
     name: string
     description?: string
     tag: string
-    deadline?: Date
     members: string[] // ids de usuarios
 }

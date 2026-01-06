@@ -94,7 +94,7 @@ export async function POST(request: Request) {
         // Obtener datos del body
         const body = await request.json()
         console.log('datos del body', body)
-        const { name, description, tag, deadline, memberIds = [] } = body
+        const { name, description, tag, memberIds = [] } = body
 
         // Validaciones
         if (!name || name.trim().length === 0) {
@@ -125,7 +125,6 @@ export async function POST(request: Request) {
                 name: name.trim(),
                 description: description?.trim() || null,
                 tag,
-                deadline: deadline ? new Date(deadline) : null,
                 createdBy: session.user.id,
                 members: {
                     create: [
