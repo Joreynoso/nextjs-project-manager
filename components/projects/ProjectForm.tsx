@@ -7,10 +7,15 @@ import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from 'sonner'
 import { useState } from 'react'
-import { X } from 'lucide-react'
+import { Users, X } from 'lucide-react'
 import { createProject, updateProject } from '@/actions/projects'
 import { ProjectWithMembers } from '@/types/projects'
 import { projectSchema } from '@/lib/validations/projects'
+
+// User
+import type { User } from '@/types/user'
+import { authClient } from '@/lib/auth-client'
+import { useSession } from '@/lib/auth-client'
 
 type FormProjectProps = {
     users: any
@@ -28,7 +33,13 @@ interface ProjectFormState {
 export default function ProjectForm({ users, onCancel, project = null }: FormProjectProps) {
     const [loading, setLoading] = useState(false)
 
-    // Extraer IDs de miembros si el proyecto tiene members como objetos
+    // get usuario autenticado
+    const { data: session } = useSession()
+    const authUser = session?.user.id
+
+    console.log('authUser', authUser)
+
+    // extraer los ids de los miembros
     const getMemberIds = () => {
         if (!project?.members) return []
         // Si members es un array de objetos con userId, extraer los IDs
@@ -68,11 +79,14 @@ export default function ProjectForm({ users, onCancel, project = null }: FormPro
         })
     }
 
+    // ?
     const getUserById = (userId: string) => {
         return users.find((user: any) => user.id === userId)
     }
 
-    const availableUsers = users.filter((user: any) => !formData.members.includes(user.id))
+    // debe contener todos los usuarios menos el usuario autenticado
+    // ya que no puede agregarse el mismo
+    const availableUsers = users.filter((user: any) => user.id !== authUser)
 
     // Handle submit
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -185,7 +199,7 @@ export default function ProjectForm({ users, onCancel, project = null }: FormPro
                         <SelectValue placeholder="Seleccionar miembros" />
                     </SelectTrigger>
                     <SelectContent>
-                        {users
+                        {availableUsers
                             .filter((user: any) => !formData.members.includes(user.id))
                             .map((user: any) => (
                                 <SelectItem key={user.id} value={user.id}>

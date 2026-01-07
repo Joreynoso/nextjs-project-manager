@@ -6,9 +6,12 @@ import { toast } from 'sonner'
 import DateFormatter from '@/lib/dateformatter'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { authClient } from '@/lib/auth-client'
+
+// User
 import type { User } from '@/types/user'
+import { authClient } from '@/lib/auth-client'
 import { useSession } from '@/lib/auth-client'
+
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import AvatarPicker from '@/components/profile/AvatarPicker'
 
