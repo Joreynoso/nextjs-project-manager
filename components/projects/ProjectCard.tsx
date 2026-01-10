@@ -28,24 +28,32 @@ import { ProjectWithMembers } from '@/types/projects'
 import { toast } from 'sonner'
 import { useProjectsDialog } from '@/app/projects/context/ProjectContext'
 import Link from 'next/link'
+import { useState } from 'react'
+import ProjectDialogDelete from './ProjectDialogDelete'
 
 export default function ProjectCard({ project }: { project: ProjectWithMembers }) {
+
+    // Estado para abrir el dialog de eliminación
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false)
 
     // Usar el contexto para abrir el dialog de edición
     const { openEditDialog } = useProjectsDialog()
 
     // Handle delete project
     const handleDeleteProject = async () => {
+        setIsDeleting(true)
         try {
-            const result = await deleteProject(project.id)
-            if (result.success) {
-                toast.success('Proyecto eliminado correctamente')
-            } else {
-                toast.error(result.error)
+                const result = await deleteProject(project.id)
+                if (result.success) {
+                    toast.success('Proyecto eliminado correctamente')
+                } else {
+                    toast.error(result.error)
+                }
+            } catch (error) {
+                toast.error('Ocurrió un error inesperado al intentar eliminar el proyecto')
             }
-        } catch (error) {
-            toast.error('Ocurrió un error inesperado al intentar eliminar el proyecto')
-        }
+        setIsDeleting(false)
     }
 
     // render return
@@ -73,25 +81,34 @@ export default function ProjectCard({ project }: { project: ProjectWithMembers }
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-48">
                         <DropdownMenuItem
+                            className="cursor-pointer"
+                        >
+                            <Link href={`/projects/${project.id}`}>Ver proyecto</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
                             onClick={() => openEditDialog(project)}
                             className="cursor-pointer"
                         >
                             Editar proyecto
                         </DropdownMenuItem>
+
+                        {/* Deberia ejecutar un dialog con Aceptar y Cancelar */}
                         <DropdownMenuItem
-                            onClick={handleDeleteProject}
+                            onClick={() => setOpenDeleteDialog(true)}
                             className="cursor-pointer"
                         >
                             Eliminar proyecto
                         </DropdownMenuItem>
-                        <DropdownMenuItem
-                            className="cursor-pointer"
-                        >
-                           <Link href={`/projects/${project.id}`}>Ver proyecto</Link>
-                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
+
+            <ProjectDialogDelete
+                open={openDeleteDialog}
+                onClose={() => setOpenDeleteDialog(false)}
+                onConfirm={handleDeleteProject}
+                isDeleting={isDeleting}
+            />
 
             {/* Título y descripción */}
             <div className='mb-6 space-y-2'>

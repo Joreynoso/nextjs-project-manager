@@ -60,11 +60,11 @@ export default function Navbar() {
 
     return (
         <motion.div
-        // transición de arriba a abajo
-        initial={{ opacity: 0, y: -20 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ duration: 0.5 }} 
-        className='w-full mx-auto border border-border'>
+            // transición de arriba a abajo
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className='w-full mx-auto border border-border'>
 
             <nav className="max-w-7xl mx-auto flex justify-between items-center px-5 xl:px-0 py-4 bg-outline">
 
@@ -88,12 +88,11 @@ export default function Navbar() {
                         </>
                     )}
 
-                    {/* botones de modo oscuro y claro */}
-                    <ModeToggle />
-
                     {/* si existe session, renderiza el avatar y el email */}
                     {session && (
                         <>
+                            {/* email y avatar */}
+                            <span className='text-sm font-medium self-center truncate max-w-[200px] block'>{session.user.email}</span>
                             <Link href="/profile">
                                 <Button variant="secondary" size="icon" className="flex items-center justify-center cursor-pointer rounded-full overflow-hidden">
                                     <Avatar>
@@ -102,7 +101,7 @@ export default function Navbar() {
                                     </Avatar>
                                 </Button>
                             </Link>
-                            
+
                             <Link href="/projects">
                                 <Button
                                     variant="secondary"
@@ -113,15 +112,22 @@ export default function Navbar() {
                                 </Button>
                             </Link>
 
+                            {/* botones de modo oscuro y claro */}
+                            <ModeToggle />
+
+                            {/* cerrar sesión */}
                             <Button onClick={handleLogout}
                                 variant="secondary"
                                 className="flex items-center justify-center cursor-pointer"
+                                aria-label="Cerrar sesión"
+
                             >
-                                cerrar sesión
                                 {loading ? <Spin /> : <LogOut />}
                             </Button>
                         </>
                     )}
+
+
                 </div>
 
                 {/* buttons section on smaller screens*/}
