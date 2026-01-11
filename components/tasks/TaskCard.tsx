@@ -2,7 +2,7 @@
 
 import type { Task } from '@/types/tasks'
 import { formatDateString } from '@/lib/utils'
-import { Calendar, Check, CircleDashed, EllipsisVertical, Loader } from 'lucide-react'
+import { Calendar, Check, CircleDashed, EllipsisVertical, Loader, Pencil, Trash } from 'lucide-react'
 
 // import dropdown menu
 import {
@@ -88,8 +88,13 @@ export default function TaskCard({ task }: { task: Task }) {
                             <span>Marcar como completada</span>
                             <Check className="h-4 w-4 ml-2" />
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleDeleteTask(task.id)}>
-                            Borrar tarea
+                        <DropdownMenuItem onClick={() => { console.log('Editar tarea') }} className="flex justify-between">
+                            <span>Editar tarea</span>
+                            <Pencil className="h-4 w-4 ml-2" /> 
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDeleteTask(task.id)} className="flex justify-between">
+                            <span>Borrar tarea</span>
+                            <Trash className="h-4 w-4 ml-2" />
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
