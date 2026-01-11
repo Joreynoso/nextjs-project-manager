@@ -67,7 +67,6 @@ export default function Navbar() {
             className='w-full mx-auto border border-border'>
 
             <nav className="max-w-7xl mx-auto flex justify-between items-center px-5 xl:px-0 py-4 bg-outline">
-
                 {/* logo section */}
                 <Link href="/">
                     <h1 className='text-xl font-medium tracking-tight'>Better <span className='text-primary'>Jungle</span></h1>
@@ -139,7 +138,7 @@ export default function Navbar() {
 
                 {/* dropdown menu */}
                 {menuOpen && (
-                    <div className='bg-card border border-border p-4 rounded-lg shadow-sm absolute top-16 right-4'>
+                    <div className='bg-card border border-border p-4 rounded-lg shadow-sm absolute top-16 right-4 z-50'>
                         <div className="flex flex-col gap-2">
 
                             {/* inicio */}

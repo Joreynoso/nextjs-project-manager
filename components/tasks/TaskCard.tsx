@@ -16,8 +16,13 @@ import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
+import { useState } from 'react'
+
+import EditTaskDialog from './EditTaskDialog'
 
 export default function TaskCard({ task }: { task: Task }) {
+
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
 
     const router = useRouter()
 
@@ -60,62 +65,65 @@ export default function TaskCard({ task }: { task: Task }) {
     }
 
     return (
-        <motion.div
-            // Aparece desde abajo y sube
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className='relative bg-card text-card-foreground border rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:border-primary/20 mb-3'>
+        <>
+            <motion.div
+                // Aparece desde abajo y sube
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className='relative bg-card text-card-foreground border rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:border-primary/20 mb-3'>
 
-            {/* Dropdown menu de estados - Posicionado arriba a la derecha */}
-            <div className="absolute top-2 right-2">
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <EllipsisVertical className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => handleStatusChange('pending')} className="flex justify-between">
-                            <span>Marcar como pendiente</span>
-                            <CircleDashed className="h-4 w-4 ml-2" />
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleStatusChange('in_progress')} className="flex justify-between">
-                            <span>Marcar como en progreso</span>
-                            <Loader className="h-4 w-4 ml-2" />
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleStatusChange('completed')} className="flex justify-between">
-                            <span>Marcar como completada</span>
-                            <Check className="h-4 w-4 ml-2" />
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => { console.log('Editar tarea') }} className="flex justify-between">
-                            <span>Editar tarea</span>
-                            <Pencil className="h-4 w-4 ml-2" /> 
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleDeleteTask(task.id)} className="flex justify-between">
-                            <span>Borrar tarea</span>
-                            <Trash className="h-4 w-4 ml-2" />
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            </div>
+                {/* Dropdown menu de estados - Posicionado arriba a la derecha */}
+                <div className="absolute top-2 right-2">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                                <EllipsisVertical className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => handleStatusChange('pending')} className="flex justify-between">
+                                <span>Marcar como pendiente</span>
+                                <CircleDashed className="h-4 w-4 ml-2" />
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleStatusChange('in_progress')} className="flex justify-between">
+                                <span>Marcar como en progreso</span>
+                                <Loader className="h-4 w-4 ml-2" />
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleStatusChange('completed')} className="flex justify-between">
+                                <span>Marcar como completada</span>
+                                <Check className="h-4 w-4 ml-2" />
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setIsEditDialogOpen(true)} className="flex justify-between">
+                                <span>Editar tarea</span>
+                                <Pencil className="h-4 w-4 ml-2" />
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleDeleteTask(task.id)} className="flex justify-between">
+                                <span>Borrar tarea</span>
+                                <Trash className="h-4 w-4 ml-2" />
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
 
-            {/* Header: Fecha */}
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-4">
-                <Calendar className="h-3 w-3" />
-                <span>{formatDateString(task.createdAt)}</span>
-            </div>
+                {/* Header: Fecha */}
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-4">
+                    <Calendar className="h-3 w-3" />
+                    <span>{formatDateString(task.createdAt)}</span>
+                </div>
 
-            {/* Título y descripción */}
-            <div className='space-y-2'>
-                <h3 className='text-lg font-semibold tracking-tight leading-tight'>
-                    {task.title}
-                </h3>
-                <p className='text-sm text-muted-foreground leading-relaxed line-clamp-3'>
-                    {task.description || 'Sin descripción'}
-                </p>
-            </div>
+                {/* Título y descripción */}
+                <div className='space-y-2'>
+                    <h3 className='text-lg font-semibold tracking-tight leading-tight'>
+                        {task.title}
+                    </h3>
+                    <p className='text-sm text-muted-foreground leading-relaxed line-clamp-3'>
+                        {task.description || 'Sin descripción'}
+                    </p>
+                </div>
 
-        </motion.div>
+            </motion.div>
+            <EditTaskDialog task={task} open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} />
+        </>
     )
 }
