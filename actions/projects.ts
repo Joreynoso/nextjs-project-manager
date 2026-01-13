@@ -6,6 +6,7 @@ import { CreateProjectInput } from '@/types/projects'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { projectSchema } from '@/lib/validations/projects'
+import { notFound, redirect } from 'next/navigation'
 
 // obtener lista de proyectos
 export async function getProjects() {
@@ -14,8 +15,9 @@ export async function getProjects() {
         headers: await headers()
     })
 
+    // Defensa adicional: por si el middleware falla o es bypasseado
     if (!user?.user?.id) {
-        throw new Error('No autenticado')
+        redirect('/auth/login')
     }
 
     const projects = await prisma.project.findMany({
@@ -47,8 +49,9 @@ export async function getProjectById(id: string) {
         headers: await headers()
     })
 
+    // Defensa adicional: por si el middleware falla o es bypasseado
     if (!user?.user?.id) {
-        throw new Error('No autenticado')
+        redirect('/auth/login')
     }
 
     // proyectos con tareas incluidas, si es que las tiene
@@ -68,6 +71,21 @@ export async function getProjectById(id: string) {
             }
         }
     })
+
+    // Si el proyecto no existe, muestra 404
+    if (!project) {
+        notFound()
+    }
+
+    // CRÍTICO: Verificar que el usuario tiene acceso al proyecto
+    const hasAccess =
+        project.creator.id === user.user.id ||
+        project.members.some(member => member.userId === user.user.id)
+
+    if (!hasAccess) {
+        redirect('/projects')
+    }
+
     return project
 }
 
