@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useSession } from '@/lib/auth-client'
 import { motion } from 'framer-motion'
+import CardsHome from '@/components/home/CardsHome'
 
 export default function Home() {
   const { data: session } = useSession()
@@ -114,84 +115,7 @@ export default function Home() {
       </div>
 
       {/* section 3 */}
-      <div className='container mx-auto mt-10 mb-20'>
-        <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-
-          {/* card 1 - gestion de proyectos */}
-          <div className='bg-card p-8 rounded-2xl text-center flex flex-col justify-center items-center
-          hover:bg-secondary transition-colors duration-300 ease-in-out'>
-            <div className='aspect-square w-12 h-12 mx-aut bg-muted rounded-full flex justify-center items-center mb-6'>
-              <FolderKanban className='w-6 h-6 text-primary' />
-            </div>
-            <h2 className='text-lg font-semibold mb-2'>Gestión de proyectos</h2>
-            <p className='text-muted-foreground'>Creá y organizá proyectos en un solo lugar, con estructura clara,
-              objetivos definidos y control total desde el inicio</p>
-          </div>
-
-          {/* card 2 - Miembros y roles */}
-          <div className='bg-card p-8 rounded-2xl text-center flex flex-col justify-center items-center
-          hover:bg-secondary transition-colors duration-300 ease-in-out'>
-            <div className='aspect-square w-12 h-12 mx-aut bg-muted rounded-full flex justify-center items-center mb-6'>
-              <User className='w-6 h-6 text-primary' />
-            </div>
-            <h2 className='text-lg font-semibold mb-2'>Miembros y roles</h2>
-            <p className='text-muted-foreground'>Organiza y gestiona los miembros de tu equipo, asignando roles y permisos
-              para que cada uno tenga acceso a las herramientas y funcionalidades que necesita</p>
-          </div>
-
-          {/* card 3 - Gestión de tareas */}
-          <div className='bg-card p-8 rounded-2xl text-center flex flex-col justify-center items-center
-          hover:bg-secondary transition-colors duration-300 ease-in-out'>
-
-            <div className='aspect-square w-12 h-12 mx-aut bg-muted rounded-full flex justify-center items-center mb-6'>
-              <SquareCheckBig className='w-6 h-6 text-primary' />
-            </div>
-
-            <h2 className='text-lg font-semibold mb-2'>Gestión de tareas</h2>
-            <p className='text-muted-foreground'>Organiza y gestiona los miembros de tu equipo, asignando roles y permisos
-              para que cada uno tenga acceso a las herramientas y funcionalidades que necesita</p>
-          </div>
-
-          {/* card 4 - Seguimiento de progreso */}
-          <div className='bg-card p-8 rounded-2xl text-center flex flex-col justify-center items-center
-          hover:bg-secondary transition-colors duration-300 ease-in-out'>
-
-            <div className='aspect-square w-12 h-12 mx-aut bg-muted rounded-full flex justify-center items-center mb-6'>
-              <SquareCheckBig className='w-6 h-6 text-primary' />
-            </div>
-
-            <h2 className='text-lg font-semibold mb-2'>Seguimiento de progreso</h2>
-            <p className='text-muted-foreground'>Visualizá el estado de cada tarea y proyecto en tiempo real,
-              detectando bloqueos y avances sin esfuerzo.</p>
-          </div>
-
-          {/* card 5 - Colaboración en tiempo real */}
-          <div className='bg-card p-8 rounded-2xl text-center flex flex-col justify-center items-center
-          hover:bg-secondary transition-colors duration-300 ease-in-out'>
-
-            <div className='aspect-square w-12 h-12 mx-aut bg-muted rounded-full flex justify-center items-center mb-6'>
-              <MessageSquare className='w-6 h-6 text-primary' />
-            </div>
-
-            <h2 className='text-lg font-semibold mb-2'>Colaboración en tiempo real</h2>
-            <p className='text-muted-foreground'>Compartí ideas, asigná tareas y colaborá en tiempo real,
-              manteniendo la comunicación fluida y el progreso constante.</p>
-          </div>
-
-          {/* card 6 - Asistencia con IA (Grok */}
-          <div className='bg-card p-8 rounded-2xl text-center flex flex-col justify-center items-center
-          hover:bg-secondary transition-colors duration-300 ease-in-out'>
-
-            <div className='aspect-square w-12 h-12 mx-aut bg-muted rounded-full flex justify-center items-center mb-6'>
-              <Sparkles className='w-6 h-6 text-primary' />
-            </div>
-
-            <h2 className='text-lg font-semibold mb-2'>Asistencia con IA (Grok</h2>
-            <p className='text-muted-foreground'>Generá y mejorá descripciones de tareas con ayuda de IA para ahorrar tiempo y ganar claridad.</p>
-          </div>
-
-        </div>
-      </div>
+      <CardsHome />
 
     </div>
   )

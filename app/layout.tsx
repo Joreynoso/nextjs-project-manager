@@ -59,7 +59,7 @@ export default function RootLayout({
             expand={true}
           />
           <Footer />
-          <ScreenSizeHelper />
+          {/* <ScreenSizeHelper /> */}
         </ThemeProvider>
       </body>
     </html>

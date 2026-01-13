@@ -11,6 +11,19 @@ import {
     BreadcrumbLink
 }
     from '@/components/ui/breadcrumb'
+import { getInitials } from '@/lib/utils'
+
+// import tooltip
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+
+} from "@/components/ui/tooltip"
+
+import { Badge } from '@/components/ui/badge'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+
 
 type Props = {
     params: Promise<{ id: string }>
@@ -22,6 +35,12 @@ export default async function ProjectDetailPage({ params }: Props) {
 
     // fetch project
     const project = await getProjectById(id)
+
+    // extraer el owner
+    const owner = project?.creator || null
+
+    // extraer los miembros
+    const members = project?.members || []
 
     // render return
     return (
@@ -44,12 +63,64 @@ export default async function ProjectDetailPage({ params }: Props) {
                 </BreadcrumbList>
             </Breadcrumb>
 
-            {/* Page Header: Title, Description */}
-            <div className='flex flex-col gap-y-2 mb-5'>
-                <p className='text-base text-muted-foreground leading-relaxed'>
-                    {project?.description}
-                </p>
-                {/* aqui debe ir la lista de miembros */}
+            <div className='w-full grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6'>
+                
+                {/* Card de Descripción */}
+                <div className='lg:col-span-2 bg-linear-to-br from-card via-card to-muted/20 border border-border/50 rounded-xl p-5'>
+                    <h1 className='text-xl font-bold text-foreground mb-2'>{project?.name}</h1>
+                    <p className='text-sm text-muted-foreground leading-relaxed'>
+                        {project?.description || 'Sin descripción disponible'}
+                    </p>
+                </div>
+
+                {/* Card de Team */}
+                <div className='bg-linear-to-br from-card via-card to-muted/20 border border-border/50 rounded-xl p-5'>
+                    <div className='flex items-center justify-between mb-4'>
+                        <h2 className='text-sm font-semibold text-foreground'>Equipo</h2>
+                        <Badge variant="secondary" className='text-xs'>
+                            {members.length + 1}
+                        </Badge>
+                    </div>
+                    
+                    {/* Avatares */}
+                    <div className='flex flex-wrap gap-2'>
+                        {/* Owner */}
+                        {owner && (
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Avatar className='h-11 w-11 ring-2 ring-primary cursor-pointer hover:scale-110 transition-all'>
+                                        <AvatarImage src={owner.image ?? undefined} />
+                                        <AvatarFallback className="text-xs font-bold bg-primary text-primary-foreground">
+                                            {getInitials(owner.name)}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>{owner.name}</p>
+                                    <p>Owner</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        )}
+
+                        {/* Members */}
+                        {members.map((member) => (
+                            <Tooltip key={member.user.id}>
+                                <TooltipTrigger asChild>
+                                    <Avatar className='h-11 w-11 ring-2 ring-background cursor-pointer hover:scale-110 hover:ring-primary/30 transition-all'>
+                                        <AvatarImage src={member.user.image ?? undefined} />
+                                        <AvatarFallback className="text-xs font-medium bg-muted">
+                                            {getInitials(member.user.name)}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>{member.user.name}</p>
+                                    <p>{member.user.email}</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        ))}
+                    </div>
+                </div>
             </div>
 
             {/* lista de tareas del proyecto deberia ir aqui */}

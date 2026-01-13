@@ -71,7 +71,7 @@ export default function TaskCard({ task }: { task: Task }) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className='relative bg-card text-card-foreground border rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:border-primary/20 mb-3'>
+                className='relative bg-linear-to-br from-card via-card to-muted/20 border-border/50 text-card-foreground border rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:border-primary/20 mb-3'>
 
                 {/* Dropdown menu de estados - Posicionado arriba a la derecha */}
                 <div className="absolute top-2 right-2">

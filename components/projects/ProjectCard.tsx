@@ -58,7 +58,7 @@ export default function ProjectCard({ project }: { project: ProjectWithMembers }
 
     // render return
     return (
-        <div className='bg-card text-card-foreground border rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:border-primary/20'>
+        <div className='bg-linear-to-br from-card via-card to-muted/20 border-border/50 text-card-foreground border rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:border-primary/20'>
 
             {/* Header: Tag, Fecha y Acciones */}
             <div className="flex items-start justify-between mb-6">

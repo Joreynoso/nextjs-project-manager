@@ -62,7 +62,7 @@ export default function ProfilePage() {
             <div className='w-full flex flex-col sm:flex-row gap-4'>
 
                 {/* información del usuario */}
-                <div className='w-full flex gap-4 bg-card border border-border p-6 rounded-lg mx-auto'>
+                <div className='w-full flex gap-4 bg-linear-to-br from-card via-card to-muted/20 border border-border/50 rounded-xl p-6 mx-auto'>
 
                     <div className='flex flex-col gap-2'>
                         <Item label="Nombre" value={user.name} />
@@ -90,7 +90,7 @@ export default function ProfilePage() {
                 </div>
 
                 {/* avatar picker sección */}
-                <div className='w-full flex flex-col gap-4 bg-card border border-border p-6 rounded-lg mx-auto'>
+                <div className='w-full flex flex-col gap-4 bg-linear-to-br from-card via-card to-muted/20 border border-border/50 rounded-xl p-6 mx-auto'>
                     <div className='flex flex-col gap-2'>
                         <h2 className='text-lg font-semibold'>Avatar</h2>
                         <p className='text-sm text-muted-foreground mb-4'>
