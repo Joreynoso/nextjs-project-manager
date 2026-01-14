@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import auth from "@/lib/auth"
+import { taskStatusSchema } from "@/lib/validations/tasks"
+import { z } from "zod"
 
 /**
  * PATCH /api/tasks/[taskId]
@@ -22,13 +24,15 @@ export async function PATCH(req: Request, context: { params: Promise<{ taskId: s
 
         const body = await req.json()
 
+        const validatedBody = taskStatusSchema.parse(body)
+
         // Actualizar la tarea
         const updatedTask = await prisma.task.update({
             where: {
                 id: taskId
             },
             data: {
-                status: body.status,
+                status: validatedBody.status,
             },
         })
 
@@ -37,13 +41,21 @@ export async function PATCH(req: Request, context: { params: Promise<{ taskId: s
             task: updatedTask
         })
     } catch (error) {
-        console.error("Error al actualizar una tarea", error)
+        if (error instanceof z.ZodError) {
+            const issues = error.issues;
+            return NextResponse.json(
+                { error: issues[0].message },
+                { status: 400 }
+            )
+        }
+        console.error("Error al actualizar el estado de una tarea", error)
         return NextResponse.json(
-            { error: "Error al actualizar tarea" },
+            { error: "Error al actualizar el estado de la tarea" },
             { status: 500 }
         )
     }
 }
+
 
 /**
  * PUT /api/tasks/[taskId]
@@ -83,7 +95,7 @@ export async function PUT(req: Request, context: { params: Promise<{ taskId: str
             message: "Tarea actualizada exitosamente",
             task: updatedTask
         })
-        
+
     } catch (error) {
         console.error("Error al actualizar una tarea", error)
         return NextResponse.json(

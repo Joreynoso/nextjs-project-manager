@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import auth from "@/lib/auth"
 import { taskSchema } from "@/lib/validations/tasks"
-import { z, ZodError } from "zod"
+import { z } from "zod"
 
 /**
  * POST /api/projects/[id]/tasks
@@ -58,37 +58,37 @@ export async function POST(
 }
 
 
-  /**
-   * GET /api/projects/[id]/tasks
-   * Trae todas las tareas de un proyecto específico
-   */
-  export async function GET(req: Request, context: { params: Promise<{ id: string }> }
-  ) {
-    try {
-      const { id } = await context.params
-      const session = await auth.api.getSession({
-        headers: req.headers
-      })
+/**
+ * GET /api/projects/[id]/tasks
+ * Trae todas las tareas de un proyecto específico
+ */
+export async function GET(req: Request, context: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await context.params
+    const session = await auth.api.getSession({
+      headers: req.headers
+    })
 
-      if (!session?.user?.id) {
-        return NextResponse.json(
-          { error: "No autorizado" },
-          { status: 401 }
-        )
-      }
-
-      const tasks = await prisma.task.findMany({
-        where: {
-          projectId: id,
-        }
-      })
-
-      return NextResponse.json({ tasks })
-    } catch (error) {
-      console.error("Error al obtener las tareas", error)
+    if (!session?.user?.id) {
       return NextResponse.json(
-        { error: "Error al obtener tareas" },
-        { status: 500 }
+        { error: "No autorizado" },
+        { status: 401 }
       )
     }
+
+    const tasks = await prisma.task.findMany({
+      where: {
+        projectId: id,
+      }
+    })
+
+    return NextResponse.json({ tasks })
+  } catch (error) {
+    console.error("Error al obtener las tareas", error)
+    return NextResponse.json(
+      { error: "Error al obtener tareas" },
+      { status: 500 }
+    )
   }
+}

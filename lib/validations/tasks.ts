@@ -14,3 +14,11 @@ export const taskSchema = z.object({
 });
 
 export type TaskSchema = z.infer<typeof taskSchema>
+
+// reglas de valdiación para actualizar el estado de una tarea
+export const taskStatusSchema = z.object({
+    status: z.enum(['pending', 'in_progress', 'completed'])
+    .default('pending') // valor por defecto
+});
+
+export type TaskStatusSchema = z.infer<typeof taskStatusSchema>
