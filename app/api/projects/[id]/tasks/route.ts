@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import auth from "@/lib/auth"
+import { taskSchema } from "@/lib/validations/tasks"
+import { z, ZodError } from "zod"
 
 /**
  * POST /api/projects/[id]/tasks
@@ -26,16 +28,27 @@ export async function POST(
 
     const body = await req.json()
 
+    const validatedBody = taskSchema.parse(body)
+
+    console.log('validatedBody', validatedBody)
+
     const newTask = await prisma.task.create({
       data: {
-        title: body.title,
-        description: body.description,
+        title: validatedBody.title,
+        description: validatedBody.description,
         projectId: id,
       }
     })
 
     return NextResponse.json({ message: "Tarea creada exitosamente", newTask })
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      const issues = error.issues;
+      return NextResponse.json(
+        { error: issues[0].message },
+        { status: 400 }
+      )
+    }
     console.error("Error al crear una nueva tarea", error)
     return NextResponse.json(
       { error: "Error al crear tarea" },
@@ -45,37 +58,37 @@ export async function POST(
 }
 
 
-/**
- * GET /api/projects/[id]/tasks
- * Trae todas las tareas de un proyecto específico
- */
-export async function GET(req: Request, context: { params: Promise<{ id: string }> }
-) {
-  try {
-    const { id } = await context.params
-    const session = await auth.api.getSession({
-      headers: req.headers
-    })
+  /**
+   * GET /api/projects/[id]/tasks
+   * Trae todas las tareas de un proyecto específico
+   */
+  export async function GET(req: Request, context: { params: Promise<{ id: string }> }
+  ) {
+    try {
+      const { id } = await context.params
+      const session = await auth.api.getSession({
+        headers: req.headers
+      })
 
-    if (!session?.user?.id) {
+      if (!session?.user?.id) {
+        return NextResponse.json(
+          { error: "No autorizado" },
+          { status: 401 }
+        )
+      }
+
+      const tasks = await prisma.task.findMany({
+        where: {
+          projectId: id,
+        }
+      })
+
+      return NextResponse.json({ tasks })
+    } catch (error) {
+      console.error("Error al obtener las tareas", error)
       return NextResponse.json(
-        { error: "No autorizado" },
-        { status: 401 }
+        { error: "Error al obtener tareas" },
+        { status: 500 }
       )
     }
-
-    const tasks = await prisma.task.findMany({
-      where: {
-        projectId: id,
-      }
-    })
-
-    return NextResponse.json({ tasks })
-  } catch (error) {
-    console.error("Error al obtener las tareas", error)
-    return NextResponse.json(
-      { error: "Error al obtener tareas" },
-      { status: 500 }
-    )
   }
-}
