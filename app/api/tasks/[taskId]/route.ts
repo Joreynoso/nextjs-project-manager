@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import auth from "@/lib/auth"
-import { taskStatusSchema } from "@/lib/validations/tasks"
+import { taskStatusSchema, taskSchema } from "@/lib/validations/tasks"
 import { z } from "zod"
 
 /**
  * PATCH /api/tasks/[taskId]
- * Actualiza una tarea específica
+ * Actualiza el estado de una tarea específica
  */
 export async function PATCH(req: Request, context: { params: Promise<{ taskId: string }> }) {
     try {
@@ -56,10 +56,9 @@ export async function PATCH(req: Request, context: { params: Promise<{ taskId: s
     }
 }
 
-
 /**
  * PUT /api/tasks/[taskId]
- * Actualiza una tarea específica
+ * Actualiza una tarea específica (title y description obligatorios)
  */
 export async function PUT(req: Request, context: { params: Promise<{ taskId: string }> }) {
     try {
@@ -68,7 +67,6 @@ export async function PUT(req: Request, context: { params: Promise<{ taskId: str
             headers: req.headers
         })
 
-        // Verificar que el usuario esté autenticado
         if (!session?.user?.id) {
             return NextResponse.json(
                 { error: "No autorizado" },
@@ -76,20 +74,24 @@ export async function PUT(req: Request, context: { params: Promise<{ taskId: str
             )
         }
 
-        // Actualizar la tarea
         const body = await req.json()
+        console
 
-        // Actualizar la tarea
+        // Usa taskSchema - ambos campos obligatorios
+        const validatedBody = taskSchema.parse(body)
+
+        console.log('-->[validaciones]', validatedBody)
+
         const updatedTask = await prisma.task.update({
-            where: {
-                id: taskId
-            },
+            where: { id: taskId },
             data: {
-                title: body.title,
-                description: body.description,
-                // el status permanace tal cual está
+                title: validatedBody.title,
+                description: validatedBody.description,
+                // el status permanece sin cambios
             },
         })
+
+        console.log('-->[updatedTask]', updatedTask)
 
         return NextResponse.json({
             message: "Tarea actualizada exitosamente",
@@ -97,9 +99,21 @@ export async function PUT(req: Request, context: { params: Promise<{ taskId: str
         })
 
     } catch (error) {
-        console.error("Error al actualizar una tarea", error)
+        console.error('====== ERROR CAPTURADO =======')
+        console.error('Tipo de error:', error?.constructor?.name)
+        console.error('Error completo:', error)
+
+        if (error instanceof z.ZodError) {
+            console.error('Error de Zod - issues:', error.issues)
+            return NextResponse.json(
+                { error: error.issues[0].message },
+                { status: 400 }
+            )
+        }
+
+        console.error("Error al actualizar tarea", error)
         return NextResponse.json(
-            { error: "Error al actualizar tarea" },
+            { error: "Error al actualizar la tarea" },
             { status: 500 }
         )
     }

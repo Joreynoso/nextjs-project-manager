@@ -57,7 +57,6 @@ export async function POST(
   }
 }
 
-
 /**
  * GET /api/projects/[id]/tasks
  * Trae todas las tareas de un proyecto específico
