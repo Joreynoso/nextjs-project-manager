@@ -10,7 +10,6 @@ const groq = new Groq({
  * POST /api/generate-description
  * Genera una descripción para una tarea específica
  */
-
 export async function POST(request: NextRequest) {
     // verificar que exista un usuario autenticado
     const session = await auth.api.getSession({

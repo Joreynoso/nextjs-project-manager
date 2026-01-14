@@ -7,7 +7,7 @@ import { headers } from "next/headers"
  * GET /api/projects/[id]
  * Obtiene un proyecto específico
  */
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, context: { params: Promise<{ id: string }> }) {
   try {
     const session = await auth.api.getSession({
       headers: await headers()
@@ -24,7 +24,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 
     const project = await prisma.project.findFirst({
       where: {
-        id: params.id,
+        id: (await context.params).id,
         members: {
           some: { userId }
         }
