@@ -5,12 +5,13 @@ import { Input } from '@/components/ui/input';
 import { authClient } from '@/lib/auth-client';
 import { Label } from '@radix-ui/react-dropdown-menu';
 import { Eye, EyeOff } from 'lucide-react';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { toast } from 'sonner';
 
 import { useSearchParams, useRouter } from 'next/navigation';
 
-export default function ResetPasswordPage() {
+// Componente que usa useSearchParams
+function ResetPasswordForm() {
     const [showPassword, setShowPassword] = useState(false)
     const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -42,7 +43,7 @@ export default function ResetPasswordPage() {
             return
         }
 
-        if(!token){
+        if (!token) {
             toast.error('Token no encontrado')
             setLoading(false)
             return
@@ -96,7 +97,7 @@ export default function ResetPasswordPage() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             autoComplete='new-password'
-                            className="pr-10" // Add padding to the right for the icon
+                            className="pr-10"
                         />
                         {showPassword ? (
                             <EyeOff className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground cursor-pointer" onClick={handleShowPassword} />
@@ -114,7 +115,7 @@ export default function ResetPasswordPage() {
                             value={passwordConfirmation}
                             onChange={(e) => setPasswordConfirmation(e.target.value)}
                             autoComplete='new-password'
-                            className="pr-10" // Add padding to the right for the icon
+                            className="pr-10"
                         />
                         {showPasswordConfirmation ? (
                             <EyeOff className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground cursor-pointer" onClick={handleShowPasswordConfirmation} />
@@ -124,9 +125,26 @@ export default function ResetPasswordPage() {
                     </div>
 
                     {/* call to action button */}
-                    <Button type='submit' variant={'default'} className='w-full p-2' disabled={loading}>{loading ? 'Actualizando...' : 'Cambiar contraseña'}</Button>
+                    <Button type='submit' variant={'default'} className='w-full p-2' disabled={loading}>
+                        {loading ? 'Actualizando...' : 'Cambiar contraseña'}
+                    </Button>
                 </form>
             </div>
         </div>
+    )
+}
+
+// Página principal con Suspense boundary
+export default function ResetPasswordPage() {
+    return (
+        <Suspense fallback={
+            <div className='w-full flex items-center justify-center mt-20'>
+                <div className='w-full max-w-md bg-card border border-border p-6 rounded-lg shadow-sm'>
+                    <p className='text-center text-muted-foreground'>Cargando...</p>
+                </div>
+            </div>
+        }>
+            <ResetPasswordForm />
+        </Suspense>
     )
 }
