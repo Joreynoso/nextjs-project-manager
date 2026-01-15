@@ -9,6 +9,8 @@ import { headers } from "next/headers"
  */
 export async function GET(req: Request, context: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await context.params  // ← Cambia esto
+
     const session = await auth.api.getSession({
       headers: await headers()
     })
@@ -24,7 +26,7 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
 
     const project = await prisma.project.findFirst({
       where: {
-        id: (await context.params).id,
+        id,  // ← Usa id directamente
         members: {
           some: { userId }
         }
