@@ -75,12 +75,9 @@ export async function PUT(req: Request, context: { params: Promise<{ taskId: str
         }
 
         const body = await req.json()
-        console
 
         // Usa taskSchema - ambos campos obligatorios
         const validatedBody = taskSchema.parse(body)
-
-        console.log('-->[validaciones]', validatedBody)
 
         const updatedTask = await prisma.task.update({
             where: { id: taskId },
@@ -91,27 +88,19 @@ export async function PUT(req: Request, context: { params: Promise<{ taskId: str
             },
         })
 
-        console.log('-->[updatedTask]', updatedTask)
-
         return NextResponse.json({
             message: "Tarea actualizada exitosamente",
             task: updatedTask
         })
 
     } catch (error) {
-        console.error('====== ERROR CAPTURADO =======')
-        console.error('Tipo de error:', error?.constructor?.name)
-        console.error('Error completo:', error)
-
         if (error instanceof z.ZodError) {
-            console.error('Error de Zod - issues:', error.issues)
             return NextResponse.json(
                 { error: error.issues[0].message },
                 { status: 400 }
             )
         }
 
-        console.error("Error al actualizar tarea", error)
         return NextResponse.json(
             { error: "Error al actualizar la tarea" },
             { status: 500 }
