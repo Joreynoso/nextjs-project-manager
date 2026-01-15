@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, TaskStatus } from '@prisma/client'
 
 const prisma = new PrismaClient()
 const API_URL = 'http://localhost:3000'
@@ -19,7 +19,7 @@ async function registerUser(userData: { email: string; password: string; name: s
       },
       body: JSON.stringify(userData),
     })
-    
+
     if (res.ok) {
       console.log('✅ Usuario registrado:', userData.email)
     } else {
@@ -32,13 +32,13 @@ async function registerUser(userData: { email: string; password: string; name: s
 
 async function main() {
   console.log('🌱 Seeding database...\n')
-  
+
   // 1. Registrar usuarios
   console.log('👥 Registrando usuarios...')
   for (const user of users) {
     await registerUser(user)
   }
-  
+
   // 2. Obtener usuarios
   console.log('\n📋 Obteniendo usuarios...')
   const dbUsers = await prisma.user.findMany({
@@ -47,18 +47,18 @@ async function main() {
     },
     select: { id: true, email: true, name: true }
   })
-  
+
   if (dbUsers.length < 3) {
     console.error('❌ No se encontraron suficientes usuarios')
     return
   }
-  
+
   console.log(`✅ Encontrados ${dbUsers.length} usuarios`)
-  
+
   const alice = dbUsers.find(u => u.email === 'alice@test.com')!
   const bob = dbUsers.find(u => u.email === 'bob@test.com')!
   const charlie = dbUsers.find(u => u.email === 'charlie@test.com')!
-  
+
   // 3. Crear proyecto
   console.log('\n📁 Creando proyecto...')
   const project = await prisma.project.create({
@@ -76,27 +76,27 @@ async function main() {
       }
     }
   })
-  
+
   console.log('✅ Proyecto creado:', project.name)
-  
+
   // 4. Crear tareas
   console.log('\n✏️  Creando tareas...')
-  
+
   const tasks = [
     // Pendientes
-    { title: 'Diseñar mockups de UI', description: 'Crear diseños en Figma', status: 'pending', assignedTo: null },
-    { title: 'Definir arquitectura de BD', description: 'Esquema de base de datos', status: 'pending', assignedTo: null },
-    { title: 'Setup del proyecto', description: 'Inicializar Next.js y dependencias', status: 'pending', assignedTo: bob.id },
-    
+    { title: 'Diseñar mockups de UI', description: 'Crear diseños en Figma', status: TaskStatus.pending, assignedTo: null },
+    { title: 'Definir arquitectura de BD', description: 'Esquema de base de datos', status: TaskStatus.pending, assignedTo: null },
+    { title: 'Setup del proyecto', description: 'Inicializar Next.js y dependencias', status: TaskStatus.pending, assignedTo: bob.id },
+
     // En progreso
-    { title: 'Implementar autenticación', description: 'Better Auth con Google y GitHub', status: 'in_progress', assignedTo: alice.id },
-    { title: 'API de usuarios', description: 'CRUD de usuarios', status: 'in_progress', assignedTo: bob.id },
-    
-    // Completadas
-    { title: 'Configurar Prisma', description: 'Schema y migraciones', status: 'done', assignedTo: alice.id },
-    { title: 'Deploy inicial', description: 'Deploy en Vercel', status: 'done', assignedTo: charlie.id },
+    { title: 'Implementar autenticación', description: 'Better Auth con Google y GitHub', status: TaskStatus.in_progress, assignedTo: alice.id },
+    { title: 'API de usuarios', description: 'CRUD de usuarios', status: TaskStatus.in_progress, assignedTo: bob.id },
+
+    // Completadas - CAMBIO: 'done' → 'completed'
+    { title: 'Configurar Prisma', description: 'Schema y migraciones', status: TaskStatus.completed, assignedTo: alice.id },
+    { title: 'Deploy inicial', description: 'Deploy en Vercel', status: TaskStatus.completed, assignedTo: charlie.id },
   ]
-  
+
   for (const taskData of tasks) {
     await prisma.task.create({
       data: {
@@ -105,9 +105,9 @@ async function main() {
       }
     })
   }
-  
+
   console.log(`✅ ${tasks.length} tareas creadas`)
-  
+
   console.log('\n✨ Seed completado!')
   console.log('\n📊 Resumen:')
   console.log(`   - ${dbUsers.length} usuarios`)
