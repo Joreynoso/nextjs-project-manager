@@ -1,5 +1,6 @@
 import { getProjectById } from '@/actions/projects'
 import ProjectTasks from '@/components/projects/ProjectTasks'
+import ProjectChatWrapper from '@/components/projects/ProjectChatWrapper'
 
 // import breacumb
 import {
@@ -23,7 +24,6 @@ import {
 
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-
 
 type Props = {
     params: Promise<{ id: string }>
@@ -64,7 +64,7 @@ export default async function ProjectDetailPage({ params }: Props) {
             </Breadcrumb>
 
             <div className='w-full grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6'>
-                
+
                 {/* Card de Descripción */}
                 <div className='lg:col-span-2 bg-linear-to-br from-card via-card to-muted/20 border border-border/50 rounded-xl p-5'>
                     <h1 className='text-xl font-bold text-foreground mb-2'>{project?.name}</h1>
@@ -81,7 +81,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                             {members.length + 1}
                         </Badge>
                     </div>
-                    
+
                     {/* Avatares */}
                     <div className='flex flex-wrap gap-2'>
                         {/* Owner */}
@@ -121,11 +121,14 @@ export default async function ProjectDetailPage({ params }: Props) {
                         ))}
                     </div>
                 </div>
+
             </div>
 
             {/* lista de tareas del proyecto deberia ir aqui */}
             <ProjectTasks projectId={id} projectName={project?.name ?? ''} tasks={project?.tasks ?? []} />
 
+            {/* Chat del proyecto */}
+            <ProjectChatWrapper projectName={project?.name ?? 'Proyecto'} />
         </div>
     )
 }
