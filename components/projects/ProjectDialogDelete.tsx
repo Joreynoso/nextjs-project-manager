@@ -17,7 +17,7 @@ export default function ProjectDialogDelete({ open, onConfirm, isDeleting, onClo
     // render return
     return (
         <div
-            className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'>
+            className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-5'>
             <motion.div
                 // efecto de aparecer suavemente
                 initial={{ opacity: 0, scale: 0.9 }}
