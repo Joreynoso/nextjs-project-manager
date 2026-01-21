@@ -22,7 +22,6 @@ type ChatSidebarProps = {
     isLoading: boolean
 }
 
-
 export default function ChatSidebar({ isOpen, onClose, projectName, messages, isLoading }: ChatSidebarProps) {
     const [inputValue, setInputValue] = useState('')
 

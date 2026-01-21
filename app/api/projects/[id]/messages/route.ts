@@ -62,7 +62,7 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
         })  
 
         // retornar los mensajes
-        return NextResponse.json({ success: true, messages: messages || [] })
+        return NextResponse.json(messages || [])
     } catch (error) {
         console.error(error)
         return NextResponse.json(
@@ -121,7 +121,7 @@ export async function POST(req: Request, context: { params: Promise<{ id: string
             }
         })
 
-        return NextResponse.json({ success: true, message })
+        return NextResponse.json({ message })
     } catch (error) {
         console.error(error)
         return NextResponse.json(
