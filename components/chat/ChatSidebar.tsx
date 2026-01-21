@@ -11,26 +11,15 @@ import { useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import ChatSkeleton from './ChatSkeleton'
 
+// import types
+import { Message } from '@/types/messages'
+
 type ChatSidebarProps = {
     isOpen: boolean
     onClose: () => void
     projectName: string
     messages: Message[]
     isLoading: boolean
-}
-
-type Message = {
-    id: string
-    content: string
-    userId: string
-    projectId: string
-    createdAt: Date
-    user: {
-        id: string
-        name: string
-        email: string
-        image: string | null
-    }
 }
 
 
@@ -100,8 +89,9 @@ export default function ChatSidebar({ isOpen, onClose, projectName, messages, is
                                             >
                                                 {/* Avatar */}
                                                 <Avatar className="h-9 w-9 shrink-0">
+                                                    <AvatarImage src={message.user.image ?? undefined} />
                                                     <AvatarFallback className="text-xs font-semibold bg-primary text-primary-foreground">
-                                                        U
+                                                        {message.user.name.charAt(0).toUpperCase()}
                                                     </AvatarFallback>
                                                 </Avatar>
 

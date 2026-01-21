@@ -3,14 +3,7 @@
 import { useState, useEffect } from 'react'
 import ChatButton from '../chat/ChatButton'
 import ChatSidebar from '../chat/ChatSidebar'
-
-type Message = {
-    id: string
-    content: string
-    userId: string
-    projectId: string
-    createdAt: Date
-}
+import { Message } from '@/types/messages'
 
 type ProjectChatWrapperProps = {
     projectName: string
@@ -22,7 +15,12 @@ async function getMessages(id: string) {
     const response = await fetch(`/api/projects/${id}/messages`)
     const data = await response.json()
     console.log('Mensajes del proyecto...', data)
-    return data.messages
+
+    if (data.error) {
+        throw new Error(data.error)
+    }
+
+    return data || []
 }
 
 export default function ProjectChatWrapper({ projectName, projectId }: ProjectChatWrapperProps) {
@@ -35,7 +33,7 @@ export default function ProjectChatWrapper({ projectName, projectId }: ProjectCh
             setIsLoading(true)
             getMessages(projectId)
                 .then((data) => {
-                    setMessages(data || [])
+                    setMessages(data)
                 })
                 .catch((error) => {
                     console.error('Error al cargar mensajes:', error)
