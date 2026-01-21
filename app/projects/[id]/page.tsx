@@ -128,7 +128,7 @@ export default async function ProjectDetailPage({ params }: Props) {
             <ProjectTasks projectId={id} projectName={project?.name ?? ''} tasks={project?.tasks ?? []} />
 
             {/* Chat del proyecto */}
-            <ProjectChatWrapper projectName={project?.name ?? 'Proyecto'} />
+            <ProjectChatWrapper projectName={project?.name ?? 'Proyecto'} projectId={id} />
         </div>
     )
 }
