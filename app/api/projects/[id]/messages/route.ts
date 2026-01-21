@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import auth from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { headers } from "next/headers"
+import { messageSchema } from "@/lib/validations/messages"
 
 /**
  * GET /api/projects/[id]/messages
@@ -59,7 +60,7 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
             include: {
                 user: true
             }
-        })  
+        })
 
         // retornar los mensajes
         return NextResponse.json(messages || [])
@@ -78,18 +79,14 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
  */
 export async function POST(req: Request, context: { params: Promise<{ id: string }> }) {
     try {
-        // obtener el id del proyecto
         const { id } = await context.params
 
-        // obtener la sesion del usuario
         const session = await auth.api.getSession({
             headers: await headers()
         })
 
-        // obtener el id del usuario
         const userId = session?.user?.id
 
-        // verificar que el usuario este autenticado
         if (!userId) {
             return NextResponse.json(
                 { error: "No autorizado" },
@@ -97,19 +94,39 @@ export async function POST(req: Request, context: { params: Promise<{ id: string
             )
         }
 
-        // obtener los datos del mensaje
-        const { content } = await req.json()
+        // Verificar acceso al proyecto
+        const project = await prisma.project.findFirst({
+            where: {
+                id,
+                members: {
+                    some: { userId }
+                }
+            }
+        })
 
-        // verificar que el mensaje no este vacio
-        // deberiar validarse luego con ZOD
-        if (!content) {
+        if (!project) {
             return NextResponse.json(
-                { error: "El mensaje no puede estar vacio" },
+                { error: "Proyecto no encontrado" },
+                { status: 404 }
+            )
+        }
+
+        // Obtener y validar datos
+        const body = await req.json()
+        const validation = messageSchema.safeParse(body)
+
+        // Si la validación falla, retornar errores
+        if (!validation.success) {
+            return NextResponse.json(
+                validation.error.issues.map(issue => issue.message),
                 { status: 400 }
             )
         }
 
-        // crear el mensaje
+        // Datos validados
+        const { content } = validation.data
+
+        // Crear mensaje
         const message = await prisma.message.create({
             data: {
                 content,
@@ -117,11 +134,19 @@ export async function POST(req: Request, context: { params: Promise<{ id: string
                 userId
             },
             include: {
-                user: true
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        image: true,
+                        email: true
+                    }
+                }
             }
         })
 
-        return NextResponse.json({ message })
+        return NextResponse.json(message)
+
     } catch (error) {
         console.error(error)
         return NextResponse.json(

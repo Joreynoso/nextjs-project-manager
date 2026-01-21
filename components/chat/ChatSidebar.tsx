@@ -7,23 +7,90 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 
+
 // import avatar
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import ChatSkeleton from './ChatSkeleton'
 
 // import types
 import { Message } from '@/types/messages'
+import { toast } from 'sonner'
+
+// import validaciones
+import { messageSchema } from '@/lib/validations/messages'
+
+// crear mensaje
+async function createMessage(message: string, projectId: string) {
+    // Validar en el cliente ANTES de enviar
+    const validation = messageSchema.safeParse({ content: message })
+
+    if (!validation.success) {
+        // Mostrar error sin hacer el request
+        const firstError = validation.error.issues[0]
+        toast.error(firstError.message)
+        return null
+    }
+
+    try {
+        const response = await fetch(`/api/projects/${projectId}/messages`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ content: message }),
+        })
+
+        if (!response.ok) {
+            const error = await response.json()
+            toast.error(error.error || 'Error al crear el mensaje')
+            return null
+        }
+
+        const data = await response.json()
+        return data
+
+    } catch (error) {
+        console.error('Error:', error)
+        toast.error('Error de conexión')
+        return null
+    }
+}
 
 type ChatSidebarProps = {
     isOpen: boolean
     onClose: () => void
+    projectId: string
     projectName: string
     messages: Message[]
     isLoading: boolean
 }
 
-export default function ChatSidebar({ isOpen, onClose, projectName, messages, isLoading }: ChatSidebarProps) {
+export default function ChatSidebar({ isOpen, onClose, projectId, projectName, messages, isLoading }: ChatSidebarProps) {
     const [inputValue, setInputValue] = useState('')
+
+    // enviar mensaje
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+
+        try {
+            // verificar que el proyecto exista
+            if (!projectId) {
+                toast.error('El proyecto no existe')
+                return
+            }
+
+            // crear el nuevo mensaje
+            const newMessage = await createMessage(inputValue, projectId)
+
+            // si el mensaje se creo correctamente, limpiar el input
+            if (newMessage) {
+                setInputValue('')
+            }
+
+        } catch (error) {
+            toast.error('Error al crear el mensaje')
+        }
+    }
 
     return (
         <>
@@ -129,14 +196,12 @@ export default function ChatSidebar({ isOpen, onClose, projectName, messages, is
                                 <Input
                                     value={inputValue}
                                     onChange={(e) => setInputValue(e.target.value)}
-                                    // onKeyPress={handleKeyPress}
                                     placeholder="Escribe un mensaje..."
                                     className="flex-1"
                                 />
                                 <Button
-                                    // onClick={handleSendMessage}
+                                    onClick={handleSubmit}
                                     size="icon"
-                                    disabled={!inputValue.trim()}
                                 >
                                     <Send className="h-4 w-4" />
                                 </Button>

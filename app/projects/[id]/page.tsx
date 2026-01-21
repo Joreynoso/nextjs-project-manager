@@ -1,6 +1,6 @@
 import { getProjectById } from '@/actions/projects'
 import ProjectTasks from '@/components/projects/ProjectTasks'
-import ProjectChatWrapper from '@/components/projects/ProjectChatWrapper'
+import ProjectChatWrapper from '@/components/chat/ProjectChatWrapper'
 
 // import breacumb
 import {
