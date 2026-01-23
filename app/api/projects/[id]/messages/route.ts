@@ -10,18 +10,14 @@ import { messageSchema } from "@/lib/validations/messages"
  */
 export async function GET(req: Request, context: { params: Promise<{ id: string }> }) {
     try {
-        // obtener el id del proyecto
         const { id } = await context.params
 
-        // obtener la sesion del usuario
         const session = await auth.api.getSession({
             headers: await headers()
         })
 
-        // obtener el id del usuario
         const userId = session?.user?.id
 
-        // verificar que el usuario este autenticado
         if (!userId) {
             return NextResponse.json(
                 { error: "No autorizado" },
@@ -29,7 +25,7 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
             )
         }
 
-        // buscar proyecto por id
+        // verificar que el proyecto exista y que el usuario pertenezca al proyecto 
         const project = await prisma.project.findFirst({
             where: {
                 id,
@@ -39,7 +35,7 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
             }
         })
 
-        // verificar que el proyecto exista
+        // si el proyecto no existe o el usuario no pertenece al proyecto
         if (!project) {
             return NextResponse.json(
                 { error: "Proyecto no encontrado" },
@@ -47,13 +43,21 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
             )
         }
 
-        // buscar los mensajes del proyecto
-        // traer solo los ultimos 50 mensajes
+        // soporte para polling
+        const { searchParams } = new URL(req.url)
+        const sinceId = searchParams.get('since') // ID del último mensaje que tiene el cliente
+
+        // construir query dinámica
+        const whereClause: any = { projectId: id }
+
+        // si hay 'since', solo traer mensajes más nuevos
+        if (sinceId) {
+            whereClause.id = { gt: sinceId } // greater than
+        }
+
         const messages = await prisma.message.findMany({
-            where: {
-                projectId: id
-            },
-            take: 50,
+            where: whereClause,
+            take: sinceId ? undefined : 50, // límite solo en carga inicial
             orderBy: {
                 createdAt: "asc"
             },
@@ -62,8 +66,7 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
             }
         })
 
-        // retornar los mensajes
-        return NextResponse.json(messages || [])
+        return NextResponse.json(messages)
     } catch (error) {
         console.error(error)
         return NextResponse.json(

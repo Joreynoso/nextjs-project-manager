@@ -20,7 +20,13 @@ import { toast } from 'sonner'
 import { messageSchema } from '@/lib/validations/messages'
 
 // crear mensaje
-async function createMessage(message: string, projectId: string) {
+async function createMessage(message: string, projectId: string, sinceId?: string) {
+
+    // Construir URL con parámetro opcional
+    const url = sinceId 
+        ? `/api/projects/${projectId}/messages?since=${sinceId}`
+        : `/api/projects/${projectId}/messages`
+
     // Validar en el cliente ANTES de enviar
     const validation = messageSchema.safeParse({ content: message })
 
@@ -32,7 +38,7 @@ async function createMessage(message: string, projectId: string) {
     }
 
     try {
-        const response = await fetch(`/api/projects/${projectId}/messages`, {
+        const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
