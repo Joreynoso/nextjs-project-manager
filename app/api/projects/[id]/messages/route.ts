@@ -57,7 +57,7 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
 
         const messages = await prisma.message.findMany({
             where: whereClause,
-            take: sinceId ? undefined : 50, // límite solo en carga inicial
+            take: sinceId ? undefined : 10, // límite solo en carga inicial
             orderBy: {
                 createdAt: "asc"
             },

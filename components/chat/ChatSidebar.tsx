@@ -15,6 +15,12 @@ import ChatSkeleton from './ChatSkeleton'
 import { Message } from '@/types/messages'
 import { toast } from 'sonner'
 
+// user
+import { redirect } from 'next/navigation'
+import type { User } from '@/types/user'
+import { authClient } from '@/lib/auth-client'
+import { useSession } from '@/lib/auth-client'
+
 type ChatSidebarProps = {
     isOpen: boolean
     onClose: () => void
@@ -27,6 +33,17 @@ type ChatSidebarProps = {
 
 export default function ChatSidebar({ isOpen, onClose, projectId, projectName, messages, isLoading, onHandleSendMessage }: ChatSidebarProps) {
     const [inputValue, setInputValue] = useState('')
+
+    // obtener el usuario logueado
+    const { data: session } = useSession()
+
+    if (!session) {
+        redirect('/auth/login')
+    }
+
+    const { user }: { user: User } = session
+
+    const currentUserEmail = user.email
 
     // enviar mensaje
     const handleSubmit = async (e: React.FormEvent) => {
@@ -95,6 +112,7 @@ export default function ChatSidebar({ isOpen, onClose, projectId, projectName, m
 
 
                         {/* Messages */}
+                        {/* Deberia poder diferenciar con un color distinto los mensajes del usuario que está actualmente logueado */}
                         <ScrollArea className="flex-1 overflow-y-auto p-4">
                             {isLoading ? (
                                 <ChatSkeleton />
@@ -109,7 +127,7 @@ export default function ChatSidebar({ isOpen, onClose, projectId, projectName, m
                                         messages.map((message) => (
                                             <div
                                                 key={message.id}
-                                                className="flex gap-3 flex-row"
+                                                className={`flex gap-3 ${currentUserEmail === message.user.email ? 'flex-row-reverse' : 'flex-row'}`}
                                             >
                                                 {/* Avatar */}
                                                 <Avatar className="h-9 w-9 shrink-0">
@@ -120,7 +138,7 @@ export default function ChatSidebar({ isOpen, onClose, projectId, projectName, m
                                                 </Avatar>
 
                                                 {/* Message Content */}
-                                                <div className="flex flex-col gap-1 max-w-[75%] items-start">
+                                                <div className={`flex flex-col gap-1 max-w-[75%] ${currentUserEmail === message.user.email ? 'items-end' : 'items-start'}`}>
                                                     {/* Nombre y timestamp */}
                                                     <div className="flex items-center gap-2 px-1 flex-row">
                                                         <span className="text-xs font-semibold text-foreground">
@@ -135,11 +153,21 @@ export default function ChatSidebar({ isOpen, onClose, projectId, projectName, m
                                                     </div>
 
                                                     {/* Message bubble */}
-                                                    <div className="rounded-2xl px-4 py-2.5 bg-muted text-foreground rounded-tl-sm">
-                                                        <p className="text-sm leading-relaxed wrap-break-word">
-                                                            {message.content}
-                                                        </p>
-                                                    </div>
+                                                    {/* Cambiar color de la burbuja si el email coincide con el del usuario logueado */}
+                                                    {/* y que aparezca a la derecha */}
+                                                    {currentUserEmail === message.user.email ? (
+                                                        <div className="rounded-2xl px-4 py-2.5 bg-secondary text-dark dark:text-white rounded-tr-sm">
+                                                            <p className="text-sm leading-relaxed wrap-break-word">
+                                                                {message.content}
+                                                            </p>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="rounded-2xl px-4 py-2.5 bg-muted text-foreground rounded-tl-sm">
+                                                            <p className="text-sm leading-relaxed wrap-break-word">
+                                                                {message.content}
+                                                            </p>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         ))
