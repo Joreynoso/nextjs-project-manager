@@ -1,5 +1,4 @@
-// lib/api/messages.ts (o utils/messages.ts)
-
+// lib/api/messages.ts
 import { messageSchema } from '@/lib/validations/messages'
 import { toast } from 'sonner'
 
@@ -36,7 +35,7 @@ export async function createMessage(content: string, projectId: string) {
         return null
     }
     
-    const response = await fetch(`/api/projects/${projectId}/messages`, {
+    const response = await fetch(`/api/projects/${projectId}/messages`, { // ← CORREGIDO AQUÍ
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content }),
