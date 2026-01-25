@@ -7,7 +7,6 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 
-
 // import avatar
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import ChatSkeleton from './ChatSkeleton'
@@ -16,52 +15,6 @@ import ChatSkeleton from './ChatSkeleton'
 import { Message } from '@/types/messages'
 import { toast } from 'sonner'
 
-// import validaciones
-import { messageSchema } from '@/lib/validations/messages'
-
-// crear mensaje
-async function createMessage(message: string, projectId: string, sinceId?: string) {
-
-    // Construir URL con parámetro opcional
-    const url = sinceId 
-        ? `/api/projects/${projectId}/messages?since=${sinceId}`
-        : `/api/projects/${projectId}/messages`
-
-    // Validar en el cliente ANTES de enviar
-    const validation = messageSchema.safeParse({ content: message })
-
-    if (!validation.success) {
-        // Mostrar error sin hacer el request
-        const firstError = validation.error.issues[0]
-        toast.error(firstError.message)
-        return null
-    }
-
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ content: message }),
-        })
-
-        if (!response.ok) {
-            const error = await response.json()
-            toast.error(error.error || 'Error al crear el mensaje')
-            return null
-        }
-
-        const data = await response.json()
-        return data
-
-    } catch (error) {
-        console.error('Error:', error)
-        toast.error('Error de conexión')
-        return null
-    }
-}
-
 type ChatSidebarProps = {
     isOpen: boolean
     onClose: () => void
@@ -69,9 +22,10 @@ type ChatSidebarProps = {
     projectName: string
     messages: Message[]
     isLoading: boolean
+    onHandleSendMessage: (message: string) => void
 }
 
-export default function ChatSidebar({ isOpen, onClose, projectId, projectName, messages, isLoading }: ChatSidebarProps) {
+export default function ChatSidebar({ isOpen, onClose, projectId, projectName, messages, isLoading, onHandleSendMessage }: ChatSidebarProps) {
     const [inputValue, setInputValue] = useState('')
 
     // enviar mensaje
@@ -86,12 +40,10 @@ export default function ChatSidebar({ isOpen, onClose, projectId, projectName, m
             }
 
             // crear el nuevo mensaje
-            const newMessage = await createMessage(inputValue, projectId)
+            onHandleSendMessage(inputValue)
 
             // si el mensaje se creo correctamente, limpiar el input
-            if (newMessage) {
-                setInputValue('')
-            }
+            setInputValue('')
 
         } catch (error) {
             toast.error('Error al crear el mensaje')
@@ -143,7 +95,7 @@ export default function ChatSidebar({ isOpen, onClose, projectId, projectName, m
 
 
                         {/* Messages */}
-                        <ScrollArea className="flex-1 p-4">
+                        <ScrollArea className="flex-1 overflow-y-auto p-4">
                             {isLoading ? (
                                 <ChatSkeleton />
                             ) : (
