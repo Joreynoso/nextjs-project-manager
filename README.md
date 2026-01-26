@@ -544,6 +544,17 @@ La aplicación estará disponible en `http://localhost:3000`
    - Usar el menú de opciones
    - Confirmar eliminación
 
+5. **Chat**:
+   - Abrir el chat
+   - Enviar mensajes
+   - Ver mensajes
+
+6. **Usuarios por defecto pra testear el sistema**:
+   - alice@test.com / [test13456]
+   - bob@test.com / [test13456]
+   - charlie@test.com / [test13456]
+
+
 ### Características Adicionales
 
 - **Modo Oscuro**: Toggle en la barra de navegación
