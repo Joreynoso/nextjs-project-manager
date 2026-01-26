@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 // import avatar
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -35,6 +35,7 @@ type ChatSidebarProps = {
 
 export default function ChatSidebar({ isOpen, onClose, projectId, projectName, messages, isLoading, onHandleSendMessage }: ChatSidebarProps) {
     const [inputValue, setInputValue] = useState('')
+    const messagesEndRef = useRef<HTMLDivElement>(null)
 
     // obtener el usuario logueado
     const { data: session } = useSession()
@@ -86,6 +87,14 @@ export default function ChatSidebar({ isOpen, onClose, projectId, projectName, m
             toast.error('Error al crear el mensaje')
         }
     }
+
+    // scroll al final cuando hay nuevos mensajes
+    // cada vez que cambia el array de mensajes, scrollear al final
+    // para poder ver el ultimo mensaje
+    // scroll al final cuando hay nuevos mensajes
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, [messages])
 
     return (
         <>
@@ -192,6 +201,7 @@ export default function ChatSidebar({ isOpen, onClose, projectId, projectName, m
                                             </div>
                                         ))
                                     )}
+                                    <div ref={messagesEndRef} />
                                 </div>
                             )}
                         </ScrollArea>
