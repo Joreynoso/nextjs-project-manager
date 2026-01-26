@@ -18,8 +18,10 @@ import { toast } from 'sonner'
 // user
 import { redirect } from 'next/navigation'
 import type { User } from '@/types/user'
-import { authClient } from '@/lib/auth-client'
 import { useSession } from '@/lib/auth-client'
+
+// validaciones
+import { messageSchema } from '@/lib/validations/messages'
 
 type ChatSidebarProps = {
     isOpen: boolean
@@ -47,6 +49,7 @@ export default function ChatSidebar({ isOpen, onClose, projectId, projectName, m
 
     // enviar mensaje
     const handleSubmit = async (e: React.FormEvent) => {
+        console.log('1. entrando a la función')
         e.preventDefault()
 
         try {
@@ -56,8 +59,25 @@ export default function ChatSidebar({ isOpen, onClose, projectId, projectName, m
                 return
             }
 
-            // crear el nuevo mensaje
-            onHandleSendMessage(inputValue)
+            // verificar que el mensaje no este vacio
+            if (!inputValue) {
+                toast.error('El mensaje no puede estar vacio')
+                return
+            }
+
+            // si todo está bien validar con zod
+            const result = messageSchema.safeParse({ content: inputValue })
+            console.log('2. validacion zod', result)
+
+            if (!result.success) {
+                toast.error('El mensaje no es valido')
+                return
+            }
+
+            console.log('3. creando el mensaje')
+            // crear el nuevo mensaje con la funcion onHandleSendMessage
+            onHandleSendMessage(result.data.content)
+            console.log('4. mensaje creado', result.data.content)
 
             // si el mensaje se creo correctamente, limpiar el input
             setInputValue('')

@@ -30,12 +30,13 @@ export async function createMessage(content: string, projectId: string) {
     // Validar antes de enviar
     const validation = messageSchema.safeParse({ content })
     
+    // validar que el mensaje no este vacio del lado del servidor
     if (!validation.success) {
         toast.error(validation.error.issues[0].message)
         return null
     }
     
-    const response = await fetch(`/api/projects/${projectId}/messages`, { // ← CORREGIDO AQUÍ
+    const response = await fetch(`/api/projects/${projectId}/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content }),
