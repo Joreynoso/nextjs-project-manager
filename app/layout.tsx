@@ -5,7 +5,6 @@ import Navbar from '@/components/Navbar';
 import { ThemeProvider } from '../components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 import Footer from '@/components/Footer';
-import ScreenSizeHelper from "@/components/ScreenSizeHelper";
 
 const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage-sans",
@@ -58,6 +57,7 @@ export default function RootLayout({
             position="top-center"
             expand={true}
           />
+
           <Footer />
           {/* <ScreenSizeHelper /> */}
         </ThemeProvider>

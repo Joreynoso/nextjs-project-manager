@@ -22,7 +22,8 @@ export default function Home() {
           <motion.div
             // transición de izquierda a derecha
             initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.5 }}
             className="w-full flex flex-col items-center justify-center space-y-8 text-center">
             <div className="space-y-6">
@@ -50,7 +51,8 @@ export default function Home() {
           <motion.div
             // transición desde derecha a izquierda
             initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.5 }}
             className="lg:block relative w-full min-h-[calc(50vh)] border border-border rounded-3xl overflow-hidden">
             <Image
@@ -72,7 +74,8 @@ export default function Home() {
           <motion.div
             // transición de izquierda a derecha
             initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.5 }}
             className="w-full lg:w-1/2 space-y-8 text-center lg:text-left">
             <div className="space-y-6">
@@ -100,7 +103,8 @@ export default function Home() {
           <motion.div
             // transición desde derecha a izquierda
             initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.5 }}
             className="hidden lg:block relative w-1/2 min-h-[calc(75vh)] border border-border rounded-3xl overflow-hidden">
             <Image

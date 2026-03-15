@@ -73,7 +73,11 @@ export default function Navbar() {
                 </Link>
 
                 {/* buttons section on larger screens*/}
-                <div className="hidden md:flex gap-2">
+                <div className="hidden md:flex gap-2 items-center">
+                    {/* Link Acerca de visible para todos */}
+                    <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors px-4">
+                        Acerca de
+                    </Link>
 
                     {/* botones de login y register */}
                     {!session && (
@@ -147,6 +151,15 @@ export default function Navbar() {
                                     variant="secondary"
                                     className='w-full'>
                                     Inicio
+                                </Button>
+                            </Link>
+
+                            {/* acerca de móvil */}
+                            <Link href="/about">
+                                <Button
+                                    variant="secondary"
+                                    className='w-full'>
+                                    Acerca de
                                 </Button>
                             </Link>
 

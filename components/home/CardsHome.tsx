@@ -40,17 +40,47 @@ export const features = [
 ]
 
 
+import { motion } from 'framer-motion'
+
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.1
+        }
+    }
+}
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.5
+        }
+    }
+}
+
 export default function CardsHome() {
 
     // render return
     return (
         <div className='container mx-auto mt-10 mb-20'>
-            <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+            <motion.div 
+                className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+            >
                 {features.map((feature) => {
                     const Icon = feature.icon
                     return (
-                        <div
+                        <motion.div
                             key={feature.id}
+                            variants={itemVariants}
                             className='bg-linear-to-br from-card via-card to-muted/20 border border-border/50 p-8 rounded-2xl text-center flex flex-col justify-center items-center hover:bg-secondary transition-colors duration-300 ease-in-out'
                         >
                             <div className='aspect-square w-12 h-12 mx-auto bg-muted rounded-full flex justify-center items-center mb-6'>
@@ -58,10 +88,10 @@ export default function CardsHome() {
                             </div>
                             <h2 className='text-lg font-semibold mb-2'>{feature.title}</h2>
                             <p className='text-muted-foreground'>{feature.description}</p>
-                        </div>
+                        </motion.div>
                     )
                 })}
-            </div>
+            </motion.div>
         </div>
     )
 }
