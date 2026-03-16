@@ -30,6 +30,7 @@ export default function ProjectChatWrapper({ projectName, projectId }: ProjectCh
             setIsLoading(true)
             try {
                 const data = await getMessages(projectId)
+                console.log('data', data)
                 setMessages(data)
             } catch (error) {
                 toast.error('Error al cargar mensajes:')

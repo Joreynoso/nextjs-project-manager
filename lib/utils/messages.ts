@@ -17,8 +17,9 @@ export async function getMessages(projectId: string, sinceId?: string) {
     if (!response.ok) {
         throw new Error('Error al obtener mensajes')
     }
-    
-    return response.json()
+
+    const data = await response.json()
+    return data
 }
 
 /**

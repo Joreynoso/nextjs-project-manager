@@ -34,7 +34,7 @@ const auth = betterAuth({
         expiresIn: 60 * 60 * 24 * 7,
         cookieCache: {
             enabled: true,
-            maxAge: 5 * 60,
+            maxAge: 30 * 60, // 30 minutos — evita re-validaciones frecuentes en Server Components
         }
     },
 
