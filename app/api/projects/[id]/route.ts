@@ -26,10 +26,11 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
 
     const project = await prisma.project.findFirst({
       where: {
-        id,  // ← Usa id directamente
-        members: {
-          some: { userId }
-        }
+        id, 
+        OR: [
+          { members: { some: { userId } } },
+          { createdBy: userId }
+        ]
       }
     })
 

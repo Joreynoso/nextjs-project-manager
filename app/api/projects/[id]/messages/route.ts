@@ -29,9 +29,10 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
         const project = await prisma.project.findFirst({
             where: {
                 id,
-                members: {
-                    some: { userId }
-                }
+                OR: [
+                    { members: { some: { userId } } },
+                    { createdBy: userId }
+                ]
             }
         })
 
@@ -101,9 +102,10 @@ export async function POST(req: Request, context: { params: Promise<{ id: string
         const project = await prisma.project.findFirst({
             where: {
                 id,
-                members: {
-                    some: { userId }
-                }
+                OR: [
+                    { members: { some: { userId } } },
+                    { createdBy: userId }
+                ]
             }
         })
 
