@@ -9,10 +9,14 @@ import { authClient } from '@/lib/auth-client'
 
 export default function AvatarPicker() {
 
-    const { data: session } = useSession()
+    const { data: session, isPending } = useSession()
+
+    if (isPending) {
+        return <div className="animate-pulse bg-muted rounded-full w-24 h-24 mx-auto" />
+    }
 
     if (!session) {
-        redirect('/auth/login')
+        return null
     }
 
     const { user }: { user: User } = session
