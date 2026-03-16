@@ -18,7 +18,15 @@ import AvatarPicker from '@/components/profile/AvatarPicker'
 
 export default function ProfilePage() {
 
-    const { data: session } = useSession()
+    const { data: session, isPending } = useSession()
+
+    if (isPending) {
+        return (
+            <div className='w-full min-h-[calc(100vh-4rem)] flex items-center justify-center'>
+                <p className='text-muted-foreground animate-pulse'>Cargando perfil...</p>
+            </div>
+        )
+    }
 
     if (!session) {
         redirect('/auth/login')

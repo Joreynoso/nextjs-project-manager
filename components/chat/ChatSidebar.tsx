@@ -38,10 +38,14 @@ export default function ChatSidebar({ isOpen, onClose, projectId, projectName, m
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
     // obtener el usuario logueado
-    const { data: session } = useSession()
+    const { data: session, isPending } = useSession()
+
+    if (isPending) {
+        return null // O un esqueleto si prefieres
+    }
 
     if (!session) {
-        redirect('/auth/login')
+        return null // No redirigir aquí, dejar que la página lo maneje si es necesario
     }
 
     const { user }: { user: User } = session
