@@ -656,9 +656,15 @@ npx prisma generate
 
 ---
 
-## 📄 Licencia
+## 📄 Licencia de Uso
 
-Este proyecto es privado y está destinado únicamente para uso interno.
+Este proyecto es de **uso abierto**. Podés usarlo, modificarlo, integrarlo en otros sistemas y distribuirlo libremente, incluso con fines comerciales.
+
+### Condiciones
+- **Mantener la atribución original** del proyecto al autor (José Oscar Reynoso).  
+- **No presentar el trabajo como propio** ni eliminar mi crédito como autor.
+
+El software se entrega **"tal cual"**, sin garantías de ningún tipo.
 
 ---
 
